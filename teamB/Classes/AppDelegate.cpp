@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
 #include "HelloWorldScene.h"
+#include "MultiResolution.h"
 
 USING_NS_CC;
 
