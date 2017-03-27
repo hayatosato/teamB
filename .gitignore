@@ -1,3 +1,8 @@
 *.opendb
 teamB/proj.win32/
 teamB/cocos2d/
+teamB/proj.android-studio/
+teamB/proj.android/
+teamB/proj.ios_mac/
+teamB/proj.win10/
+teamB/proj.win8.1-universal/
