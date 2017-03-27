@@ -1,4 +1,8 @@
 *.opendb
+*.sdf
+*.exp
+*.idb
+*.tlog
 teamB/proj.win32/
 teamB/cocos2d/
 teamB/proj.android-studio/
