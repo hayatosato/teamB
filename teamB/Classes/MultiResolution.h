@@ -11,7 +11,7 @@
 
 #include "cocos2d.h"
 
-static cocos2d::Size designResolutionSize = cocos2d::Size(1920, 1080);//iphone6+
+static cocos2d::Size designResolutionSize = cocos2d::Size(1080, 1920);//iphone6+
 //static cocos2d::Size designResolutionSize = cocos2d::Size(1334, 750);//iphone6
 //static cocos2d::Size designResolutionSize = cocos2d::Size(1536, 2048);
 
