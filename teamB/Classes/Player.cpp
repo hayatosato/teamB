@@ -2,8 +2,13 @@
 #include "WatchLayer.h"
 #include "MultiResolution.h"
 
-const float LongMoveDir = 6;
-const float ShortMoveDir = 0.5;
+//針一回の角度
+const float OneLongMoveDir = 6;
+const float OneShortMoveDir = 0.5;
+//針一周分の角度
+const int OneRotation = 360;
+//
+const int MoveDivide = (designResolutionSize.height * 0.5f) / 120;
 
 bool Player::init()
 {
@@ -26,21 +31,14 @@ bool Player::onTouchBegan(Touch* pTouch, Event* pEvent)
 	touchPos.y = designResolutionSize.height - touchPos.y;
 
 	//Rect
-	//Rect knobRect = ((WatchLayer*)(this->getParent()))->_knob->getBoundingBox();
 	Size knobRect = ((WatchLayer*)(this->getParent()))->_knob->getContentSize();
 	Vec2 knobPos = ((WatchLayer*)(this->getParent()))->_knob->getPosition();
 
-	log("knob X:%f, Y:%f", knobPos.x, knobPos.y);
-	log("touch X:%f, Y:%f", touchPos.x, touchPos.y);
-
-	//
-	//if (knobRect.containsPoint(touchPos))
-	//{
-	//	_knobFlg = true;
-	//}
+	//判定
 	if (touchPos.x > (knobPos.x - knobRect.width) && touchPos.x < (knobPos.x + knobRect.width) &&
 		touchPos.y > (knobPos.y - knobRect.height) && touchPos.y < (knobPos.y + knobRect.height))
 	{
+		//フラグをtrueに
 		_knobFlg = true;
 	}
 
@@ -52,6 +50,7 @@ void Player::onTouchMoved(Touch* pTouch, Event* pEvent)
 	Vec2 touchPos = pTouch->getLocation();
 	//前回とのタッチ位置の差
 	Vec2 delta = pTouch->getDelta();
+
 	if (delta.y == 0) return;
 
 	if (_knobFlg)
@@ -63,23 +62,19 @@ void Player::onTouchMoved(Touch* pTouch, Event* pEvent)
 		float longDir = watchLayer->_longHand->getRotation();
 		float shortDir = watchLayer->_shortHand->getRotation();
 
-		//時計回り
-		if (delta.y > 0)
-		{
-			//角度
-			longDir += LongMoveDir;
-			shortDir += ShortMoveDir;
-		}
-		//反時計回り
-		else if (delta.y < 0)
-		{
-			//角度
-			longDir -= LongMoveDir;
-			shortDir -= ShortMoveDir;
-		}
+		//動く角度
+		float longMoveDir = OneLongMoveDir * delta.y / MoveDivide;
+		float shortMoveDir = OneShortMoveDir * delta.y / MoveDivide;
 
-		if (longDir >= 360 || longDir <= -360) longDir -= 360;
-		if (shortDir >= 360 || shortDir <= -360) shortDir += 360;
+		//角度
+		longDir += longMoveDir;
+		shortDir += shortMoveDir;
+
+		//チェック
+		if (longDir >= OneRotation) longDir -= OneRotation;
+		else if (longDir <= -OneRotation) longDir += OneRotation;
+		if (shortDir >= OneRotation) shortDir -= OneRotation;
+		else if (shortDir <= -OneRotation) shortDir += OneRotation;
 
 		//更新
 		watchLayer->_longHand->setRotation(longDir);
@@ -89,5 +84,6 @@ void Player::onTouchMoved(Touch* pTouch, Event* pEvent)
 
 void Player::onTouchEnded(Touch* pTouch, Event* pEvent)
 {
+	//フラグをfalseに
 	_knobFlg = false;
 }

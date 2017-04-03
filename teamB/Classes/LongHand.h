@@ -7,9 +7,11 @@ USING_NS_CC;
 class LongHand : public Sprite
 {
 public:
+	CREATE_FUNC(LongHand);
 	virtual bool init();
 
-	CREATE_FUNC(LongHand);
+	//j‚Ì‘å‚«‚³
+	Size _handSize;
 private:
 
 };

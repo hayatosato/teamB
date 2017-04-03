@@ -12,7 +12,6 @@ public:
 	CREATE_FUNC(GameScene);
 	virtual bool init();
 
-
 private:
 	//Layer
 	WatchLayer* _watchLayer;

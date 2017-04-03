@@ -1,7 +1,5 @@
 #include "GameScene.h"
 
-#include "MultiResolution.h"
-
 bool GameScene::init()
 {
 	if (!Scene::init()) return false;

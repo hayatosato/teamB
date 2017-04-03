@@ -5,36 +5,40 @@ bool WatchLayer::init()
 {
 	if (!Layer::init()) return false;
 
+	//時計の位置
 	Vec2 watchPos = designResolutionSize * 0.5f;
 
-	//コンビニに行きました。
-
-	//Knob
+	//つまみ
 	_knob = Knob::create();
-	_knob->setPosition(Vec2(designResolutionSize * 0.5f));
-	this->addChild(_knob, 10);
+	_knob->setPosition(Vec2(watchPos.x + watchPos.x * 0.9f, watchPos.y));
+	_knob->setScale(3.0f);
+	this->addChild(_knob);
 
 	//時計
 	_watchSprite = Sprite::create("Watch.png");
 	_watchSprite->setPosition(watchPos);
+	_watchSprite->setScale(3.0f);
 	this->addChild(_watchSprite);
 
-	//ShortHand
+	//短針
 	_shortHand = ShortHand::create();
 	_shortHand->setPosition(watchPos);
-	this->setScaleX(1.5);
-	this->setScaleY(1.3);
+	_shortHand->setScale(3.0f);
 	this->addChild(_shortHand);
 
-	//LongHand
+	//長針
 	_longHand = LongHand::create();
 	_longHand->setPosition(watchPos);
-	this->setScale(1.5);
+	_longHand->setScale(3.0f);
 	this->addChild(_longHand);
 
 	//Playerクラス
 	_player = Player::create();
 	this->addChild(_player);
+
+	//EnemyManagerクラス
+	_enemyManager = EnemyManager::create();
+	this->addChild(_enemyManager);
 
 	return true;
 }
