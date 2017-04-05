@@ -17,6 +17,10 @@ public:
 	void Move(float deltaTime);
 	void Hit();
 private:
+	//判定
+	bool HoldCheck(Vec2 pos, Rect shortRect, Rect longRect);
+	bool JastHandCheck(float shortRotate, float longRotate);
+
 	//ステータス
 	float _speed;	//移動速度
 };

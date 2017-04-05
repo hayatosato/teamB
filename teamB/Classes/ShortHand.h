@@ -9,9 +9,6 @@ class ShortHand : public Sprite
 public:
 	CREATE_FUNC(ShortHand);
 	virtual bool init();
-
-	//j‚Ì‘å‚«‚³
-	Size _handSize;
 private:
 
 };

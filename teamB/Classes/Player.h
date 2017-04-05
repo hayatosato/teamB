@@ -14,6 +14,8 @@ public:
 	virtual void onTouchMoved(Touch* pTouch, Event* pEvent);
 	virtual void onTouchEnded(Touch* pTouch, Event* pEvent);
 
+	//“®‚¢‚Ä‚¢‚é‚©
+	bool _isMove;
 private:
 	//ƒtƒ‰ƒO
 	bool _knobFlg;

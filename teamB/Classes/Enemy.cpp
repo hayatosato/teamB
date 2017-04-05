@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include "EnemyManager.h"
 #include "WatchLayer.h"
+#include "Player.h"
 #include "MultiResolution.h"
 
 //目標地点
@@ -26,7 +27,12 @@ void Enemy::update(float dt)
 	Move(dt);
 
 	//当たり判定
-	Hit();
+	WatchLayer* layer = ((WatchLayer*)((EnemyManager*)(this->getParent())->getParent()));
+	if (layer->_player->_isMove) 
+	{
+		Hit();
+	}
+	
 }
 
 //移動
@@ -62,9 +68,40 @@ void Enemy::Hit()
 	Rect shortRect = watchLayer->_shortHand->getBoundingBox();
 	Rect longRect = watchLayer->_longHand->getBoundingBox();
 
+	//Rotate
+	float shortRotate = watchLayer->_shortHand->getRotation();
+	float longRotate = watchLayer->_longHand->getRotation();
+
 	//判定
-	if (shortRect.containsPoint(enemyPos) && longRect.containsPoint(enemyPos))
+	if (HoldCheck(enemyPos, shortRect, longRect) &&
+		JastHandCheck(shortRotate, longRotate))
 	{
 		this->removeFromParentAndCleanup(true);
 	}
+}
+
+//二つの針と敵が重なっているか
+bool Enemy::HoldCheck(Vec2 pos, Rect shortRect, Rect longRect)
+{
+	if (shortRect.containsPoint(pos) && longRect.containsPoint(pos))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+//針が重なっていないか
+bool Enemy::JastHandCheck(float shortRotate, float longRotate)
+{
+	//差
+	const float Difference = 10.0f;
+	float handDif = shortRotate - longRotate;
+
+	if (handDif < -Difference || handDif > Difference)
+	{
+		return true;
+	}
+
+	return false;
 }

@@ -22,6 +22,9 @@ bool Player::init()
 	listener->onTouchEnded = CC_CALLBACK_2(Player::onTouchEnded, this);
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
+	//動いているか
+	_isMove = false;
+
 	return true;
 }
 
@@ -79,6 +82,10 @@ void Player::onTouchMoved(Touch* pTouch, Event* pEvent)
 		//更新
 		watchLayer->_longHand->setRotation(longDir);
 		watchLayer->_shortHand->setRotation(shortDir);
+
+		//動いているか
+		if(longMoveDir != 0) _isMove = true;
+		else _isMove = false;
 	}
 }
 
@@ -86,4 +93,5 @@ void Player::onTouchEnded(Touch* pTouch, Event* pEvent)
 {
 	//フラグをfalseに
 	_knobFlg = false;
+	_isMove = false;
 }

@@ -9,9 +9,6 @@ class LongHand : public Sprite
 public:
 	CREATE_FUNC(LongHand);
 	virtual bool init();
-
-	//j‚Ì‘å‚«‚³
-	Size _handSize;
 private:
 
 };

@@ -8,6 +8,10 @@ bool WatchLayer::init()
 	//ŽžŒv‚ÌˆÊ’u
 	Vec2 watchPos = designResolutionSize * 0.5f;
 
+	//”wŒi
+	LayerColor* layerColor = LayerColor::create(Color4B::GREEN, designResolutionSize.width, designResolutionSize.height);
+	this->addChild(layerColor);
+
 	//‚Â‚Ü‚Ý
 	_knob = Knob::create();
 	_knob->setPosition(Vec2(watchPos.x + watchPos.x * 0.9f, watchPos.y));
