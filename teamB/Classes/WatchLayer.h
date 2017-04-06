@@ -14,6 +14,8 @@ class WatchLayer : public Layer
 public:
 	CREATE_FUNC(WatchLayer);
 	virtual bool init();
+
+	Sprite* back;   //âºîwåi
 	//êj
 	ShortHand* _shortHand;
 	LongHand* _longHand;

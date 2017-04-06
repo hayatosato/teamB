@@ -6,7 +6,7 @@
 
 USING_NS_CC;
 
-class GameScene : public cocos2d::Scene
+class GameScene : public Scene
 {
 public:
 	CREATE_FUNC(GameScene);
@@ -17,5 +17,4 @@ private:
 	//Layer
 	WatchLayer* _watchLayer;
 };
-
 #endif

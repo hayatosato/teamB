@@ -7,16 +7,18 @@ bool WatchLayer::init()
 
 	Vec2 watchPos = designResolutionSize * 0.5f;
 
-	//コンビニに行きました。
+	back = Sprite::create("backFactory.png");
+	back->setPosition(designResolutionSize.width / 2, designResolutionSize.height *0.4f);
+	this->addChild(back);
 
 	//Knob
 	_knob = Knob::create();
-	_knob->setPosition(Vec2(designResolutionSize * 0.5f));
+	_knob->setPosition(designResolutionSize.width*0.5f,designResolutionSize.height*0.5f);
 	this->addChild(_knob, 10);
 
 	//時計
 	_watchSprite = Sprite::create("Watch.png");
-	_watchSprite->setPosition(watchPos);
+	_watchSprite->setPosition(designResolutionSize.width*0.5f, designResolutionSize.height*0.5f);
 	this->addChild(_watchSprite);
 
 	//ShortHand

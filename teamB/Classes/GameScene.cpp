@@ -1,5 +1,4 @@
 #include "GameScene.h"
-
 #include "MultiResolution.h"
 
 bool GameScene::init()
