@@ -8,26 +8,23 @@ bool WatchLayer::init()
 	//Œv‚ÌˆÊ’u
 	Vec2 watchPos = designResolutionSize * 0.5f;
 
-<<<<<<< HEAD
 	back = Sprite::create("backFactory.png");
 	back->setPosition(designResolutionSize.width / 2, designResolutionSize.height *0.4f);
 	this->addChild(back);
-=======
+
 	//”wŒi
 	LayerColor* layerColor = LayerColor::create(Color4B::GREEN, designResolutionSize.width, designResolutionSize.height);
 	this->addChild(layerColor);
->>>>>>> 4fd1ba1ef1549ef0a3e53f28073be19d237a49df
+
 
 	//‚Â‚Ü‚İ
 	_knob = Knob::create();
-<<<<<<< HEAD
 	_knob->setPosition(designResolutionSize.width*0.5f,designResolutionSize.height*0.5f);
 	this->addChild(_knob, 10);
 
 	//Œv
 	_watchSprite = Sprite::create("Watch.png");
 	_watchSprite->setPosition(designResolutionSize.width*0.5f, designResolutionSize.height*0.5f);
-=======
 	_knob->setPosition(Vec2(watchPos.x + watchPos.x * 0.9f, watchPos.y));
 	_knob->setScale(3.0f);
 	this->addChild(_knob);
@@ -36,7 +33,6 @@ bool WatchLayer::init()
 	_watchSprite = Sprite::create("Watch.png");
 	_watchSprite->setPosition(watchPos);
 	_watchSprite->setScale(3.0f);
->>>>>>> 4fd1ba1ef1549ef0a3e53f28073be19d237a49df
 	this->addChild(_watchSprite);
 
 	//’Zj
