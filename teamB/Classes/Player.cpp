@@ -8,7 +8,7 @@ const float OneShortMoveDir = 0.5;
 //jˆêü•ª‚ÌŠp“x
 const int OneRotation = 360;
 //•ªŠ„
-const int MoveDivide = (designResolutionSize.height * 0.5f) / 120;
+const int MoveDivide = (designResolutionSize.height * 0.5f) / 10;
 
 bool Player::init()
 {
