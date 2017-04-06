@@ -40,7 +40,6 @@ void Enemy::Move(float deltaTime)
 {
 	//Œ»Ý’n
 	Vec2 enemyPos = this->getPosition();
-
 	//ˆÚ“®•ûŒü
 	Vec2 moveDir = AttackPoint - enemyPos;
 	float moveDirX = moveDir.x;
