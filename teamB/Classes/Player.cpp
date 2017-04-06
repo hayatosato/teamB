@@ -7,7 +7,7 @@ const float OneLongMoveDir = 6;
 const float OneShortMoveDir = 0.5;
 //針一周分の角度
 const int OneRotation = 360;
-//
+//分割
 const int MoveDivide = (designResolutionSize.height * 0.5f) / 120;
 
 bool Player::init()
@@ -43,6 +43,8 @@ bool Player::onTouchBegan(Touch* pTouch, Event* pEvent)
 	{
 		//フラグをtrueに
 		_knobFlg = true;
+
+		_isMove = true;
 	}
 
 	return true;
@@ -82,10 +84,6 @@ void Player::onTouchMoved(Touch* pTouch, Event* pEvent)
 		//更新
 		watchLayer->_longHand->setRotation(longDir);
 		watchLayer->_shortHand->setRotation(shortDir);
-
-		//動いているか
-		if(longMoveDir != 0) _isMove = true;
-		else _isMove = false;
 	}
 }
 

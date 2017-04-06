@@ -10,7 +10,6 @@ public:
 	CREATE_FUNC(ShortHand);
 	virtual bool init();
 private:
-
 };
 
 #endif

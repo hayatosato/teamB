@@ -32,7 +32,6 @@ void Enemy::update(float dt)
 	{
 		Hit();
 	}
-	
 }
 
 //ˆÚ“®

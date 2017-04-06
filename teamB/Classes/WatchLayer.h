@@ -29,8 +29,6 @@ private:
 	//時計　背景
 	Sprite* _watchSprite;
 
-	
-
 	//EnemyManagerクラス
 	EnemyManager* _enemyManager;
 };
