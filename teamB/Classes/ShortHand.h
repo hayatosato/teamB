@@ -7,9 +7,8 @@ USING_NS_CC;
 class ShortHand : public Sprite
 {
 public:
-	virtual bool init();
-
 	CREATE_FUNC(ShortHand);
+	virtual bool init();
 private:
 
 };
