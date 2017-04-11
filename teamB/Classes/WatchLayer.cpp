@@ -21,7 +21,7 @@ bool WatchLayer::init()
 	//Œv
 	_watchSprite = Sprite::create("Watch.png");
 	_watchSprite->setPosition(watchPos);
-	_watchSprite->setScale(3.0f);
+	//_watchSprite->setScale(3.0f);
 	this->addChild(_watchSprite);
 
 	//’Zj

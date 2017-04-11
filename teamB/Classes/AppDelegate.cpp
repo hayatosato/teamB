@@ -39,10 +39,17 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // initialize director
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
-    if(!glview) {
-        glview = GLViewImpl::create("teamB");
-        director->setOpenGLView(glview);
-    }
+	if (!glview)
+	{
+		/* glview = GLViewImpl::createWithRect("teamB",Rect(0,0,designResolutionSize.width,designResolutionSize.height));
+		director->setOpenGLView(glview);*/
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+		glview = GLViewImpl::createWithRect("teamB", Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
+#else
+		glview = GLViewImpl::create("teamB");
+#endif
+		director->setOpenGLView(glview);
+	}
 
     // turn on display FPS
     director->setDisplayStats(true);
