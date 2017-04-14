@@ -72,8 +72,8 @@ void Enemy::Hit()
 	float longRotate = watchLayer->_longHand->getRotation();
 
 	//”»’è
-	if (HoldCheck(enemyPos, shortRect, longRect) &&
-		JastHandCheck(shortRotate, longRotate))
+	if (HoldCheck(enemyPos, shortRect, longRect) /*&&
+		JastHandCheck(shortRotate, longRotate)*/)
 	{
 		this->removeFromParentAndCleanup(true);
 	}

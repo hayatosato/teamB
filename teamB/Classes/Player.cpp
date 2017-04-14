@@ -8,7 +8,7 @@ const float OneShortMoveDir = 0.5;
 //jˆêŽü•ª‚ÌŠp“x
 const int OneRotation = 360;
 //•ªŠ„
-const int MoveDivide = (designResolutionSize.height * 0.5f) / 10;
+const int MoveDivide = (designResolutionSize.height * 0.5f) / 80;
 
 bool Player::init()
 {
@@ -38,14 +38,14 @@ bool Player::onTouchBegan(Touch* pTouch, Event* pEvent)
 	Vec2 knobPos = ((WatchLayer*)(this->getParent()))->_knob->getPosition();
 
 	//”»’è
-	if (touchPos.x > (knobPos.x - knobRect.width) && touchPos.x < (knobPos.x + knobRect.width) &&
-		touchPos.y > (knobPos.y - knobRect.height) && touchPos.y < (knobPos.y + knobRect.height))
-	{
+	//if (touchPos.x > (knobPos.x - knobRect.width) && touchPos.x < (knobPos.x + knobRect.width) &&
+	//	touchPos.y > (knobPos.y - knobRect.height) && touchPos.y < (knobPos.y + knobRect.height))
+	//{
 		//ƒtƒ‰ƒO‚ðtrue‚É
 		_knobFlg = true;
 
 		_isMove = true;
-	}
+	//}
 
 	return true;
 }

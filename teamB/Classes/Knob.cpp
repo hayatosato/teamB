@@ -4,7 +4,7 @@ bool Knob::init()
 {
 	if (!Sprite::init()) return true;
 
-	initWithFile("Knob.png");
+	initWithFile("newKnob.png");
 
 	return true;
 }

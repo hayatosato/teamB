@@ -31,5 +31,6 @@ void EnemyManager::EnemyCreater(float dt)
 	//“G¶¬
 	Enemy* enemy = Enemy::create();
 	enemy->setPosition(enemyPos);
+	enemy->setScale(0.3f);
 	this->addChild(enemy);
 }
