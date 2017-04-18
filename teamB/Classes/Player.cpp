@@ -14,6 +14,9 @@ bool Player::init()
 {
 	if (!Node::init()) return false;
 
+	downMove = 0.5f;
+	maxMoveSpeed = 40.0f;
+
 	// タッチイベントを有効にする
 	auto listener = EventListenerTouchOneByOne::create();
 	listener->setSwallowTouches(true);
@@ -24,6 +27,8 @@ bool Player::init()
 
 	//動いているか
 	_isMove = false;
+
+	this->scheduleUpdate();
 
 	return true;
 }
@@ -56,20 +61,79 @@ void Player::onTouchMoved(Touch* pTouch, Event* pEvent)
 	//前回とのタッチ位置の差
 	Vec2 delta = pTouch->getDelta();
 
-	if (delta.y == 0) return;
+	if (delta.y == 0) 
+	{
 
+		return;
+	}
 	if (_knobFlg)
 	{
 		//親Layer
 		WatchLayer* watchLayer = ((WatchLayer*)(this->getParent()));
 
 		//取得
-		float longDir = watchLayer->_longHand->getRotation();
-		float shortDir = watchLayer->_shortHand->getRotation();
+		longDir = watchLayer->_longHand->getRotation();
+		shortDir = watchLayer->_shortHand->getRotation();
 
 		//動く角度
-		float longMoveDir = OneLongMoveDir * delta.y / MoveDivide;
-		float shortMoveDir = OneShortMoveDir * delta.y / MoveDivide;
+		longMoveDir  = OneLongMoveDir  * delta.y / MoveDivide;
+		shortMoveDir = OneShortMoveDir * delta.y / MoveDivide;
+
+		//針の速度制限
+		if (longMoveDir > maxMoveSpeed)
+		{
+			longMoveDir = maxMoveSpeed;
+			shortMoveDir = (maxMoveSpeed / 12.0f);
+		}
+		else if (longMoveDir < -maxMoveSpeed)
+		{
+			longMoveDir = -maxMoveSpeed;
+			shortMoveDir = (-maxMoveSpeed / 12.0f);
+		}
+		//角度
+		//longDir += longMoveDir;
+		//shortDir += shortMoveDir;
+
+		////チェック
+		//if (longDir >= OneRotation) longDir -= OneRotation;
+		//else if (longDir <= -OneRotation) longDir += OneRotation;
+		//if (shortDir >= OneRotation) shortDir -= OneRotation;
+		//else if (shortDir <= -OneRotation) shortDir += OneRotation;
+
+		////更新
+		//watchLayer->_longHand->setRotation(longDir);
+		//watchLayer->_shortHand->setRotation(shortDir);
+	}
+}
+
+void Player::onTouchEnded(Touch* pTouch, Event* pEvent)
+{
+	//フラグをfalseに
+	_knobFlg = false;
+	_isMove = false;
+}
+
+void Player::update(float delta)
+{
+	if (_isMove)
+	{
+		//角度
+		longDir += longMoveDir;
+		shortDir += shortMoveDir;
+
+		//チェック
+		if (longDir >= OneRotation) longDir -= OneRotation;
+		else if (longDir <= -OneRotation) longDir += OneRotation;
+		if (shortDir >= OneRotation) shortDir -= OneRotation;
+		else if (shortDir <= -OneRotation) shortDir += OneRotation;
+
+		//更新
+		((WatchLayer*)(this->getParent()))->_longHand->setRotation(longDir);
+		((WatchLayer*)(this->getParent()))->_shortHand->setRotation(shortDir);
+	}
+	else
+	{
+		downSpeed();
 
 		//角度
 		longDir += longMoveDir;
@@ -82,14 +146,41 @@ void Player::onTouchMoved(Touch* pTouch, Event* pEvent)
 		else if (shortDir <= -OneRotation) shortDir += OneRotation;
 
 		//更新
-		watchLayer->_longHand->setRotation(longDir);
-		watchLayer->_shortHand->setRotation(shortDir);
+		((WatchLayer*)(this->getParent()))->_longHand->setRotation(longDir);
+		((WatchLayer*)(this->getParent()))->_shortHand->setRotation(shortDir);
 	}
+
 }
 
-void Player::onTouchEnded(Touch* pTouch, Event* pEvent)
+//針のスピードを遅くする処理
+void Player::downSpeed()
 {
-	//フラグをfalseに
-	_knobFlg = false;
-	_isMove = false;
+	if (longMoveDir > 0)
+	{
+		longMoveDir -= downMove;
+		shortMoveDir -= (downMove / 12.0f);
+		if (longMoveDir <= 0)
+		{
+			longMoveDir = 0;
+		}
+		if (shortMoveDir <= 0)
+		{
+			shortMoveDir = 0;
+		}
+	}
+	else
+	{
+		longMoveDir += downMove;
+		shortMoveDir += (downMove / 12.0f);
+		if (longMoveDir >= 0)
+		{
+			longMoveDir = 0;
+		}
+		if (shortMoveDir >= 0)
+		{
+			shortMoveDir = 0;
+		}
+
+	}
+
 }

@@ -16,9 +16,20 @@ public:
 
 	//動いているか
 	bool _isMove;
+
+	float longDir;         //長針の角度取得
+	float shortDir;        //短針の角度取得
+	float longMoveDir;     //長針の動く角度計算用
+	float shortMoveDir;    //短針の動く角度計算用
+
+	void update(float delta);
 private:
 	//フラグ
 	bool _knobFlg;
+	float downMove;        //針のスピードが落ちていくスピード
+	float maxMoveSpeed;    //針の最大スピード
+
+	void downSpeed();
 };
 
 #endif
