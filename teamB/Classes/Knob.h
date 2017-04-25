@@ -8,9 +8,16 @@ class Knob : public Sprite
 {
 public:
 	CREATE_FUNC(Knob);
+
+	void startAnimation();
+	void stopAnimation();
+
 	virtual bool init();
 
 private:
+	Animation *animation;   //アニメーション
+	Animate *action;
+	RepeatForever *anime;
 
 };
 

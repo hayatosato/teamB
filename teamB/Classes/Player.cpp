@@ -38,19 +38,32 @@ bool Player::onTouchBegan(Touch* pTouch, Event* pEvent)
 	Vec2 touchPos = pTouch->getLocationInView();
 	touchPos.y = designResolutionSize.height - touchPos.y;
 
-	//Rect
-	Size knobRect = ((WatchLayer*)(this->getParent()))->_knob->getContentSize();
-	Vec2 knobPos = ((WatchLayer*)(this->getParent()))->_knob->getPosition();
+	auto layer = ((WatchLayer*)(this->getParent()));
 
-	//判定
-	//if (touchPos.x > (knobPos.x - knobRect.width) && touchPos.x < (knobPos.x + knobRect.width) &&
-	//	touchPos.y > (knobPos.y - knobRect.height) && touchPos.y < (knobPos.y + knobRect.height))
-	//{
+	//つまみRect
+	Size knobRect = layer->_knob->getContentSize();
+	Vec2 knobPos  = layer->_knob->getPosition();
+	//時計ガラスRect
+	Size clockRect = layer->_watchSprite->getContentSize();
+	Vec2 clockPos  = layer->_watchSprite->getPosition();
+
+	//つまみ判定
+	if (touchPos.x > (knobPos.x - knobRect.width) && touchPos.x < (knobPos.x + knobRect.width) &&
+		touchPos.y > (knobPos.y - knobRect.height) && touchPos.y < (knobPos.y + knobRect.height))
+	{
 		//フラグをtrueに
 		_knobFlg = true;
 
 		_isMove = true;
-	//}
+		layer->_knob->startAnimation();
+	}
+	//ガラス判定
+	if (touchPos.x >(clockPos.x - clockRect.width) && touchPos.x < (clockPos.x + clockRect.width) &&
+		touchPos.y >(clockPos.y - clockRect.height) && touchPos.y < (clockPos.y + clockRect.height))
+	{
+		crackCount++;
+	}
+
 
 	return true;
 }
@@ -111,6 +124,7 @@ void Player::onTouchEnded(Touch* pTouch, Event* pEvent)
 	//フラグをfalseに
 	_knobFlg = false;
 	_isMove = false;
+	((WatchLayer*)(this->getParent()))->_knob->stopAnimation();
 }
 
 void Player::update(float delta)

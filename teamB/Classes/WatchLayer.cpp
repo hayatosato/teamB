@@ -13,7 +13,7 @@ bool WatchLayer::init()
 	//this->addChild(layerColor);
 
 	//ŽžŒv
-	_watchSprite = Sprite::create("clockBase.png");
+	_watchSprite = Sprite::create("GameScene/clockNum.png");
 	_watchSprite->setPosition(watchPos);
 	_watchSprite->setScale(0.6f);
 	this->addChild(_watchSprite,1);

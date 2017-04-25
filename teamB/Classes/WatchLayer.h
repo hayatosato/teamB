@@ -23,11 +23,12 @@ public:
 	ShortHand* _shortHand;
 	LongHand* _longHand;
 
+	//時計　背景
+	Sprite* _watchSprite;
+
 	//Playerクラス
 	Player* _player;
 private:
-	//時計　背景
-	Sprite* _watchSprite;
 
 	//EnemyManagerクラス
 	EnemyManager* _enemyManager;

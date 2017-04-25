@@ -4,7 +4,7 @@ bool ShortHand::init()
 {
 	if (!Sprite::init()) return false;
 
-	initWithFile("newShortHand.png");
+	initWithFile("GameScene/newShortHand.png");
 
 	this->setAnchorPoint(ccp(0.5, 0));
 

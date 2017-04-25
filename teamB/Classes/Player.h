@@ -24,6 +24,9 @@ public:
 
 	void update(float delta);
 private:
+	//ガラスをタッチした回数をカウント
+	int crackCount;
+
 	//フラグ
 	bool _knobFlg;
 	float downMove;        //針のスピードが落ちていくスピード

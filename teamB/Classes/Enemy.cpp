@@ -11,7 +11,7 @@ bool Enemy::init()
 {
 	if (!Sprite::init()) return false;
 
-	initWithFile("EnemySprite.png");
+	initWithFile("GameScene/EnemySprite.png");
 
 	_speed = 100;
 
@@ -28,10 +28,10 @@ void Enemy::update(float dt)
 
 	//“–‚½‚è”»’è
 	WatchLayer* layer = ((WatchLayer*)((EnemyManager*)(this->getParent())->getParent()));
-	if (layer->_player->_isMove) 
-	{
+	//if (layer->_player->_isMove) 
+	//{
 		Hit();
-	}
+	//}
 }
 
 //ˆÚ“®
