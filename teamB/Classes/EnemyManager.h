@@ -10,8 +10,12 @@ using namespace std;
 class EnemyManager : public Node 
 {
 public:
-	CREATE_FUNC(EnemyManager);
-	virtual bool init();
+	//CREATE_FUNC(EnemyManager);
+	static EnemyManager *create(int formPosNum);
+
+	virtual bool init(int formPosNum);
+
+	int createPos;
 	
 	//ìGê∂ê¨
 	void EnemyCreater(float dt);

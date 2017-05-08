@@ -11,7 +11,7 @@ bool Enemy::init()
 {
 	if (!Sprite::init()) return false;
 
-	initWithFile("GameScene/EnemySprite.png");
+	initWithFile("CloseNormal.png");
 
 	_speed = 100;
 

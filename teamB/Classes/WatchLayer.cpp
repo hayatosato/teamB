@@ -5,6 +5,7 @@ bool WatchLayer::init()
 {
 	if (!Layer::init()) return false;
 
+	circle = 12;
 	//時計の位置
 	Vec2 watchPos = designResolutionSize * 0.5f;
 
@@ -17,6 +18,16 @@ bool WatchLayer::init()
 	_watchSprite->setPosition(watchPos);
 	_watchSprite->setScale(0.6f);
 	this->addChild(_watchSprite,1);
+
+	radius = (_watchSprite->getContentSize().width*0.5f)*0.6f;
+
+	for (int i = 0; i < circle; i++)
+	{
+		fairyGate.push_back(Sprite::create("GameScene/EnemySprite.png"));
+		fairyGate.at(i)->setPosition(Vec2(designResolutionSize.width*0.5f + radius*cos(M_PI / 180 * (90 + 360 * i / circle)), designResolutionSize.height*0.5f + radius*sin(M_PI / 180 * (90 + 360 * i / circle))));
+		fairyGate.at(i)->setScale(0.3f);
+		this->addChild(fairyGate.at(i),5+i);
+	}
 
 	//つまみ
 	_knob = Knob::create();
@@ -41,7 +52,7 @@ bool WatchLayer::init()
 	this->addChild(_player);
 
 	//EnemyManagerクラス
-	_enemyManager = EnemyManager::create();
+	_enemyManager = EnemyManager::create(circle - 1);
 	this->addChild(_enemyManager,4);
 
 	return true;

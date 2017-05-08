@@ -24,8 +24,8 @@ public:
 
 	void update(float delta);
 private:
-	//ガラスをタッチした回数をカウント
-	int crackCount;
+	int crackCount;        //ガラスをタッチした回数をカウント
+	bool crush;            //ガラスが割れているかの判断
 
 	//フラグ
 	bool _knobFlg;

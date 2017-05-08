@@ -14,9 +14,9 @@ void Knob::startAnimation()
 	animation = Animation::create();
 
 	animation->addSpriteFrameWithFileName("GameScene/newKnob.png");
-	animation->addSpriteFrameWithFileName("GameScene/newKnob2.png");
+	animation->addSpriteFrameWithFileName("GameScene/newKnob2-2.png");
 
-	animation->setDelayPerUnit(0.3f);
+	animation->setDelayPerUnit(0.05f);
 	animation->setRestoreOriginalFrame(true);
 
 	action = Animate::create(animation);

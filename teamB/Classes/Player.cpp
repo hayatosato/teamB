@@ -16,7 +16,8 @@ bool Player::init()
 
 	downMove = 0.5f;
 	maxMoveSpeed = 40.0f;
-
+	crackCount = 0;
+	
 	// タッチイベントを有効にする
 	auto listener = EventListenerTouchOneByOne::create();
 	listener->setSwallowTouches(true);
@@ -28,7 +29,7 @@ bool Player::init()
 	//動いているか
 	_isMove = false;
 
-	this->scheduleUpdate();
+	//this->scheduleUpdate();
 
 	return true;
 }
@@ -76,7 +77,6 @@ void Player::onTouchMoved(Touch* pTouch, Event* pEvent)
 
 	if (delta.y == 0) 
 	{
-
 		return;
 	}
 	if (_knobFlg)
@@ -104,18 +104,18 @@ void Player::onTouchMoved(Touch* pTouch, Event* pEvent)
 			shortMoveDir = (-maxMoveSpeed / 12.0f);
 		}
 		//角度
-		//longDir += longMoveDir;
-		//shortDir += shortMoveDir;
+		longDir += longMoveDir;
+		shortDir += shortMoveDir;
 
-		////チェック
-		//if (longDir >= OneRotation) longDir -= OneRotation;
-		//else if (longDir <= -OneRotation) longDir += OneRotation;
-		//if (shortDir >= OneRotation) shortDir -= OneRotation;
-		//else if (shortDir <= -OneRotation) shortDir += OneRotation;
+		//チェック
+		if (longDir >= OneRotation) longDir -= OneRotation;
+		else if (longDir <= -OneRotation) longDir += OneRotation;
+		if (shortDir >= OneRotation) shortDir -= OneRotation;
+		else if (shortDir <= -OneRotation) shortDir += OneRotation;
 
-		////更新
-		//watchLayer->_longHand->setRotation(longDir);
-		//watchLayer->_shortHand->setRotation(shortDir);
+		//更新
+		watchLayer->_longHand->setRotation(longDir);
+		watchLayer->_shortHand->setRotation(shortDir);
 	}
 }
 
@@ -129,40 +129,38 @@ void Player::onTouchEnded(Touch* pTouch, Event* pEvent)
 
 void Player::update(float delta)
 {
-	if (_isMove)
-	{
-		//角度
-		longDir += longMoveDir;
-		shortDir += shortMoveDir;
+	//if (_isMove)
+	//{
+	//	//角度
+	//	longDir += longMoveDir;
+	//	shortDir += shortMoveDir;
+	//	//チェック
+	//	if (longDir >= OneRotation) longDir -= OneRotation;
+	//	else if (longDir <= -OneRotation) longDir += OneRotation;
+	//	if (shortDir >= OneRotation) shortDir -= OneRotation;
+	//	else if (shortDir <= -OneRotation) shortDir += OneRotation;
+	//	//更新
+	//	((WatchLayer*)(this->getParent()))->_longHand->setRotation(longDir);
+	//	((WatchLayer*)(this->getParent()))->_shortHand->setRotation(shortDir);
+	//}
+	//else
+	//{
+	//	downSpeed();
 
-		//チェック
-		if (longDir >= OneRotation) longDir -= OneRotation;
-		else if (longDir <= -OneRotation) longDir += OneRotation;
-		if (shortDir >= OneRotation) shortDir -= OneRotation;
-		else if (shortDir <= -OneRotation) shortDir += OneRotation;
+	//	//角度
+	//	longDir += longMoveDir;
+	//	shortDir += shortMoveDir;
 
-		//更新
-		((WatchLayer*)(this->getParent()))->_longHand->setRotation(longDir);
-		((WatchLayer*)(this->getParent()))->_shortHand->setRotation(shortDir);
-	}
-	else
-	{
-		downSpeed();
+	//	//チェック
+	//	if (longDir >= OneRotation) longDir -= OneRotation;
+	//	else if (longDir <= -OneRotation) longDir += OneRotation;
+	//	if (shortDir >= OneRotation) shortDir -= OneRotation;
+	//	else if (shortDir <= -OneRotation) shortDir += OneRotation;
 
-		//角度
-		longDir += longMoveDir;
-		shortDir += shortMoveDir;
-
-		//チェック
-		if (longDir >= OneRotation) longDir -= OneRotation;
-		else if (longDir <= -OneRotation) longDir += OneRotation;
-		if (shortDir >= OneRotation) shortDir -= OneRotation;
-		else if (shortDir <= -OneRotation) shortDir += OneRotation;
-
-		//更新
-		((WatchLayer*)(this->getParent()))->_longHand->setRotation(longDir);
-		((WatchLayer*)(this->getParent()))->_shortHand->setRotation(shortDir);
-	}
+	//	//更新
+	//	((WatchLayer*)(this->getParent()))->_longHand->setRotation(longDir);
+	//	((WatchLayer*)(this->getParent()))->_shortHand->setRotation(shortDir);
+	//}
 
 }
 
