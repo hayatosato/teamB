@@ -3,6 +3,8 @@
 
 #include "cocos2d.h"
 #include "Enemy.h"
+#include "Calculation.h"
+#include <vector>
 
 USING_NS_CC;
 using namespace std;
@@ -10,17 +12,21 @@ using namespace std;
 class EnemyManager : public Node 
 {
 public:
-	//CREATE_FUNC(EnemyManager);
 	static EnemyManager *create(int formPosNum);
 
+	vector<Enemy*> enemy;
 	virtual bool init(int formPosNum);
 
-	int createPos;
+	int createPos;                     //ó‚¯æ‚Á‚½¶¬ƒ|ƒCƒ“ƒg‚ğ•Û‘¶
+	float ang;                         //j‚ÌŠoŒå
+	float tAng;                        //“G‚ÌŠp“x
 	
 	//“G¶¬
 	void EnemyCreater(float dt);
+	void update(float delta);
 
 private:
+
 };
 
 #endif

@@ -24,9 +24,10 @@ bool WatchLayer::init()
 	for (int i = 0; i < circle; i++)
 	{
 		fairyGate.push_back(Sprite::create("GameScene/EnemySprite.png"));
-		fairyGate.at(i)->setPosition(Vec2(designResolutionSize.width*0.5f + radius*cos(M_PI / 180 * (90 + 360 * i / circle)), designResolutionSize.height*0.5f + radius*sin(M_PI / 180 * (90 + 360 * i / circle))));
+		fairyGate.at(i)->setPosition(Vec2(designResolutionSize.width*0.5f + radius*cos(M_PI / 180 * (90 + 360 * i / circle)),
+			                              designResolutionSize.height*0.5f + radius*sin(M_PI / 180 * (90 + 360 * i / circle))));
 		fairyGate.at(i)->setScale(0.3f);
-		this->addChild(fairyGate.at(i),5+i);
+		this->addChild(fairyGate.at(i),5);
 	}
 
 	//‚Â‚Ü‚Ý
@@ -53,7 +54,7 @@ bool WatchLayer::init()
 
 	//EnemyManagerƒNƒ‰ƒX
 	_enemyManager = EnemyManager::create(circle - 1);
-	this->addChild(_enemyManager,4);
+	this->addChild(_enemyManager,6);
 
 	return true;
 }

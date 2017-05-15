@@ -116,6 +116,7 @@ void Player::onTouchMoved(Touch* pTouch, Event* pEvent)
 		//XV
 		watchLayer->_longHand->setRotation(longDir);
 		watchLayer->_shortHand->setRotation(shortDir);
+		//log("%f", longDir);
 	}
 }
 

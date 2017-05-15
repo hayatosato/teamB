@@ -12,11 +12,13 @@ public:
 
 	//update
 	void update(float dt);
+	bool moveMode;          //ìÆÇ≠Ç©
 
 	//ìÆçÏ
 	void Move(float deltaTime);
 	void Hit();
 private:
+
 	//îªíË
 	bool HoldCheck(Vec2 pos, Rect shortRect, Rect longRect);
 	bool JastHandCheck(float shortRotate, float longRotate);

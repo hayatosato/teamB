@@ -13,6 +13,8 @@ bool Enemy::init()
 
 	initWithFile("CloseNormal.png");
 
+	moveMode = false;
+
 	_speed = 100;
 
 	//update
@@ -27,33 +29,28 @@ void Enemy::update(float dt)
 	Move(dt);
 
 	//当たり判定
-	WatchLayer* layer = ((WatchLayer*)((EnemyManager*)(this->getParent())->getParent()));
-	//if (layer->_player->_isMove) 
-	//{
 		Hit();
-	//}
 }
 
 //移動
 void Enemy::Move(float deltaTime)
 {
-	//現在地
-	Vec2 enemyPos = this->getPosition();
+	if (moveMode)
+	{
+		//現在地
+		Vec2 enemyPos = this->getPosition();
 
-	//移動方向
-	Vec2 moveDir = AttackPoint - enemyPos;
-	float moveDirX = moveDir.x;
-	float moveDirY = moveDir.y;
-	if (moveDirX < 0) moveDirX = -moveDirX;
-	if (moveDirY < 0) moveDirY = -moveDirY;
+		//移動方向
+		Vec2 moveDir = AttackPoint - enemyPos;
 
-	moveDir = Vec2(moveDir.x / (moveDirX + moveDirY), moveDir.y / (moveDirX + moveDirY));
+		moveDir.normalize();
 
-	//移動
-	enemyPos += moveDir * _speed * deltaTime;
+		//移動
+		enemyPos += moveDir * _speed * deltaTime;
 
-	//更新
-	this->setPosition(enemyPos);
+		//更新
+		this->setPosition(enemyPos);
+	}
 }
 
 //当たり判定
@@ -75,14 +72,23 @@ void Enemy::Hit()
 	if (HoldCheck(enemyPos, shortRect, longRect) /*&&
 		JastHandCheck(shortRotate, longRotate)*/)
 	{
-		this->removeFromParentAndCleanup(true);
+		//float ax, ay;
+		//
+		//longRotate = M_PI / 180;
+		//ax = enemyPos.x*cos(longRotate) - enemyPos.y*sin(longRotate);
+		//ay = enemyPos.x*sin(longRotate) + enemyPos.y*cos(longRotate);
+
+		//setPosition(Vec2(ax, ay));
+
+
+
 	}
 }
 
 //二つの針と敵が重なっているか
 bool Enemy::HoldCheck(Vec2 pos, Rect shortRect, Rect longRect)
 {
-	if (shortRect.containsPoint(pos) && longRect.containsPoint(pos))
+	if (/*shortRect.containsPoint(pos) && */longRect.containsPoint(pos + designResolutionSize*0.5f))
 	{
 		return true;
 	}
