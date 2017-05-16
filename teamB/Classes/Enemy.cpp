@@ -3,6 +3,7 @@
 #include "WatchLayer.h"
 #include "Player.h"
 #include "MultiResolution.h"
+#include "Calculation.h"
 
 //目標地点
 const Vec2 AttackPoint = designResolutionSize * 0.5f;
@@ -15,7 +16,7 @@ bool Enemy::init()
 
 	moveMode = false;
 
-	_speed = 100;
+	_speed = 50;
 
 	//update
 	this->scheduleUpdate();
@@ -50,6 +51,10 @@ void Enemy::Move(float deltaTime)
 
 		//更新
 		this->setPosition(enemyPos);
+
+		this->setPosition(Calculation::setPos(designResolutionSize*0.5f,
+			                                  Calculation::sq(designResolutionSize*0.5f, this->getPosition()),                    //cocos側との角度のずれ90°
+			                                  -((WatchLayer*)((EnemyManager*)(this->getParent())->getParent()))->_longHand->getRotation()+90.0f));
 	}
 }
 
@@ -79,9 +84,6 @@ void Enemy::Hit()
 		//ay = enemyPos.x*sin(longRotate) + enemyPos.y*cos(longRotate);
 
 		//setPosition(Vec2(ax, ay));
-
-
-
 	}
 }
 

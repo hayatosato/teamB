@@ -21,6 +21,7 @@ public:
 	float shortDir;        //’Zj‚ÌŠp“xæ“¾
 	float longMoveDir;     //’·j‚Ì“®‚­Šp“xŒvZ—p
 	float shortMoveDir;    //’Zj‚Ì“®‚­Šp“xŒvZ—p
+	float longDirF;        //’·j‚ÌŠp“x•Ï‰»
 
 	void update(float delta);
 private:

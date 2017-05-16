@@ -87,6 +87,7 @@ void Player::onTouchMoved(Touch* pTouch, Event* pEvent)
 		//取得
 		longDir = watchLayer->_longHand->getRotation();
 		shortDir = watchLayer->_shortHand->getRotation();
+		longDirF = longDir;
 
 		//動く角度
 		longMoveDir  = OneLongMoveDir  * delta.y / MoveDivide;
@@ -109,14 +110,16 @@ void Player::onTouchMoved(Touch* pTouch, Event* pEvent)
 
 		//チェック
 		if (longDir >= OneRotation) longDir -= OneRotation;
-		else if (longDir <= -OneRotation) longDir += OneRotation;
+		else if (longDir <= 0.0f) longDir += OneRotation;
 		if (shortDir >= OneRotation) shortDir -= OneRotation;
 		else if (shortDir <= -OneRotation) shortDir += OneRotation;
+
+		longDirF = longDir - longDirF;
+
 
 		//更新
 		watchLayer->_longHand->setRotation(longDir);
 		watchLayer->_shortHand->setRotation(shortDir);
-		//log("%f", longDir);
 	}
 }
 

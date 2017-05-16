@@ -73,7 +73,8 @@ void EnemyManager::update(float delta)
 		}
 
 		if (ang < tAng +10.0 &&
-			ang > tAng -10.0
+			ang > tAng -10.0 &&
+			enemy.at(i)->moveMode == false
 			)
 		{
 			enemy.at(i)->setColor(Color3B::GREEN);
