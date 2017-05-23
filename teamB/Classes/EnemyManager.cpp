@@ -72,13 +72,13 @@ void EnemyManager::update(float delta)
 		tAng = tAng + 360.0f;
 		}
 
-		if (ang < tAng +10.0 &&
-			ang > tAng -10.0 &&
-			enemy.at(i)->moveMode == false
+		if (ang < tAng +5.0 &&
+			ang > tAng -5.0 &&
+			enemy.at(i)->fairyModes == enemy.at(i)->WAIT
 			)
 		{
 			enemy.at(i)->setColor(Color3B::GREEN);
-			enemy.at(i)->moveMode = true;
+			enemy.at(i)->fairyModes = enemy.at(i)->GO;
 		}
 	}
 }

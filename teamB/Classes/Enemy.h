@@ -13,6 +13,15 @@ public:
 	//update
 	void update(float dt);
 	bool moveMode;          //動くか
+	enum fairyMode
+	{
+		WAIT,
+		GO,
+		BACK,
+		SAVEONE,
+		SAVETWO
+	};
+	enum fairyMode fairyModes;
 
 	//動作
 	void Move(float deltaTime);
@@ -24,7 +33,9 @@ private:
 	bool JastHandCheck(float shortRotate, float longRotate);
 
 	//ステータス
+	//float shotLength;   //短針の長さ
 	float _speed;	//移動速度
+
 };
 
 #endif

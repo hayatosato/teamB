@@ -87,7 +87,6 @@ void Player::onTouchMoved(Touch* pTouch, Event* pEvent)
 		//éÊìæ
 		longDir = watchLayer->_longHand->getRotation();
 		shortDir = watchLayer->_shortHand->getRotation();
-		longDirF = longDir;
 
 		//ìÆÇ≠äpìx
 		longMoveDir  = OneLongMoveDir  * delta.y / MoveDivide;
@@ -112,9 +111,22 @@ void Player::onTouchMoved(Touch* pTouch, Event* pEvent)
 		if (longDir >= OneRotation) longDir -= OneRotation;
 		else if (longDir <= 0.0f) longDir += OneRotation;
 		if (shortDir >= OneRotation) shortDir -= OneRotation;
-		else if (shortDir <= -OneRotation) shortDir += OneRotation;
+		else if (shortDir <= -0.0f) shortDir += OneRotation;
 
-		longDirF = longDir - longDirF;
+		longDirF = longDir - shortDir;
+		if (longDirF < -175.0f && longDirF > -185.0f ||
+			longDirF > 175.0f  && longDirF < 185.0f)
+		{
+			watchLayer->_longHand->setColor(Color3B::RED);
+			watchLayer->_shortHand->setColor(Color3B::RED);
+			parallel = true;
+		}
+		else
+		{
+			watchLayer->_longHand->setColor(Color3B::WHITE);
+			watchLayer->_shortHand->setColor(Color3B::WHITE);
+			parallel = false;
+		}
 
 
 		//çXêV

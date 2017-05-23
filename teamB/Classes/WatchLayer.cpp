@@ -39,14 +39,17 @@ bool WatchLayer::init()
 	//’Zj
 	_shortHand = ShortHand::create();
 	_shortHand->setPosition(watchPos);
-	//_shortHand->setScale(3.0f);
 	this->addChild(_shortHand,2);
 
 	//’·j
 	_longHand = LongHand::create();
 	_longHand->setPosition(watchPos);
-	//_longHand->setScale(3.0f);
 	this->addChild(_longHand,3);
+
+	//•bj
+	_secondHand = SecondHand::create();
+	_secondHand->setPosition(watchPos);
+	this->addChild(_secondHand, 6);
 
 	//PlayerƒNƒ‰ƒX
 	_player = Player::create();
@@ -56,5 +59,16 @@ bool WatchLayer::init()
 	_enemyManager = EnemyManager::create(circle - 1);
 	this->addChild(_enemyManager,6);
 
+	this->scheduleUpdate();
+
 	return true;
+}
+
+void WatchLayer::update(float delta)
+{
+	_secondHand->setRotation(_secondHand->getRotation() + 0.1f);
+	if (_secondHand->getRotation() >= 360.0f)
+	{
+		_secondHand->setRotation(_secondHand->getRotation() - 360.0f);
+	}
 }

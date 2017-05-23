@@ -7,6 +7,7 @@
 #include "Knob.h"
 #include "ShortHand.h"
 #include "LongHand.h"
+#include "SecondHand.h"
 #include "Player.h"
 #include "EnemyManager.h"
 
@@ -28,12 +29,14 @@ public:
 	//針
 	ShortHand* _shortHand;
 	LongHand* _longHand;
+	SecondHand* _secondHand;
 
 	//時計　背景
 	Sprite* _watchSprite;
-
 	//Playerクラス
 	Player* _player;
+
+	void update(float delta);
 private:
 
 	//EnemyManagerクラス

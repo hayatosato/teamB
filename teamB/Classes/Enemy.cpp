@@ -15,7 +15,9 @@ bool Enemy::init()
 	initWithFile("CloseNormal.png");
 
 	moveMode = false;
+	fairyModes = WAIT;
 
+	//50
 	_speed = 50;
 
 	//update
@@ -36,25 +38,109 @@ void Enemy::update(float dt)
 //移動
 void Enemy::Move(float deltaTime)
 {
-	if (moveMode)
+	WatchLayer* watchLayer = ((WatchLayer*)((EnemyManager*)(this->getParent())->getParent()));
+
+	//現在地
+	Vec2 enemyPos = this->getPosition();
+	//移動方向
+	Vec2 moveDir = AttackPoint - enemyPos;
+	moveDir.normalize();
+
+	switch (fairyModes)
 	{
-		//現在地
-		Vec2 enemyPos = this->getPosition();
+	case WAIT:
+	{
 
-		//移動方向
-		Vec2 moveDir = AttackPoint - enemyPos;
-
-		moveDir.normalize();
-
+	}
+		break;
+	case GO:
+	{
 		//移動
 		enemyPos += moveDir * _speed * deltaTime;
+		//更新
+		this->setPosition(enemyPos);
+		this->setPosition(Calculation::setPos(designResolutionSize*0.5f,
+			Calculation::sq(designResolutionSize*0.5f, this->getPosition()),
+			-watchLayer->_longHand->getRotation() + 90.0f));            //cocos側との角度のずれ90°
 
+		if (this->getPositionX() > designResolutionSize.width*0.49f &&
+			this->getPositionX() < designResolutionSize.width*0.51f &&
+			this->getPositionY() > designResolutionSize.height*0.49f&&
+			this->getPositionY() < designResolutionSize.height*0.51f)
+		{
+			if (watchLayer->_player->parallel == true)
+			{
+				fairyModes = SAVEONE;
+			}
+			else
+			{
+				fairyModes = BACK;
+			}
+		}
+
+	}
+		break;
+	case BACK:
+	{
+		//移動
+		enemyPos -= moveDir * _speed * deltaTime;
 		//更新
 		this->setPosition(enemyPos);
 
+		if (Calculation::sq(designResolutionSize*0.5f,Vec2(watchLayer->_watchSprite->getPositionX() + ((watchLayer->_watchSprite->getContentSize().width*0.5f)*0.6f),watchLayer->_watchSprite->getPositionY())) > 
+			Calculation::sq(designResolutionSize*0.5f, this->getPosition()))
+		{
+			this->setPosition(Calculation::setPos(designResolutionSize*0.5f,
+				Calculation::sq(designResolutionSize*0.5f, this->getPosition()),
+				-watchLayer->_longHand->getRotation() + 90.0f));            //cocos側との角度のずれ90°
+		}
+	}
+		break;
+	case SAVEONE:
+	{
+		//移動
+		enemyPos -= moveDir * _speed * deltaTime;
+		//更新
+		this->setPosition(enemyPos);
 		this->setPosition(Calculation::setPos(designResolutionSize*0.5f,
-			                                  Calculation::sq(designResolutionSize*0.5f, this->getPosition()),                    //cocos側との角度のずれ90°
-			                                  -((WatchLayer*)((EnemyManager*)(this->getParent())->getParent()))->_longHand->getRotation()+90.0f));
+			Calculation::sq(designResolutionSize*0.5f, this->getPosition()),
+			-watchLayer->_shortHand->getRotation() + 90.0f));            //cocos側との角度のずれ90°
+
+		if (Calculation::sq(designResolutionSize*0.5f, this->getPosition()) > watchLayer->_shortHand->getContentSize().height)
+		{
+			fairyModes = SAVETWO;
+		}
+
+	}
+	break;
+	case SAVETWO:
+	{
+		//移動
+		enemyPos += moveDir * _speed * deltaTime;
+		//更新
+		this->setPosition(enemyPos);
+		this->setPosition(Calculation::setPos(designResolutionSize*0.5f,
+			Calculation::sq(designResolutionSize*0.5f, this->getPosition()),
+			-watchLayer->_shortHand->getRotation() + 90.0f));            //cocos側との角度のずれ90°
+
+		if (this->getPositionX() > designResolutionSize.width*0.49f &&
+			this->getPositionX() < designResolutionSize.width*0.51f &&
+			this->getPositionY() > designResolutionSize.height*0.49f&&
+			this->getPositionY() < designResolutionSize.height*0.51f)
+		{
+			if (watchLayer->_player->parallel == true)
+			{
+				fairyModes = BACK;
+			}
+			else
+			{
+				fairyModes = SAVEONE;
+			}
+		}
+	}
+	break;
+	default:
+		break;
 	}
 }
 

@@ -14,8 +14,8 @@ public:
 	virtual void onTouchMoved(Touch* pTouch, Event* pEvent);
 	virtual void onTouchEnded(Touch* pTouch, Event* pEvent);
 
-	//“®‚¢‚Ä‚¢‚é‚©
-	bool _isMove;
+	bool _isMove;     //“®‚¢‚Ä‚¢‚é‚©
+	bool parallel;  //’·j‚Æ’Zj‚ª•½s‚©
 
 	float longDir;         //’·j‚ÌŠp“xæ“¾
 	float shortDir;        //’Zj‚ÌŠp“xæ“¾
