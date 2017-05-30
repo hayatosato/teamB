@@ -14,7 +14,7 @@ bool WatchLayer::init()
 	//this->addChild(layerColor);
 
 	//ŽžŒv
-	_watchSprite = Sprite::create("GameScene/clockNum.png");
+	_watchSprite = Sprite::create("GameScene/clockOne.png");
 	_watchSprite->setPosition(watchPos);
 	_watchSprite->setScale(0.6f);
 	this->addChild(_watchSprite,1);
@@ -30,6 +30,22 @@ bool WatchLayer::init()
 		this->addChild(fairyGate.at(i),5);
 	}
 
+	for (int j = 0; j < 12; j++)
+	{
+		String* noNum = String::createWithFormat("GameScene/clockTwo-%d.png", j + 1);
+		numSpr.push_back(Sprite::create(noNum->getCString()));
+		numSpr.at(j)->setPosition(watchPos);
+		numSpr.at(j)->setScale(0.6f);
+		this->addChild(numSpr.at(j), 2);
+	}
+
+	//‰˜‚ê
+	dirtWatch = Sprite::create("GameScene/clockThree.png");
+	dirtWatch->setPosition(watchPos);
+	dirtWatch->setScale(0.6f);
+	this->addChild(dirtWatch, 3);
+
+
 	//‚Â‚Ü‚Ý
 	_knob = Knob::create();
 	_knob->setPosition(Vec2(designResolutionSize.width * 0.96f, watchPos.y));
@@ -39,17 +55,23 @@ bool WatchLayer::init()
 	//’Zj
 	_shortHand = ShortHand::create();
 	_shortHand->setPosition(watchPos);
-	this->addChild(_shortHand,2);
+	this->addChild(_shortHand,4);
 
 	//’·j
 	_longHand = LongHand::create();
 	_longHand->setPosition(watchPos);
-	this->addChild(_longHand,3);
+	this->addChild(_longHand,5);
 
 	//•bj
 	_secondHand = SecondHand::create();
 	_secondHand->setPosition(watchPos);
-	this->addChild(_secondHand, 6);
+	this->addChild(_secondHand, 8);
+
+	//Œõ‚Ì”½ŽË
+	glassShine = Sprite::create("GameScene/clockFour.png");
+	glassShine->setPosition(watchPos);
+	glassShine->setScale(0.6f);
+	this->addChild(glassShine,9);
 
 	//PlayerƒNƒ‰ƒX
 	_player = Player::create();
@@ -57,7 +79,7 @@ bool WatchLayer::init()
 
 	//EnemyManagerƒNƒ‰ƒX
 	_enemyManager = EnemyManager::create(circle - 1);
-	this->addChild(_enemyManager,6);
+	this->addChild(_enemyManager,9);
 
 	this->scheduleUpdate();
 

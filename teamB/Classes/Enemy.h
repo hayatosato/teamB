@@ -10,8 +10,9 @@ public:
 	CREATE_FUNC(Enemy);
 	virtual bool init();
 
-	//update
-	void update(float dt);
+	int startCount;            //移動開始までのカウント
+
+	//動作
 	bool moveMode;          //動くか
 	enum fairyMode
 	{
@@ -23,9 +24,12 @@ public:
 	};
 	enum fairyMode fairyModes;
 
-	//動作
-	void Move(float deltaTime);
+	void resetCount();              //startCountをリセット
+	void Move(float deltaTime);     //動き
 	void Hit();
+
+	//update
+	void update(float dt);
 private:
 
 	//判定

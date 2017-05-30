@@ -17,8 +17,8 @@ bool Enemy::init()
 	moveMode = false;
 	fairyModes = WAIT;
 
-	//50
-	_speed = 50;
+	_speed = 50;                 //動く速さ
+	resetCount();                //動くまでのカウント
 
 	//update
 	this->scheduleUpdate();
@@ -32,7 +32,7 @@ void Enemy::update(float dt)
 	Move(dt);
 
 	//当たり判定
-		Hit();
+	Hit();
 }
 
 //移動
@@ -50,9 +50,14 @@ void Enemy::Move(float deltaTime)
 	{
 	case WAIT:
 	{
-
+		if (startCount <= 0)
+		{
+			this->setColor(Color3B::GREEN);
+			fairyModes = GO;
+		}
 	}
 		break;
+	//長針の上から中央に向かう
 	case GO:
 	{
 		//移動
@@ -77,9 +82,9 @@ void Enemy::Move(float deltaTime)
 				fairyModes = BACK;
 			}
 		}
-
 	}
 		break;
+	//長針の上から外に向かう
 	case BACK:
 	{
 		//移動
@@ -96,6 +101,7 @@ void Enemy::Move(float deltaTime)
 		}
 	}
 		break;
+	//短針の上から外に向かう
 	case SAVEONE:
 	{
 		//移動
@@ -113,6 +119,7 @@ void Enemy::Move(float deltaTime)
 
 	}
 	break;
+	//短針の上から中央へ向かう
 	case SAVETWO:
 	{
 		//移動
@@ -197,4 +204,10 @@ bool Enemy::JastHandCheck(float shortRotate, float longRotate)
 	}
 
 	return false;
+}
+
+//カウントのリセット
+void Enemy::resetCount()
+{
+	startCount = 120;
 }

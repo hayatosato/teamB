@@ -26,7 +26,7 @@ bool EnemyManager::init(int formPosNum)
 	if (!Node::init()) return false;
 
 	createPos = formPosNum;
-	//update
+	//ˆê’èŠÔ‚²‚Æ‚É“G‚ğ¶¬
 	this->schedule(schedule_selector(EnemyManager::EnemyCreater), EnemyPopInterval);
 
 	this->scheduleUpdate();
@@ -34,6 +34,7 @@ bool EnemyManager::init(int formPosNum)
 	return true;
 }
 
+//“G¶¬
 void EnemyManager::EnemyCreater(float dt)
 {
 	//Ramdom
@@ -42,18 +43,9 @@ void EnemyManager::EnemyCreater(float dt)
 	uniform_int_distribution<int> posNum(0, createPos);
 	//“G¶¬
 	int pos = posNum(mt);
-	//Enemy* enemy = Enemy::create();
-	//enemy->setPosition(((WatchLayer*)(this->getParent()))->fairyGate.at(pos)->getPosition());
-	//this->addChild(enemy);
-	enemy.push_back(Enemy::create());
+	enemy.pushBack(Enemy::create());
 	enemy.at(enemy.size() - 1)->setPosition(((WatchLayer*)(this->getParent()))->fairyGate.at(pos)->getPosition());
 	this->addChild(enemy.at(enemy.size() - 1));
-	
-	//“G¶¬‰ñ“]—p
-	//FairyNode* fairyNode = FairyNode::create(Vec2((((WatchLayer*)(this->getParent()))->fairyGate.at(pos)->getPositionX()) - (designResolutionSize.width*0.5f), (((WatchLayer*)(this->getParent()))->fairyGate.at(pos)->getPositionY() - (designResolutionSize.height*0.5f))));
-	//fairyNode->setPosition(Vec2(designResolutionSize.width*0.5f, designResolutionSize.height*0.5f));
-	//this->addChild(fairyNode);
-
 }
 
 void EnemyManager::update(float delta)
@@ -64,21 +56,53 @@ void EnemyManager::update(float delta)
 	{
 		ang = ang + 360.0f;
 	}
+	shotAng = layer->_shortHand->getRotation();
+	if (shotAng < 0.0f)
+	{
+		shotAng = shotAng + 360.0f;
+	}
+	secondAng = layer->_secondHand->getRotation();
 	for (int i = 0; i < enemy.size(); i++)
 	{
 		tAng = Calculation::angle(designResolutionSize*0.5f, enemy.at(i)->getPosition());
 		if (tAng < 0.0f)
 		{
-		tAng = tAng + 360.0f;
+		    tAng = tAng + 360.0f;
 		}
-
+		//•ªj‚Æ—d¸‚ª“¯‚¶Šp“x‚¾‚Á‚½
 		if (ang < tAng +5.0 &&
 			ang > tAng -5.0 &&
 			enemy.at(i)->fairyModes == enemy.at(i)->WAIT
 			)
 		{
-			enemy.at(i)->setColor(Color3B::GREEN);
-			enemy.at(i)->fairyModes = enemy.at(i)->GO;
+			enemy.at(i)->startCount--;
 		}
+		else
+		{
+			enemy.at(i)->resetCount();
+		}
+
+		//’·j‚Æ•bj‚ÌŠp“x‚ª“¯‚¶‚É‚È‚Á‚½‚©‚Ç‚¤‚©
+		if (ang < secondAng + 2.0f &&
+			ang > secondAng - 2.0f)
+		{
+			if (enemy.at(i)->fairyModes == enemy.at(i)->GO || enemy.at(i)->fairyModes == enemy.at(i)->BACK)
+			{
+				enemy.at(i)->removeFromParentAndCleanup(true);
+				enemy.erase(i);
+			}
+		}
+
+		//’Zj‚Æ•bj‚ÌŠp“x‚ª“¯‚¶‚É‚È‚Á‚½‚©‚Ç‚¤‚©
+		if (shotAng < secondAng + 2.0f &&
+			shotAng > secondAng - 2.0f)
+		{
+			if (enemy.at(i)->fairyModes == enemy.at(i)->SAVEONE || enemy.at(i)->fairyModes == enemy.at(i)->SAVETWO)
+			{
+				enemy.at(i)->removeFromParentAndCleanup(true);
+				enemy.erase(i);
+			}
+		}
+
 	}
 }

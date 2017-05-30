@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 #include <vector>
 #include <math.h>
+#include <string>
 #include "Knob.h"
 #include "ShortHand.h"
 #include "LongHand.h"
@@ -23,6 +24,7 @@ public:
 	float radius;                       //半径
 
 	vector<Sprite*> fairyGate;          //敵発生地点
+	vector<Sprite*> numSpr;             //数字の画像
 
 	Knob* _knob;                        //つまみ
 
@@ -33,6 +35,8 @@ public:
 
 	//時計　背景
 	Sprite* _watchSprite;
+	Sprite* dirtWatch;       //時計の汚れなど
+	Sprite* glassShine;      //ガラスの反射
 	//Playerクラス
 	Player* _player;
 
