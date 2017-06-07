@@ -6,12 +6,15 @@ bool WatchLayer::init()
 	if (!Layer::init()) return false;
 
 	circle = 12;
+	breakNumCheck = 0;
+	breakNum = 3;
+
+	for (int t = 0; t < 12; t++)
+	{
+		breakCheck[t] = true;
+	}
 	//時計の位置
 	Vec2 watchPos = designResolutionSize * 0.5f;
-
-	//背景
-	//LayerColor* layerColor = LayerColor::create(Color4B::GREEN, designResolutionSize.width, designResolutionSize.height);
-	//this->addChild(layerColor);
 
 	//時計
 	_watchSprite = Sprite::create("GameScene/clockOne.png");
@@ -21,15 +24,17 @@ bool WatchLayer::init()
 
 	radius = (_watchSprite->getContentSize().width*0.5f)*0.6f;
 
+	//妖精発生地点設定&ゲート画像配置
 	for (int i = 0; i < circle; i++)
 	{
 		fairyGate.push_back(Sprite::create("GameScene/EnemySprite.png"));
-		fairyGate.at(i)->setPosition(Vec2(designResolutionSize.width*0.5f + radius*cos(M_PI / 180 * (90 + 360 * i / circle)),
-			                              designResolutionSize.height*0.5f + radius*sin(M_PI / 180 * (90 + 360 * i / circle))));
+		fairyGate.at(i)->setPosition(Vec2(designResolutionSize.width*0.5f + radius*cos(M_PI / 180 * (90 - 360 * i / circle)),
+			                              designResolutionSize.height*0.5f + radius*sin(M_PI / 180 * (90 - 360 * i / circle))));
 		fairyGate.at(i)->setScale(0.3f);
 		this->addChild(fairyGate.at(i),5);
 	}
-
+	//fairyGate.at(2)->setColor(Color3B::GREEN);
+	//数字を表示
 	for (int j = 0; j < 12; j++)
 	{
 		String* noNum = String::createWithFormat("GameScene/clockTwo-%d.png", j + 1);
@@ -38,6 +43,8 @@ bool WatchLayer::init()
 		numSpr.at(j)->setScale(0.6f);
 		this->addChild(numSpr.at(j), 2);
 	}
+	
+	ramdomBreak();            //breakNumの数だけランダムで数字を壊す
 
 	//汚れ
 	dirtWatch = Sprite::create("GameScene/clockThree.png");
@@ -92,5 +99,25 @@ void WatchLayer::update(float delta)
 	if (_secondHand->getRotation() >= 360.0f)
 	{
 		_secondHand->setRotation(_secondHand->getRotation() - 360.0f);
+	}
+}
+
+void WatchLayer::ramdomBreak()
+{
+	//Ramdom
+	random_device rnd;
+	mt19937 mt(rnd());
+	uniform_int_distribution<int> breakPosNum(0, 11);
+	while (true)
+	{
+		actingBreak = breakPosNum(mt);
+		if (breakCheck[actingBreak] == true)
+		{
+			breakCheck[actingBreak] = false;
+			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak.png", actingBreak + 1);
+			numSpr.at(actingBreak)->setTexture(breakNoNum->getCString());
+			breakNumCheck++;
+		}
+		if (breakNum == breakNumCheck) break;
 	}
 }

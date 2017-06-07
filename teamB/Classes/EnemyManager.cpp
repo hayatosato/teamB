@@ -3,7 +3,7 @@
 #include "MultiResolution.h"
 
 //ìGê∂ê¨ä‘äu 3.0f
-const float EnemyPopInterval = 1.0f;
+const float EnemyPopInterval = 0.1f;
 
 EnemyManager *EnemyManager::create(int formPosNum)
 {
@@ -42,10 +42,20 @@ void EnemyManager::EnemyCreater(float dt)
 	mt19937 mt(rnd());
 	uniform_int_distribution<int> posNum(0, createPos);
 	//ìGê∂ê¨
-	int pos = posNum(mt);
-	enemy.pushBack(Enemy::create());
-	enemy.at(enemy.size() - 1)->setPosition(((WatchLayer*)(this->getParent()))->fairyGate.at(pos)->getPosition());
-	this->addChild(enemy.at(enemy.size() - 1));
+	pos = posNum(mt);
+	if (((WatchLayer*)(this->getParent()))->breakCheck[pos] == true)
+	{
+		//îzóÒÇÃÇ∏ÇÍèCê≥
+		pos++;
+		if (pos > 11)
+		{
+			pos = 0;
+		}
+
+		enemy.pushBack(Enemy::create());
+		enemy.at(enemy.size() - 1)->setPosition(((WatchLayer*)(this->getParent()))->fairyGate.at(pos)->getPosition());
+		this->addChild(enemy.at(enemy.size() - 1));
+	}
 }
 
 void EnemyManager::update(float delta)

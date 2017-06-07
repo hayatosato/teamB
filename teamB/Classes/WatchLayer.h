@@ -13,6 +13,7 @@
 #include "EnemyManager.h"
 
 USING_NS_CC;
+using namespace std;
 
 class WatchLayer : public Layer
 {
@@ -22,6 +23,11 @@ public:
 
 	int circle;                         //配置する敵発生地点の数
 	float radius;                       //半径
+
+	int breakNum;                       //壊す数字の数
+	int breakNumCheck;                  //壊す数字増加防止
+	bool breakCheck[11];                //壊す数字多重防止
+	int actingBreak;
 
 	vector<Sprite*> fairyGate;          //敵発生地点
 	vector<Sprite*> numSpr;             //数字の画像
@@ -45,6 +51,8 @@ private:
 
 	//EnemyManagerクラス
 	EnemyManager* _enemyManager;
+
+	void ramdomBreak();    //壊れた数字の配置
 };
 
 #endif

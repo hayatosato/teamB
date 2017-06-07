@@ -24,6 +24,7 @@ public:
 	float shotAng;                     //’Zj‚ÌŠp“x
 	float secondAng;                   //•bj‚ÌŠp“x
 	
+	int pos;
 	//“G¶¬
 	void EnemyCreater(float dt);
 	void update(float delta);
