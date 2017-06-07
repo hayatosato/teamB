@@ -17,16 +17,17 @@ public:
 	Vector<Enemy*> enemy;
 	virtual bool init(int formPosNum);
 
+	int pos;                           //—d¸¶¬ƒ|ƒCƒ“ƒg
 	int createPos;                     //ó‚¯æ‚Á‚½¶¬ƒ|ƒCƒ“ƒg‚ğ•Û‘¶
 	float ang;                         //’·j‚ÌŠoŒå
-	float tAng;                        //“G‚ÌŠp“x
+	float tAng;                        //—d¸‚ÌŠp“x
+	float fairyGateAng;                //—d¸oŒ»ƒ|ƒCƒ“ƒg‚ÌŠp“x
 
 	float shotAng;                     //’Zj‚ÌŠp“x
 	float secondAng;                   //•bj‚ÌŠp“x
 	
-	int pos;
-	//“G¶¬
-	void EnemyCreater(float dt);
+	void EnemyCreater(float dt);       //“G¶¬
+	void deleteEnemy(int enemyNum);    //—d¸íœ
 	void update(float delta);
 
 private:

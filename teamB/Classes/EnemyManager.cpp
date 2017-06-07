@@ -3,7 +3,7 @@
 #include "MultiResolution.h"
 
 //“G¶¬ŠÔŠu 3.0f
-const float EnemyPopInterval = 0.1f;
+const float EnemyPopInterval = 3.0f;
 
 EnemyManager *EnemyManager::create(int formPosNum)
 {
@@ -98,8 +98,7 @@ void EnemyManager::update(float delta)
 		{
 			if (enemy.at(i)->fairyModes == enemy.at(i)->GO || enemy.at(i)->fairyModes == enemy.at(i)->BACK)
 			{
-				enemy.at(i)->removeFromParentAndCleanup(true);
-				enemy.erase(i);
+				deleteEnemy(i);
 			}
 		}
 
@@ -109,10 +108,39 @@ void EnemyManager::update(float delta)
 		{
 			if (enemy.at(i)->fairyModes == enemy.at(i)->SAVEONE || enemy.at(i)->fairyModes == enemy.at(i)->SAVETWO)
 			{
-				enemy.at(i)->removeFromParentAndCleanup(true);
-				enemy.erase(i);
+				deleteEnemy(i);
 			}
 		}
 
+		if (enemy.at(i)->exitNeedle == false)
+		{
+			for (int a = 0; a < layer->fairyGate.size(); a++)
+			{
+				//ƒQ[ƒg‚ÌŠp“xŽæ“¾
+				fairyGateAng = Calculation::angle(designResolutionSize*0.5, layer->fairyGate.at(a)->getPosition());
+				if (fairyGateAng < 0.0f)
+				{
+					fairyGateAng += 360.0f;
+				}
+				//ƒQ[ƒg‚ÌŠp“x‚Æ—d¸‚ÌŠp“x‚ª“¯‚¶‚¾‚Á‚½‚Æ‚«ƒQ[ƒg‚Ìó‘Ô‚ð•\Ž¦
+				if (tAng < fairyGateAng + 2.0f &&
+					tAng > fairyGateAng - 2.0f)
+				{
+					int GateNum = a;
+					GateNum--;
+					if (GateNum < 0) GateNum = 11;
+					log("%d", layer->breakCheck[GateNum]);
+				}
+
+			}
+			deleteEnemy(i);
+		}
+
 	}
+}
+
+void EnemyManager::deleteEnemy(int enemyNum)
+{
+	enemy.at(enemyNum)->removeFromParentAndCleanup(true);
+	enemy.erase(enemyNum);
 }

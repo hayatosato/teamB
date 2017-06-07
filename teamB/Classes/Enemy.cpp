@@ -15,6 +15,7 @@ bool Enemy::init()
 	initWithFile("CloseNormal.png");
 
 	moveMode = false;
+	exitNeedle = true;
 	fairyModes = WAIT;
 
 	_speed = 50;                 //“®‚­‘¬‚³
@@ -98,6 +99,10 @@ void Enemy::Move(float deltaTime)
 			this->setPosition(Calculation::setPos(designResolutionSize*0.5f,
 				Calculation::sq(designResolutionSize*0.5f, this->getPosition()),
 				-watchLayer->_longHand->getRotation() + 90.0f));            //cocos‘¤‚Æ‚ÌŠp“x‚Ì‚¸‚ê90‹
+		}
+		else
+		{
+			exitNeedle = false;
 		}
 	}
 		break;

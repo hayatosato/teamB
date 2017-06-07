@@ -14,6 +14,8 @@ public:
 
 	//“®ì
 	bool moveMode;          //“®‚­‚©
+	bool exitNeedle;        //j‚©‚ço‚½‚©
+
 	enum fairyMode
 	{
 		WAIT,

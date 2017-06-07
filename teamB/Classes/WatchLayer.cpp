@@ -7,7 +7,7 @@ bool WatchLayer::init()
 
 	circle = 12;
 	breakNumCheck = 0;
-	breakNum = 3;
+	breakNum = 3;           //‰ó‚·”š‚Ì”  11ˆÈã‚É‚µ‚È‚¢‚æ‚¤‚É
 
 	for (int t = 0; t < 12; t++)
 	{
