@@ -3,7 +3,7 @@
 #include "MultiResolution.h"
 
 //“G¶¬ŠÔŠu 3.0f
-const float EnemyPopInterval = 3.0f;
+const float EnemyPopInterval = 1.0f;
 
 EnemyManager *EnemyManager::create(int formPosNum)
 {
@@ -112,6 +112,7 @@ void EnemyManager::update(float delta)
 			}
 		}
 
+		//—d¸‚ªj‚ÌS‘©‚©‚çŠO‚ê‚½‚çƒQ[ƒg‚Æ‚ÌŠp“x·‚ğ‹‚ß‹ß‚©‚Á‚½‚çˆ—‚ğ‚µÅŒã‚É—d¸‚ğíœ‚·‚é
 		if (enemy.at(i)->exitNeedle == false)
 		{
 			for (int a = 0; a < layer->fairyGate.size(); a++)
@@ -129,7 +130,11 @@ void EnemyManager::update(float delta)
 					int GateNum = a;
 					GateNum--;
 					if (GateNum < 0) GateNum = 11;
-					log("%d", layer->breakCheck[GateNum]);
+					//log("%d", layer->numberHP[GateNum]);
+					if (layer->breakCheck[GateNum] == false)
+					{
+						layer->repairNumber(GateNum);
+					}
 				}
 
 			}

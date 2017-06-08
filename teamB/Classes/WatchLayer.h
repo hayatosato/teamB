@@ -1,5 +1,6 @@
 #ifndef _WATCH_LAYER_H_
 #define _WATCH_LAYER_H_
+#define WATCH_NUMBER 11
 
 #include "cocos2d.h"
 #include <vector>
@@ -21,13 +22,15 @@ public:
 	CREATE_FUNC(WatchLayer);
 	virtual bool init();
 
-	int circle;                         //”z’u‚·‚é“G”­¶’n“_‚Ì”
+	int   circle;                         //”z’u‚·‚é“G”­¶’n“_‚Ì”
 	float radius;                       //”¼Œa
 
-	int breakNum;                       //‰ó‚·”š‚Ì”
-	int breakNumCheck;                  //‰ó‚·”š‘‰Á–h~
-	bool breakCheck[11];                //‰ó‚·”š‘½d–h~
-	int actingBreak;
+	int  breakNum;                       //‰ó‚·”š‚Ì”
+	int  breakNumCheck;                  //‰ó‚·”š‘‰Á–h~
+	int  actingBreak;                    //‰ó‚·”š‚ğ‘I‘ğ‚·‚é‚Æ‚«‚Ég—p
+	bool breakCheck[WATCH_NUMBER];       //‰ó‚·”š‘½d–h~
+
+	int  numberHP[WATCH_NUMBER];         //”š‚Ì‘Ì—Í
 
 	vector<Sprite*> fairyGate;          //“G”­¶’n“_
 	vector<Sprite*> numSpr;             //”š‚Ì‰æ‘œ
@@ -35,8 +38,8 @@ public:
 	Knob* _knob;                        //‚Â‚Ü‚İ
 
 	//j
-	ShortHand* _shortHand;
-	LongHand* _longHand;
+	ShortHand*  _shortHand;
+	LongHand*   _longHand;
 	SecondHand* _secondHand;
 
 	//Œv@”wŒi
@@ -46,6 +49,7 @@ public:
 	//PlayerƒNƒ‰ƒX
 	Player* _player;
 
+	void repairNumber(int num);    //”š‚ÌC•œ
 	void update(float delta);
 private:
 

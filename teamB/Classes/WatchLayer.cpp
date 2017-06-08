@@ -11,7 +11,7 @@ bool WatchLayer::init()
 
 	for (int t = 0; t < 12; t++)
 	{
-		breakCheck[t] = true;
+		breakCheck[t] = true;        //”Žš‚ª‰ó‚ê‚Ä‚é‚©‚Ç‚¤‚©‚Ì‰Šú‰»
 	}
 	//ŽžŒv‚ÌˆÊ’u
 	Vec2 watchPos = designResolutionSize * 0.5f;
@@ -102,22 +102,43 @@ void WatchLayer::update(float delta)
 	}
 }
 
+//”Žš‚ðbreakNum‚Ì”•ª‰ó‚·
 void WatchLayer::ramdomBreak()
 {
 	//Ramdom
 	random_device rnd;
 	mt19937 mt(rnd());
 	uniform_int_distribution<int> breakPosNum(0, 11);
+
+	for (int t = 0; t < 12; t++)
+	{
+		numberHP[t] = 10;        //”Žš‚ÌHP‰Šú‰»
+	}
+
 	while (true)
 	{
 		actingBreak = breakPosNum(mt);
 		if (breakCheck[actingBreak] == true)
 		{
 			breakCheck[actingBreak] = false;
+			numberHP[actingBreak] = 0;
 			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak.png", actingBreak + 1);
 			numSpr.at(actingBreak)->setTexture(breakNoNum->getCString());
 			breakNumCheck++;
 		}
 		if (breakNum == breakNumCheck) break;
 	}
+}
+
+//”ŽšC•œ
+void WatchLayer::repairNumber(int num)
+{
+	numberHP[num] += 1;
+	if (numberHP[num] >= 10)
+	{
+		breakCheck[num] = true;
+		String* repairNum = String::createWithFormat("GameScene/clockTwo-%d.png", num + 1);
+		numSpr.at(num)->setTexture(repairNum->getCString());
+	}
+
 }
