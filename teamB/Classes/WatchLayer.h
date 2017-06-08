@@ -21,6 +21,7 @@ class WatchLayer : public Layer
 public:
 	CREATE_FUNC(WatchLayer);
 	virtual bool init();
+	int  numberHP[WATCH_NUMBER];         //数字の体力
 
 	int   circle;                         //配置する敵発生地点の数
 	float radius;                       //半径
@@ -29,8 +30,6 @@ public:
 	int  breakNumCheck;                  //壊す数字増加防止
 	int  actingBreak;                    //壊す数字を選択するときに使用
 	bool breakCheck[WATCH_NUMBER];       //壊す数字多重防止
-
-	int  numberHP[WATCH_NUMBER];         //数字の体力
 
 	vector<Sprite*> fairyGate;          //敵発生地点
 	vector<Sprite*> numSpr;             //数字の画像
