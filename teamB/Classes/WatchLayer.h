@@ -1,6 +1,6 @@
 #ifndef _WATCH_LAYER_H_
 #define _WATCH_LAYER_H_
-#define WATCH_NUMBER 11
+#define WATCH_NUMBER 12
 
 #include "cocos2d.h"
 #include <vector>
@@ -22,8 +22,6 @@ public:
 	CREATE_FUNC(WatchLayer);
 	virtual bool init();
 	int  numberHP[WATCH_NUMBER];         //数字の体力
-
-	int   circle;                         //配置する敵発生地点の数
 	float radius;                       //半径
 
 	int  breakNum;                       //壊す数字の数
@@ -54,6 +52,7 @@ private:
 
 	//EnemyManagerクラス
 	EnemyManager* _enemyManager;
+	int   circleNum;                         //配置する敵発生地点の数
 
 	void ramdomBreak();    //壊れた数字の配置
 };

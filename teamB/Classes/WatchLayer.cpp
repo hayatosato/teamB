@@ -5,11 +5,11 @@ bool WatchLayer::init()
 {
 	if (!Layer::init()) return false;
 
-	circle = 12;
+	circleNum = WATCH_NUMBER;
 	breakNumCheck = 0;
 	breakNum = 3;           //壊す数字の数  11以上にしないように
 
-	for (int t = 0; t < 12; t++)
+	for (int t = 0; t < circleNum; t++)
 	{
 		breakCheck[t] = true;        //数字が壊れてるかどうかの初期化
 	}
@@ -25,17 +25,16 @@ bool WatchLayer::init()
 	radius = (_watchSprite->getContentSize().width*0.5f)*0.6f;
 
 	//妖精発生地点設定&ゲート画像配置
-	for (int i = 0; i < circle; i++)
+	for (int i = 0; i < circleNum; i++)
 	{
 		fairyGate.push_back(Sprite::create("GameScene/EnemySprite.png"));
-		fairyGate.at(i)->setPosition(Vec2(designResolutionSize.width*0.5f + radius*cos(M_PI / 180 * (90 - 360 * i / circle)),
-			                              designResolutionSize.height*0.5f + radius*sin(M_PI / 180 * (90 - 360 * i / circle))));
+		fairyGate.at(i)->setPosition(Vec2(designResolutionSize.width*0.5f + radius*cos(M_PI / 180 * (90 - 360 * i / circleNum)),
+			                              designResolutionSize.height*0.5f + radius*sin(M_PI / 180 * (90 - 360 * i / circleNum))));
 		fairyGate.at(i)->setScale(0.3f);
 		this->addChild(fairyGate.at(i),5);
 	}
-	//fairyGate.at(2)->setColor(Color3B::GREEN);
 	//数字を表示
-	for (int j = 0; j < 12; j++)
+	for (int j = 0; j < circleNum; j++)
 	{
 		String* noNum = String::createWithFormat("GameScene/clockTwo-%d.png", j + 1);
 		numSpr.push_back(Sprite::create(noNum->getCString()));
@@ -85,7 +84,7 @@ bool WatchLayer::init()
 	this->addChild(_player);
 
 	//EnemyManagerクラス
-	_enemyManager = EnemyManager::create(circle - 1);
+	_enemyManager = EnemyManager::create(circleNum - 1);
 	this->addChild(_enemyManager,9);
 
 	this->scheduleUpdate();

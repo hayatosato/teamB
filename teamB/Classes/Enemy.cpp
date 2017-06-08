@@ -18,7 +18,7 @@ bool Enemy::init()
 	exitNeedle = true;
 	fairyModes = WAIT;
 
-	_speed = 50;                 //動く速さ
+	_speed = 100;                 //動く速さ
 	resetCount();                //動くまでのカウント
 
 	//update
@@ -214,5 +214,5 @@ bool Enemy::JastHandCheck(float shortRotate, float longRotate)
 //カウントのリセット
 void Enemy::resetCount()
 {
-	startCount = 120;
+	startCount = 60;
 }

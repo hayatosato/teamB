@@ -25,6 +25,7 @@ bool EnemyManager::init(int formPosNum)
 {
 	if (!Node::init()) return false;
 
+	log("%d", formPosNum);
 	createPos = formPosNum;
 	//ˆê’èŽžŠÔ‚²‚Æ‚É“G‚ð¶¬
 	this->schedule(schedule_selector(EnemyManager::EnemyCreater), EnemyPopInterval);
@@ -40,7 +41,7 @@ void EnemyManager::EnemyCreater(float dt)
 	//Ramdom
 	random_device rnd;
 	mt19937 mt(rnd());
-	uniform_int_distribution<int> posNum(0, createPos);
+	uniform_int_distribution<int> posNum(0,createPos);
 	//“G¶¬
 	pos = posNum(mt);
 	if (((WatchLayer*)(this->getParent()))->breakCheck[pos] == true)
