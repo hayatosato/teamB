@@ -12,6 +12,7 @@
 #include "SecondHand.h"
 #include "Player.h"
 #include "EnemyManager.h"
+#include "EffectManager.h"
 
 USING_NS_CC;
 using namespace std;
@@ -21,23 +22,24 @@ class WatchLayer : public Layer
 public:
 	CREATE_FUNC(WatchLayer);
 	virtual bool init();
-	int  numberHP[WATCH_NUMBER];         //”š‚Ì‘Ì—Í
+
+	EffectManager* effect;              //ƒGƒtƒFƒNƒgƒ}ƒl[ƒWƒƒ[
+
+	int   numberHP[WATCH_NUMBER];       //”š‚Ì‘Ì—Í
 	float radius;                       //”¼Œa
 
-	int  breakNum;                       //‰ó‚·”š‚Ì”
-	int  breakNumCheck;                  //‰ó‚·”š‘‰Á–h~
-	int  actingBreak;                    //‰ó‚·”š‚ğ‘I‘ğ‚·‚é‚Æ‚«‚Ég—p
-	bool breakCheck[WATCH_NUMBER];       //‰ó‚·”š‘½d–h~
+	int   breakNum;                     //‰ó‚·”š‚Ì”
+	int   breakNumCheck;                //‰ó‚·”š‘‰Á–h~
+	int   actingBreak;                  //‰ó‚·”š‚ğ‘I‘ğ‚·‚é‚Æ‚«‚Ég—p
+	bool  breakCheck[WATCH_NUMBER];     //‰ó‚·”š‘½d–h~
 
 	vector<Sprite*> fairyGate;          //“G”­¶’n“_
 	vector<Sprite*> numSpr;             //”š‚Ì‰æ‘œ
 
-	Knob* _knob;                        //‚Â‚Ü‚İ
-
-	//j
-	ShortHand*  _shortHand;
-	LongHand*   _longHand;
-	SecondHand* _secondHand;
+	Knob*       _knob;                  //‚Â‚Ü‚İ
+	ShortHand*  _shortHand;             //’Zj
+	LongHand*   _longHand;              //’·j
+	SecondHand* _secondHand;            //•bj
 
 	//Œv@”wŒi
 	Sprite* _watchSprite;

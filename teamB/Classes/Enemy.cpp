@@ -12,11 +12,24 @@ bool Enemy::init()
 {
 	if (!Sprite::init()) return false;
 
-	initWithFile("CloseNormal.png");
+	this->initWithFile("GameScene/clockFairy1.png");
+	this->setScale(0.15f);
 
 	moveMode   = false;
 	exitNeedle = true;
 	fairyModes = WAIT;
+
+	animation = Animation::create();
+	animation->addSpriteFrameWithFileName("GameScene/clockFairy1new.png");
+	animation->addSpriteFrameWithFileName("GameScene/clockFairy2new.png");
+	animation->addSpriteFrameWithFileName("GameScene/clockFairy3new.png");
+	animation->addSpriteFrameWithFileName("GameScene/clockFairy2new.png");
+	animation->setDelayPerUnit(0.2f);
+	animation->setRestoreOriginalFrame(true);
+	action = Animate::create(animation);
+	anime = RepeatForever::create(action);
+	this->runAction(anime);
+
 
 	_speed = 100;                 //“®‚­‘¬‚³
 	resetCount();                //“®‚­‚Ü‚Å‚ÌƒJƒEƒ“ƒg
@@ -50,7 +63,6 @@ void Enemy::Move(float deltaTime)
 	{
 		if (startCount <= 0)
 		{
-			this->setColor(Color3B::GREEN);
 			fairyModes = GO;
 		}
 	}

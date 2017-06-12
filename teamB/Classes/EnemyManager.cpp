@@ -25,7 +25,6 @@ bool EnemyManager::init(int formPosNum)
 {
 	if (!Node::init()) return false;
 
-	log("%d", formPosNum);
 	createPos = formPosNum;
 	//ˆê’èŽžŠÔ‚²‚Æ‚É“G‚ð¶¬
 	this->schedule(schedule_selector(EnemyManager::EnemyCreater), EnemyPopInterval);
@@ -53,9 +52,20 @@ void EnemyManager::EnemyCreater(float dt)
 			pos = 0;
 		}
 
+		//“G¶¬
 		enemy.pushBack(Enemy::create());
 		enemy.at(enemy.size() - 1)->setPosition(((WatchLayer*)(this->getParent()))->fairyGate.at(pos)->getPosition());
-		this->addChild(enemy.at(enemy.size() - 1));
+		this->addChild(enemy.at(enemy.size() - 1),1);
+		//—d¸ŒãŒõ¶¬
+		aura.pushBack(Sprite::create("GameScene/fairyAura.png"));
+		aura.at(aura.size() - 1)->setPosition(enemy.at(enemy.size() - 1)->getPosition());
+		aura.at(aura.size() - 1)->setScale(0.5f);
+		this->addChild(aura.at(aura.size() - 1),0);
+		FadeOut* fadeOut = FadeOut::create(1.0f);
+		FadeIn*  fadeIn = FadeIn::create(1.0f);
+		Sequence* seq = Sequence::create(fadeOut, fadeIn, nullptr);
+		RepeatForever* rep = RepeatForever::create(seq);
+		aura.at(aura.size() - 1)->runAction(rep);
 	}
 }
 
@@ -99,7 +109,7 @@ void EnemyManager::update(float delta)
 		{
 			if (enemy.at(i)->fairyModes == enemy.at(i)->GO || enemy.at(i)->fairyModes == enemy.at(i)->BACK)
 			{
-				deleteEnemy(i);
+				deleteEnemy(i,true);
 			}
 		}
 
@@ -109,7 +119,7 @@ void EnemyManager::update(float delta)
 		{
 			if (enemy.at(i)->fairyModes == enemy.at(i)->SAVEONE || enemy.at(i)->fairyModes == enemy.at(i)->SAVETWO)
 			{
-				deleteEnemy(i);
+				deleteEnemy(i,true);
 			}
 		}
 
@@ -131,7 +141,6 @@ void EnemyManager::update(float delta)
 					int GateNum = a;
 					GateNum--;
 					if (GateNum < 0) GateNum = 11;
-					//log("%d", layer->numberHP[GateNum]);
 					if (layer->breakCheck[GateNum] == false)
 					{
 						layer->repairNumber(GateNum);
@@ -139,14 +148,23 @@ void EnemyManager::update(float delta)
 				}
 
 			}
-			deleteEnemy(i);
+			deleteEnemy(i,false);
 		}
+
+		aura.at(i)->setPosition(enemy.at(i)->getPosition());
 
 	}
 }
 
-void EnemyManager::deleteEnemy(int enemyNum)
+void EnemyManager::deleteEnemy(int enemyNum,bool death)
 {
+	if (death)
+	{
+		((WatchLayer*)(this->getParent()))->effect->fairyDeath(enemy.at(enemyNum)->getPosition());
+	}
+
 	enemy.at(enemyNum)->removeFromParentAndCleanup(true);
 	enemy.erase(enemyNum);
+	aura.at(enemyNum)->removeFromParentAndCleanup(true);
+	aura.erase(enemyNum);
 }

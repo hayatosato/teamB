@@ -33,6 +33,11 @@ public:
 	void update(float dt);
 private:
 
+	Animation *animation;
+	Animate *action;
+	RepeatForever *anime;
+
+
 	//ステータス
 	//float shotLength;   //短針の長さ
 	float _speed;	//移動速度

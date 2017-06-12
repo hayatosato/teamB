@@ -29,8 +29,10 @@ public:
 	void  update(float delta);
 
 private:
-	void  EnemyCreater(float dt);      //“G¶¬
-	void  deleteEnemy(int enemyNum);   //—d¸íœ
+	Vector<Sprite*> aura;                         //—d¸ŒãŒõ
+
+	void  EnemyCreater(float dt);                 //“G¶¬
+	void  deleteEnemy(int enemyNum,bool death);   //—d¸íœ(íœ‚·‚é—d¸‚Ìƒiƒ“ƒo[Atrue‚È‚ç€‚ñ‚ÅÁ–Å)
 
 };
 

@@ -5,6 +5,9 @@ bool WatchLayer::init()
 {
 	if (!Layer::init()) return false;
 
+	effect = EffectManager::create();
+	this->addChild(effect, 10);
+
 	circleNum = WATCH_NUMBER;
 	breakNumCheck = 0;
 	breakNum = 3;           //‰ó‚·”š‚Ì”  11ˆÈã‚É‚µ‚È‚¢‚æ‚¤‚É
