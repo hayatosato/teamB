@@ -14,9 +14,9 @@ bool Player::init()
 {
 	if (!Node::init()) return false;
 
-	downMove = 0.5f;
+	downMove     = 0.5f;
 	maxMoveSpeed = 40.0f;
-	crackCount = 0;
+	crackCount   = 0;
 	
 	// タッチイベントを有効にする
 	auto listener = EventListenerTouchOneByOne::create();

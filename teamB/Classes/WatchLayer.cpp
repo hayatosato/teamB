@@ -12,6 +12,7 @@ bool WatchLayer::init()
 	for (int t = 0; t < circleNum; t++)
 	{
 		breakCheck[t] = true;        //数字が壊れてるかどうかの初期化
+		numberHP[t] = 10;        //数字のHP初期化
 	}
 	//時計の位置
 	Vec2 watchPos = designResolutionSize * 0.5f;
@@ -50,7 +51,6 @@ bool WatchLayer::init()
 	dirtWatch->setPosition(watchPos);
 	dirtWatch->setScale(0.6f);
 	this->addChild(dirtWatch, 3);
-
 
 	//つまみ
 	_knob = Knob::create();
@@ -109,11 +109,6 @@ void WatchLayer::ramdomBreak()
 	mt19937 mt(rnd());
 	uniform_int_distribution<int> breakPosNum(0, 11);
 
-	for (int t = 0; t < 12; t++)
-	{
-		numberHP[t] = 10;        //数字のHP初期化
-	}
-
 	while (true)
 	{
 		actingBreak = breakPosNum(mt);
@@ -129,7 +124,7 @@ void WatchLayer::ramdomBreak()
 	}
 }
 
-//数字修復
+//数字修復&クリアしたかどうか
 void WatchLayer::repairNumber(int num)
 {
 	numberHP[num] += 1;
@@ -138,6 +133,13 @@ void WatchLayer::repairNumber(int num)
 		breakCheck[num] = true;
 		String* repairNum = String::createWithFormat("GameScene/clockTwo-%d.png", num + 1);
 		numSpr.at(num)->setTexture(repairNum->getCString());
+		for (int g = 0; g < circleNum; g++)
+		{
+			if (breakCheck[g] == false)
+			{
+				return;
+			}
+		}
+		log("OK!");  //ここにクリア処理
 	}
-
 }

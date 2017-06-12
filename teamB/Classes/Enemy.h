@@ -28,15 +28,10 @@ public:
 
 	void resetCount();              //startCountをリセット
 	void Move(float deltaTime);     //動き
-	void Hit();
 
 	//update
 	void update(float dt);
 private:
-
-	//判定
-	bool HoldCheck(Vec2 pos, Rect shortRect, Rect longRect);
-	bool JastHandCheck(float shortRotate, float longRotate);
 
 	//ステータス
 	//float shotLength;   //短針の長さ

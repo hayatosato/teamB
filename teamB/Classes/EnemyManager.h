@@ -17,8 +17,8 @@ public:
 	Vector<Enemy*> enemy;
 	virtual bool init(int formPosNum);
 
-	int pos;                           //—d¸¶¬ƒ|ƒCƒ“ƒg
-	int createPos;                     //ó‚¯æ‚Á‚½¶¬ƒ|ƒCƒ“ƒg‚ğ•Û‘¶
+	int   pos;                         //—d¸¶¬ƒ|ƒCƒ“ƒg
+	int   createPos;                   //ó‚¯æ‚Á‚½¶¬ƒ|ƒCƒ“ƒg‚ğ•Û‘¶
 	float ang;                         //’·j‚ÌŠoŒå
 	float tAng;                        //—d¸‚ÌŠp“x
 	float fairyGateAng;                //—d¸oŒ»ƒ|ƒCƒ“ƒg‚ÌŠp“x
@@ -26,11 +26,11 @@ public:
 	float shotAng;                     //’Zj‚ÌŠp“x
 	float secondAng;                   //•bj‚ÌŠp“x
 	
-	void EnemyCreater(float dt);       //“G¶¬
-	void deleteEnemy(int enemyNum);    //—d¸íœ
-	void update(float delta);
+	void  update(float delta);
 
 private:
+	void  EnemyCreater(float dt);      //“G¶¬
+	void  deleteEnemy(int enemyNum);   //—d¸íœ
 
 };
 

@@ -14,7 +14,7 @@ bool Enemy::init()
 
 	initWithFile("CloseNormal.png");
 
-	moveMode = false;
+	moveMode   = false;
 	exitNeedle = true;
 	fairyModes = WAIT;
 
@@ -31,9 +31,6 @@ void Enemy::update(float dt)
 {
 	//移動
 	Move(dt);
-
-	//当たり判定
-	Hit();
 }
 
 //移動
@@ -154,61 +151,6 @@ void Enemy::Move(float deltaTime)
 	default:
 		break;
 	}
-}
-
-//当たり判定
-void Enemy::Hit()
-{
-	//親オブジェクト
-	WatchLayer* watchLayer = ((WatchLayer*)((EnemyManager*)(this->getParent())->getParent()));
-
-	//Rect
-	Vec2 enemyPos = this->getPosition();
-	Rect shortRect = watchLayer->_shortHand->getBoundingBox();
-	Rect longRect = watchLayer->_longHand->getBoundingBox();
-
-	//Rotate
-	float shortRotate = watchLayer->_shortHand->getRotation();
-	float longRotate = watchLayer->_longHand->getRotation();
-
-	//判定
-	if (HoldCheck(enemyPos, shortRect, longRect) /*&&
-		JastHandCheck(shortRotate, longRotate)*/)
-	{
-		//float ax, ay;
-		//
-		//longRotate = M_PI / 180;
-		//ax = enemyPos.x*cos(longRotate) - enemyPos.y*sin(longRotate);
-		//ay = enemyPos.x*sin(longRotate) + enemyPos.y*cos(longRotate);
-
-		//setPosition(Vec2(ax, ay));
-	}
-}
-
-//二つの針と敵が重なっているか
-bool Enemy::HoldCheck(Vec2 pos, Rect shortRect, Rect longRect)
-{
-	if (/*shortRect.containsPoint(pos) && */longRect.containsPoint(pos + designResolutionSize*0.5f))
-	{
-		return true;
-	}
-
-	return false;
-}
-
-//針が重なっていないか
-bool Enemy::JastHandCheck(float shortRotate, float longRotate)
-{
-	//差
-	const float Difference = 10.0f;
-	float handDif = shortRotate - longRotate;
-
-	if (handDif < -Difference || handDif > Difference)
-	{
-		return true;
-	}
-
-	return false;
 }
 
 //カウントのリセット

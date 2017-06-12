@@ -46,7 +46,7 @@ public:
 	//Playerクラス
 	Player* _player;
 
-	void repairNumber(int num);    //数字の修復
+	void repairNumber(int num);    //数字の修復&クリアしたかどうか
 	void update(float delta);
 private:
 
