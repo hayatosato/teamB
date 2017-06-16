@@ -159,6 +159,10 @@ void EnemyManager::update(float delta)
 				}
 				float fairyGateAngPlus = fairyGateAng + 5.0f;
 				float fairyGateAngMinus = fairyGateAng - 5.0f;
+				if (fairyGateAngMinus <= 0)
+				{
+					fairyGateAngMinus += 360.0f;
+				}
 				int GateNum = a;
 				GateNum--;
 				if (GateNum < 0) GateNum = 11;
@@ -177,14 +181,17 @@ void EnemyManager::update(float delta)
 				}
 				else if (fairyGateAng == 0.0f)
 				{
-					if (tAng < fairyGateAngPlus ||
-						tAng > fairyGateAngMinus)
+					if (layer->breakCheck[GateNum] == false)
 					{
-						for (int d = 0; d < 5; d++)
+						if (tAng < fairyGateAngPlus ||
+							tAng > fairyGateAngMinus)
 						{
-							layer->effect->shining(layer->fairyGate.at(a)->getPosition());
+							for (int d = 0; d < 5; d++)
+							{
+								layer->effect->shining(layer->fairyGate.at(a)->getPosition());
+							}
+							layer->repairNumber(GateNum, enemy.at(i)->bonusFairy);
 						}
-						layer->repairNumber(GateNum, enemy.at(i)->bonusFairy);
 					}
 				}
 
