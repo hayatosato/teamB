@@ -13,8 +13,8 @@ public:
 	int startCount;            //移動開始までのカウント
 
 	//動作
-	bool moveMode;          //動くか
 	bool exitNeedle;        //針から出たか
+	bool bonusFairy;        //ボーナスがかかっているかどうか
 
 	enum fairyMode
 	{

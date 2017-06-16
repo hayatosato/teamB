@@ -15,8 +15,8 @@ bool Enemy::init()
 	this->initWithFile("GameScene/clockFairy1.png");
 	this->setScale(0.15f);
 
-	moveMode   = false;
 	exitNeedle = true;
+	bonusFairy = false;
 	fairyModes = WAIT;
 
 	animation = Animation::create();
@@ -128,6 +128,7 @@ void Enemy::Move(float deltaTime)
 
 		if (Calculation::sq(designResolutionSize*0.5f, this->getPosition()) > watchLayer->_shortHand->getContentSize().height)
 		{
+			bonusFairy = true;
 			fairyModes = SAVETWO;
 		}
 
@@ -168,5 +169,5 @@ void Enemy::Move(float deltaTime)
 //カウントのリセット
 void Enemy::resetCount()
 {
-	startCount = 60;
+	startCount = 30;
 }

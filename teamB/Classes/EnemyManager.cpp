@@ -3,7 +3,7 @@
 #include "MultiResolution.h"
 
 //“G¶¬ŠÔŠu 3.0f
-const float EnemyPopInterval = 1.0f;
+const float EnemyPopInterval = 4.0f;
 
 EnemyManager *EnemyManager::create(int formPosNum)
 {
@@ -51,22 +51,27 @@ void EnemyManager::EnemyCreater(float dt)
 		{
 			pos = 0;
 		}
-
-		//“G¶¬
-		enemy.pushBack(Enemy::create());
-		enemy.at(enemy.size() - 1)->setPosition(((WatchLayer*)(this->getParent()))->fairyGate.at(pos)->getPosition());
-		this->addChild(enemy.at(enemy.size() - 1),1);
-		//—d¸ŒãŒõ¶¬
-		aura.pushBack(Sprite::create("GameScene/fairyAura.png"));
-		aura.at(aura.size() - 1)->setPosition(enemy.at(enemy.size() - 1)->getPosition());
-		aura.at(aura.size() - 1)->setScale(0.5f);
-		this->addChild(aura.at(aura.size() - 1),0);
-		FadeOut* fadeOut = FadeOut::create(1.0f);
-		FadeIn*  fadeIn = FadeIn::create(1.0f);
-		Sequence* seq = Sequence::create(fadeOut, fadeIn, nullptr);
-		RepeatForever* rep = RepeatForever::create(seq);
-		aura.at(aura.size() - 1)->runAction(rep);
+		((WatchLayer*)(this->getParent()))->adventGateMotion(pos);
 	}
+}
+
+void EnemyManager::fairyCreate(int fairyCreatePos)
+{
+	//“G¶¬
+	enemy.pushBack(Enemy::create());
+	enemy.at(enemy.size() - 1)->setPosition(((WatchLayer*)(this->getParent()))->fairyGate.at(fairyCreatePos)->getPosition());
+	this->addChild(enemy.at(enemy.size() - 1), 1);
+	//—d¸ŒãŒõ¶¬
+	aura.pushBack(Sprite::create("GameScene/fairyAura.png"));
+	aura.at(aura.size() - 1)->setPosition(enemy.at(enemy.size() - 1)->getPosition());
+	aura.at(aura.size() - 1)->setScale(0.5f);
+	this->addChild(aura.at(aura.size() - 1), 0);
+	FadeOut* fadeOut = FadeOut::create(1.0f);
+	FadeIn*  fadeIn = FadeIn::create(1.0f);
+	Sequence* seq = Sequence::create(fadeOut, fadeIn, nullptr);
+	RepeatForever* rep = RepeatForever::create(seq);
+	aura.at(aura.size() - 1)->runAction(rep);
+
 }
 
 void EnemyManager::update(float delta)
@@ -90,9 +95,15 @@ void EnemyManager::update(float delta)
 		{
 		    tAng = tAng + 360.0f;
 		}
+		float tAngPlus = tAng + 5.0f;
+		float tAngMinus = tAng - 5.0f;
+		if (tAngMinus <= 0)
+		{
+			tAngMinus += 360.0f;
+		}
 		//•ªj‚Æ—d¸‚ª“¯‚¶Šp“x‚¾‚Á‚½
-		if (ang < tAng +5.0 &&
-			ang > tAng -5.0 &&
+		if (ang < tAngPlus &&
+			ang > tAngMinus &&
 			enemy.at(i)->fairyModes == enemy.at(i)->WAIT
 			)
 		{
@@ -100,26 +111,38 @@ void EnemyManager::update(float delta)
 		}
 		else
 		{
+			//12‚ÌŠp“x’²®
+			if (tAng == 0.0f)
+			{
+				if (ang < tAngPlus && enemy.at(i)->fairyModes == enemy.at(i)->WAIT ||
+					ang > tAngMinus &&enemy.at(i)->fairyModes == enemy.at(i)->WAIT)
+				{
+					enemy.at(i)->startCount--;
+					continue;
+				}
+			}
 			enemy.at(i)->resetCount();
 		}
 
 		//’·j‚Æ•bj‚ÌŠp“x‚ª“¯‚¶‚É‚È‚Á‚½‚©‚Ç‚¤‚©
-		if (ang < secondAng + 2.0f &&
-			ang > secondAng - 2.0f)
+		if (ang < secondAng + 3.0f &&
+			ang > secondAng - 3.0f)
 		{
 			if (enemy.at(i)->fairyModes == enemy.at(i)->GO || enemy.at(i)->fairyModes == enemy.at(i)->BACK)
 			{
 				deleteEnemy(i,true);
+				return;
 			}
 		}
 
 		//’Zj‚Æ•bj‚ÌŠp“x‚ª“¯‚¶‚É‚È‚Á‚½‚©‚Ç‚¤‚©
-		if (shotAng < secondAng + 2.0f &&
-			shotAng > secondAng - 2.0f)
+		if (shotAng < secondAng + 3.0f &&
+			shotAng > secondAng - 3.0f)
 		{
 			if (enemy.at(i)->fairyModes == enemy.at(i)->SAVEONE || enemy.at(i)->fairyModes == enemy.at(i)->SAVETWO)
 			{
 				deleteEnemy(i,true);
+				return;
 			}
 		}
 
@@ -134,21 +157,40 @@ void EnemyManager::update(float delta)
 				{
 					fairyGateAng += 360.0f;
 				}
+				float fairyGateAngPlus = fairyGateAng + 5.0f;
+				float fairyGateAngMinus = fairyGateAng - 5.0f;
+				int GateNum = a;
+				GateNum--;
+				if (GateNum < 0) GateNum = 11;
 				//ƒQ[ƒg‚ÌŠp“x‚Æ—d¸‚ÌŠp“x‚ª“¯‚¶‚¾‚Á‚½‚Æ‚«ƒQ[ƒg‚Ìó‘Ô‚ğ•\¦
-				if (tAng < fairyGateAng + 2.0f &&
-					tAng > fairyGateAng - 2.0f)
+				if (tAng < fairyGateAngPlus &&
+					tAng > fairyGateAngMinus)
 				{
-					int GateNum = a;
-					GateNum--;
-					if (GateNum < 0) GateNum = 11;
 					if (layer->breakCheck[GateNum] == false)
 					{
-						layer->repairNumber(GateNum);
+						for (int d = 0; d < 5; d++)
+						{
+							layer->effect->shining(layer->fairyGate.at(a)->getPosition());
+						}
+						layer->repairNumber(GateNum,enemy.at(i)->bonusFairy);
+					}
+				}
+				else if (fairyGateAng == 0.0f)
+				{
+					if (tAng < fairyGateAngPlus ||
+						tAng > fairyGateAngMinus)
+					{
+						for (int d = 0; d < 5; d++)
+						{
+							layer->effect->shining(layer->fairyGate.at(a)->getPosition());
+						}
+						layer->repairNumber(GateNum, enemy.at(i)->bonusFairy);
 					}
 				}
 
 			}
 			deleteEnemy(i,false);
+			return;
 		}
 
 		aura.at(i)->setPosition(enemy.at(i)->getPosition());
@@ -158,6 +200,7 @@ void EnemyManager::update(float delta)
 
 void EnemyManager::deleteEnemy(int enemyNum,bool death)
 {
+
 	if (death)
 	{
 		((WatchLayer*)(this->getParent()))->effect->fairyDeath(enemy.at(enemyNum)->getPosition());

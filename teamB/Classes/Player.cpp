@@ -15,7 +15,7 @@ bool Player::init()
 	if (!Node::init()) return false;
 
 	downMove     = 0.5f;
-	maxMoveSpeed = 40.0f;
+	maxMoveSpeed = 5.0f;
 	crackCount   = 0;
 	
 	// タッチイベントを有効にする
@@ -56,7 +56,7 @@ bool Player::onTouchBegan(Touch* pTouch, Event* pEvent)
 		_knobFlg = true;
 
 		_isMove = true;
-		layer->_knob->startAnimation();
+		//layer->_knob->startAnimation();
 	}
 	//ガラス判定
 	if (touchPos.x >(clockPos.x - clockRect.width) && touchPos.x < (clockPos.x + clockRect.width) &&
@@ -74,7 +74,6 @@ void Player::onTouchMoved(Touch* pTouch, Event* pEvent)
 	Vec2 touchPos = pTouch->getLocation();
 	//前回とのタッチ位置の差
 	Vec2 delta = pTouch->getDelta();
-
 	if (delta.y == 0) 
 	{
 		return;
@@ -128,7 +127,22 @@ void Player::onTouchMoved(Touch* pTouch, Event* pEvent)
 			parallel = false;
 		}
 
-
+		//つまみを回す処理
+		if (watchLayer->_longHand->getRotation() - longDir < 1.0f &&
+			watchLayer->_longHand->getRotation() - longDir > -1.0f)
+		{
+			if (watchLayer->_knob->numberOfRunningActions() != 0)
+			{
+				watchLayer->_knob->stopAnimation();
+			}
+		}
+		else
+		{
+			if (watchLayer->_knob->numberOfRunningActions() == 0)
+			{
+				watchLayer->_knob->startAnimation();
+			}
+		}
 		//更新
 		watchLayer->_longHand->setRotation(longDir);
 		watchLayer->_shortHand->setRotation(shortDir);
@@ -140,43 +154,14 @@ void Player::onTouchEnded(Touch* pTouch, Event* pEvent)
 	//フラグをfalseに
 	_knobFlg = false;
 	_isMove = false;
-	((WatchLayer*)(this->getParent()))->_knob->stopAnimation();
+	if (((WatchLayer*)(this->getParent()))->_knob->numberOfRunningActions() != 0)
+	{
+		((WatchLayer*)(this->getParent()))->_knob->stopAnimation();
+	}
 }
 
 void Player::update(float delta)
 {
-	//if (_isMove)
-	//{
-	//	//角度
-	//	longDir += longMoveDir;
-	//	shortDir += shortMoveDir;
-	//	//チェック
-	//	if (longDir >= OneRotation) longDir -= OneRotation;
-	//	else if (longDir <= -OneRotation) longDir += OneRotation;
-	//	if (shortDir >= OneRotation) shortDir -= OneRotation;
-	//	else if (shortDir <= -OneRotation) shortDir += OneRotation;
-	//	//更新
-	//	((WatchLayer*)(this->getParent()))->_longHand->setRotation(longDir);
-	//	((WatchLayer*)(this->getParent()))->_shortHand->setRotation(shortDir);
-	//}
-	//else
-	//{
-	//	downSpeed();
-
-	//	//角度
-	//	longDir += longMoveDir;
-	//	shortDir += shortMoveDir;
-
-	//	//チェック
-	//	if (longDir >= OneRotation) longDir -= OneRotation;
-	//	else if (longDir <= -OneRotation) longDir += OneRotation;
-	//	if (shortDir >= OneRotation) shortDir -= OneRotation;
-	//	else if (shortDir <= -OneRotation) shortDir += OneRotation;
-
-	//	//更新
-	//	((WatchLayer*)(this->getParent()))->_longHand->setRotation(longDir);
-	//	((WatchLayer*)(this->getParent()))->_shortHand->setRotation(shortDir);
-	//}
 
 }
 

@@ -13,6 +13,7 @@
 #include "Player.h"
 #include "EnemyManager.h"
 #include "EffectManager.h"
+#include "FairyGate.h"
 
 USING_NS_CC;
 using namespace std;
@@ -25,6 +26,7 @@ public:
 
 	EffectManager* effect;              //エフェクトマネージャー
 
+	int   maxNumberHP;                  //数字の最大体力
 	int   numberHP[WATCH_NUMBER];       //数字の体力
 	float radius;                       //半径
 
@@ -33,7 +35,7 @@ public:
 	int   actingBreak;                  //壊す数字を選択するときに使用
 	bool  breakCheck[WATCH_NUMBER];     //壊す数字多重防止
 
-	vector<Sprite*> fairyGate;          //敵発生地点
+	vector<FairyGate*> fairyGate;          //敵発生地点
 	vector<Sprite*> numSpr;             //数字の画像
 
 	Knob*       _knob;                  //つまみ
@@ -48,9 +50,18 @@ public:
 	//Playerクラス
 	Player* _player;
 
-	void repairNumber(int num);    //数字の修復&クリアしたかどうか
+	void repairNumber(int num,bool bonus);    //数字の修復&クリアしたかどうか
+	void adventGateMotion(int GatePos);       //敵出現演出&敵を生成する処理を呼ぶ
+
 	void update(float delta);
 private:
+
+	//背景
+	Sprite* backOne;
+	Sprite* backTwo;
+
+	int repairScore;        //数字が回復する値
+	int repairBonusScore;   //ボーナス時の数字が回復する値
 
 	//EnemyManagerクラス
 	EnemyManager* _enemyManager;

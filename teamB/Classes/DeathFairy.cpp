@@ -15,12 +15,7 @@ bool DeathFairy::init()
 	call = CallFunc::create(CC_CALLBACK_0(DeathFairy::erase, this));
 	seq = Sequence::create(scale, call, nullptr);
 
-
-
 	this->runAction(seq);
-
-
-
 
 	return true;
 }

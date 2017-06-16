@@ -14,6 +14,8 @@ public:
 	virtual void onTouchMoved(Touch* pTouch, Event* pEvent);
 	virtual void onTouchEnded(Touch* pTouch, Event* pEvent);
 
+	Vec2 delta;
+
 	bool _isMove;     //“®‚¢‚Ä‚¢‚é‚©
 	bool parallel;  //’·j‚Æ’Zj‚ª•½s‚©
 

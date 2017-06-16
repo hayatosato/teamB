@@ -25,6 +25,8 @@ public:
 
 	float shotAng;                     //’Zj‚ÌŠp“x
 	float secondAng;                   //•bj‚ÌŠp“x
+
+	void fairyCreate(int fairyCreatePos);    //¶¬
 	
 	void  update(float delta);
 

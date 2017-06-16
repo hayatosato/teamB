@@ -8,14 +8,29 @@ bool WatchLayer::init()
 	effect = EffectManager::create();
 	this->addChild(effect, 10);
 
+	//背景仮置き
+	backOne = Sprite::create("GameScene/back.png");
+	backOne->setPosition(designResolutionSize*0.5f);
+	this->addChild(backOne, 0);
+	Sprite* hagu = Sprite::create("GameScene/hagu.png");
+	hagu->setPosition(designResolutionSize);
+	hagu->setScale(2.0f);
+	this->addChild(hagu, 1);
+	backTwo = Sprite::create("GameScene/back2.png");
+	backTwo->setPosition(designResolutionSize*0.5f);
+	this->addChild(backTwo, -2);
+
 	circleNum = WATCH_NUMBER;
 	breakNumCheck = 0;
 	breakNum = 3;           //壊す数字の数  11以上にしないように
+	maxNumberHP = 10;       //数字の最大HP初期化
+	repairScore = 1;
+	repairBonusScore = 2;
 
 	for (int t = 0; t < circleNum; t++)
 	{
 		breakCheck[t] = true;        //数字が壊れてるかどうかの初期化
-		numberHP[t] = 10;        //数字のHP初期化
+		numberHP[t] = maxNumberHP;        //数字のHP初期化
 	}
 	//時計の位置
 	Vec2 watchPos = designResolutionSize * 0.5f;
@@ -31,10 +46,10 @@ bool WatchLayer::init()
 	//妖精発生地点設定&ゲート画像配置
 	for (int i = 0; i < circleNum; i++)
 	{
-		fairyGate.push_back(Sprite::create("GameScene/EnemySprite.png"));
+		fairyGate.push_back(FairyGate::create());
 		fairyGate.at(i)->setPosition(Vec2(designResolutionSize.width*0.5f + radius*cos(M_PI / 180 * (90 - 360 * i / circleNum)),
 			                              designResolutionSize.height*0.5f + radius*sin(M_PI / 180 * (90 - 360 * i / circleNum))));
-		fairyGate.at(i)->setScale(0.3f);
+		fairyGate.at(i)->setScale(0.15f);
 		this->addChild(fairyGate.at(i),5);
 	}
 	//数字を表示
@@ -121,6 +136,12 @@ void WatchLayer::ramdomBreak()
 			numberHP[actingBreak] = 0;
 			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak.png", actingBreak + 1);
 			numSpr.at(actingBreak)->setTexture(breakNoNum->getCString());
+			actingBreak++;
+			if (actingBreak > 11)
+			{
+				actingBreak = 0;
+			}
+			fairyGate.at(actingBreak)->setTexture("GameScene/badVortex.png");
 			breakNumCheck++;
 		}
 		if (breakNum == breakNumCheck) break;
@@ -128,14 +149,30 @@ void WatchLayer::ramdomBreak()
 }
 
 //数字修復&クリアしたかどうか
-void WatchLayer::repairNumber(int num)
+void WatchLayer::repairNumber(int num,bool bonus)
 {
-	numberHP[num] += 1;
-	if (numberHP[num] >= 10)
+	if (!bonus)
+	{
+		numberHP[num] += repairScore;
+	}
+	else
+	{
+		numberHP[num] += repairBonusScore;
+	}
+	if (numberHP[num] >= maxNumberHP)
 	{
 		breakCheck[num] = true;
-		String* repairNum = String::createWithFormat("GameScene/clockTwo-%d.png", num + 1);
-		numSpr.at(num)->setTexture(repairNum->getCString());
+		String* repairNumStr = String::createWithFormat("GameScene/clockTwo-%d.png", num + 1);
+		numSpr.at(num)->setTexture(repairNumStr->getCString());
+		int repairNum = num;
+
+		repairNum++;
+		if (repairNum > 11)
+		{
+			repairNum = 0;
+		}
+		fairyGate.at(repairNum)->setTexture("GameScene/goodVortex.png");
+
 		for (int g = 0; g < circleNum; g++)
 		{
 			if (breakCheck[g] == false)
@@ -145,4 +182,32 @@ void WatchLayer::repairNumber(int num)
 		}
 		log("OK!");  //ここにクリア処理
 	}
+}
+
+//妖精生成演出&敵生成
+void WatchLayer::adventGateMotion(int GatePos)
+{
+	ScaleTo* bigGate = ScaleTo::create(0.5f, 0.4f);
+	CallFunc* gateSpeedUP = CallFunc::create([=]
+	{
+		fairyGate.at(GatePos)->speed = 10.0f;
+	});
+	CallFunc* fairyCreate = CallFunc::create([=]
+	{
+		_enemyManager->fairyCreate(GatePos);
+	});
+	CallFunc* gateSpeedDOWN = CallFunc::create([=]
+	{
+		fairyGate.at(GatePos)->speed = 2.0f;
+	});
+	ScaleTo* smallGate = ScaleTo::create(0.5f, 0.15f);
+	Sequence* seq = Sequence::create(gateSpeedUP,
+		                             bigGate,
+		                             DelayTime::create(1.5f), 
+		                             fairyCreate,
+		                             DelayTime::create(0.5f),
+		                             gateSpeedDOWN,
+		                             smallGate, 
+		                             nullptr);
+	fairyGate.at(GatePos)->runAction(seq);
 }
