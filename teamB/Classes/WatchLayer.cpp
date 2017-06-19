@@ -23,9 +23,9 @@ bool WatchLayer::init()
 	circleNum = WATCH_NUMBER;
 	breakNumCheck = 0;
 	breakNum = 3;           //‰ó‚·”š‚Ì”  11ˆÈã‚É‚µ‚È‚¢‚æ‚¤‚É
-	maxNumberHP = 10;       //”š‚ÌÅ‘åHP‰Šú‰»
-	repairScore = 1;
-	repairBonusScore = 2;
+	maxNumberHP = 10.0f;       //”š‚ÌÅ‘åHP‰Šú‰»
+	repairScore = 1.0f;
+	repairBonusScore = 2.0f;
 
 	for (int t = 0; t < circleNum; t++)
 	{
@@ -133,7 +133,7 @@ void WatchLayer::ramdomBreak()
 		if (breakCheck[actingBreak] == true)
 		{
 			breakCheck[actingBreak] = false;
-			numberHP[actingBreak] = 0;
+			numberHP[actingBreak] = 0.0f;
 			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak.png", actingBreak + 1);
 			numSpr.at(actingBreak)->setTexture(breakNoNum->getCString());
 			actingBreak++;
@@ -159,6 +159,7 @@ void WatchLayer::repairNumber(int num,bool bonus)
 	{
 		numberHP[num] += repairBonusScore;
 	}
+
 	if (numberHP[num] >= maxNumberHP)
 	{
 		breakCheck[num] = true;
@@ -181,6 +182,10 @@ void WatchLayer::repairNumber(int num,bool bonus)
 			}
 		}
 		log("OK!");  //‚±‚±‚ÉƒNƒŠƒAˆ—
+	}
+	else
+	{
+
 	}
 }
 

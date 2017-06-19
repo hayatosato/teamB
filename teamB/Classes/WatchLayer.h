@@ -26,8 +26,8 @@ public:
 
 	EffectManager* effect;              //エフェクトマネージャー
 
-	int   maxNumberHP;                  //数字の最大体力
-	int   numberHP[WATCH_NUMBER];       //数字の体力
+	float maxNumberHP;                  //数字の最大体力
+	float numberHP[WATCH_NUMBER];       //数字の体力
 	float radius;                       //半径
 
 	int   breakNum;                     //壊す数字の数
@@ -60,8 +60,8 @@ private:
 	Sprite* backOne;
 	Sprite* backTwo;
 
-	int repairScore;        //数字が回復する値
-	int repairBonusScore;   //ボーナス時の数字が回復する値
+	float repairScore;        //数字が回復する値
+	float repairBonusScore;   //ボーナス時の数字が回復する値
 
 	//EnemyManagerクラス
 	EnemyManager* _enemyManager;

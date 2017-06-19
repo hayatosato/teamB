@@ -8,10 +8,16 @@ float Calculation::angle(Vec2 s,Vec2 e)
 	return k;
 }
 
-//線形補間
+//線形補間座標
 Vec2 Calculation::sen(Vec2 s, Vec2 e, float t)
 {
 	return (1 - t) * s + t * e;
+}
+
+//線形補間float
+float Calculation::senF(float s, float e, float t)
+{
+	return (1.0f - t) * s + t * e;
 }
 
 //基準点に対して長さと角度から位置を求めて配置する(基準点、長さ、角度)
