@@ -15,6 +15,7 @@ public:
 
 	void fairyDeath(Vec2 deathPos);  //—d¸‚Ì€
 	void shining(Vec2 shinPos);      //‚Ò‚©‚Ò‚©‚·‚é
+	void numberShining(Vec2 numSPos);//’†S‚©‚ç‚Ò‚©‚Ò‚©‚·‚é
 
 	bool init();
 

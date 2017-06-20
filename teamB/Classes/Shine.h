@@ -12,6 +12,7 @@ public:
 	CREATE_FUNC(Shine);
 
 	bool init();
+	bool numberMode;
 
 	void update(float delta);
 

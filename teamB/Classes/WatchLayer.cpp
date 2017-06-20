@@ -173,7 +173,7 @@ void WatchLayer::repairNumber(int num,bool bonus)
 			repairNum = 0;
 		}
 		fairyGate.at(repairNum)->setTexture("GameScene/goodVortex.png");
-
+		effect->numberShining(fairyGate.at(repairNum)->getPosition());
 		for (int g = 0; g < circleNum; g++)
 		{
 			if (breakCheck[g] == false)
@@ -185,6 +185,75 @@ void WatchLayer::repairNumber(int num,bool bonus)
 	}
 	else
 	{
+		//”Žš‚ª‚¾‚ñ‚¾‚ñŽ¡‚Á‚Ä‚¢‚­
+		if (numberHP[num] >= 0 && numberHP[num] <= Calculation::senF(0.0f,maxNumberHP,0.1f))
+		{
+			//‘Ì—Í‚ª0`10%‚ÌŽž
+			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1,9);
+			numSpr.at(num)->setTexture(breakNoNum->getCString());
+		}
+		else if (numberHP[num] >= Calculation::senF(0.0f, maxNumberHP, 0.11f) && 
+			     numberHP[num] <= Calculation::senF(0.0f, maxNumberHP, 0.2f))
+		{
+			//‘Ì—Í‚ª11`20%‚ÌŽž
+			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, 8);
+			numSpr.at(num)->setTexture(breakNoNum->getCString());
+		}
+		else if(numberHP[num] >= Calculation::senF(0.0f, maxNumberHP, 0.21f) &&
+			    numberHP[num] <= Calculation::senF(0.0f, maxNumberHP, 0.3f))
+		{
+			//‘Ì—Í‚ª21`30%‚ÌŽž
+			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, 7);
+			numSpr.at(num)->setTexture(breakNoNum->getCString());
+		}
+		else if (numberHP[num] >= Calculation::senF(0.0f, maxNumberHP, 0.31f) &&
+			     numberHP[num] <= Calculation::senF(0.0f, maxNumberHP, 0.4f))
+		{
+			//‘Ì—Í‚ª31`40%‚ÌŽž
+			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, 6);
+			numSpr.at(num)->setTexture(breakNoNum->getCString());
+		}
+		else if (numberHP[num] >= Calculation::senF(0.0f, maxNumberHP, 0.41f) &&
+			     numberHP[num] <= Calculation::senF(0.0f, maxNumberHP, 0.5f))
+		{
+			//‘Ì—Í‚ª41`50%‚ÌŽž
+			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, 5);
+			numSpr.at(num)->setTexture(breakNoNum->getCString());
+		}
+		else if (numberHP[num] >= Calculation::senF(0.0f, maxNumberHP, 0.51f) &&
+			     numberHP[num] <= Calculation::senF(0.0f, maxNumberHP, 0.6f))
+		{
+			//‘Ì—Í‚ª51`60%‚ÌŽž
+			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, 4);
+			numSpr.at(num)->setTexture(breakNoNum->getCString());
+		}
+		else if (numberHP[num] >= Calculation::senF(0.0f, maxNumberHP, 0.61f) &&
+			     numberHP[num] <= Calculation::senF(0.0f, maxNumberHP, 0.7f))
+		{
+			//‘Ì—Í‚ª61`70%‚ÌŽž
+			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, 3);
+			numSpr.at(num)->setTexture(breakNoNum->getCString());
+		}
+		else if (numberHP[num] >= Calculation::senF(0.0f, maxNumberHP, 0.71f) &&
+			     numberHP[num] <= Calculation::senF(0.0f, maxNumberHP, 0.8f))
+		{
+			//‘Ì—Í‚ª71`80%‚ÌŽž
+			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, 2);
+			numSpr.at(num)->setTexture(breakNoNum->getCString());
+		}
+		else if (numberHP[num] >= Calculation::senF(0.0f, maxNumberHP, 0.81f) &&
+			     numberHP[num] <= Calculation::senF(0.0f, maxNumberHP, 0.9f))
+		{
+			//‘Ì—Í‚ª81`90%‚ÌŽž
+			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, 1);
+			numSpr.at(num)->setTexture(breakNoNum->getCString());
+		}
+		else if (numberHP[num] >= Calculation::senF(0.0f, maxNumberHP, 0.91f) &&
+			     numberHP[num] <= Calculation::senF(0.0f, maxNumberHP, 0.99f))
+		{
+			//‘Ì—Í‚ª91`99%‚ÌŽž
+			//¡‚Ì‚Æ‚±‚ë•Û—¯
+		}
 
 	}
 }

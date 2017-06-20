@@ -14,6 +14,7 @@
 #include "EnemyManager.h"
 #include "EffectManager.h"
 #include "FairyGate.h"
+#include "Calculation.h"
 
 USING_NS_CC;
 using namespace std;

@@ -7,7 +7,7 @@ bool Shine::init()
 		return false;
 	}
 	this->initWithFile("GameScene/shine.png");
-	this->setScale(0.3f);
+	numberMode = false;
 	random_device rd;
 	mt19937 mt(rd());
 	uniform_int_distribution<int> SNum(7,14);
@@ -27,6 +27,7 @@ bool Shine::init()
 
 void Shine::update(float delta)
 {
+	if (numberMode) return;
 	this->setPositionY(this->getPositionY() + 0.25f);
 }
 

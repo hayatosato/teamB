@@ -186,10 +186,7 @@ void EnemyManager::update(float delta)
 						if (tAng < fairyGateAngPlus ||
 							tAng > fairyGateAngMinus)
 						{
-							for (int d = 0; d < 5; d++)
-							{
-								layer->effect->shining(layer->fairyGate.at(a)->getPosition());
-							}
+						    layer->effect->shining(layer->fairyGate.at(a)->getPosition());
 							layer->repairNumber(GateNum, enemy.at(i)->bonusFairy);
 						}
 					}

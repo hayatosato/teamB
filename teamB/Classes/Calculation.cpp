@@ -15,7 +15,7 @@ Vec2 Calculation::sen(Vec2 s, Vec2 e, float t)
 }
 
 //üŒ`•âŠÔfloat
-float Calculation::senF(float s, float e, float t)
+float Calculation::senF(float s,float e,float t)
 {
 	return (1.0f - t) * s + t * e;
 }
