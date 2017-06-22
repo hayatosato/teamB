@@ -26,6 +26,7 @@ bool EnemyManager::init(int formPosNum)
 	if (!Node::init()) return false;
 
 	createPos = formPosNum;
+	wallCount = 0;
 	//ˆê’èŽžŠÔ‚²‚Æ‚É“G‚ð¶¬
 	this->schedule(schedule_selector(EnemyManager::EnemyCreater), EnemyPopInterval);
 
@@ -43,7 +44,8 @@ void EnemyManager::EnemyCreater(float dt)
 	uniform_int_distribution<int> posNum(0,createPos);
 	//“G¶¬
 	pos = posNum(mt);
-	if (((WatchLayer*)(this->getParent()))->breakCheck[pos] == true)
+	if (((WatchLayer*)(this->getParent()))->breakCheck[pos] == true &&
+		enemy.size() < 50)
 	{
 		//”z—ñ‚Ì‚¸‚êC³
 		pos++;
@@ -166,17 +168,16 @@ void EnemyManager::update(float delta)
 				int GateNum = a;
 				GateNum--;
 				if (GateNum < 0) GateNum = 11;
+
 				//ƒQ[ƒg‚ÌŠp“x‚Æ—d¸‚ÌŠp“x‚ª“¯‚¶‚¾‚Á‚½‚Æ‚«ƒQ[ƒg‚Ìó‘Ô‚ð•\Ž¦
 				if (tAng < fairyGateAngPlus &&
 					tAng > fairyGateAngMinus)
 				{
 					if (layer->breakCheck[GateNum] == false)
 					{
-						for (int d = 0; d < 5; d++)
-						{
-							layer->effect->shining(layer->fairyGate.at(a)->getPosition());
-						}
+						layer->effect->shining(layer->fairyGate.at(a)->getPosition());
 						layer->repairNumber(GateNum,enemy.at(i)->bonusFairy);
+						wallCount++;
 					}
 				}
 				else if (fairyGateAng == 0.0f)
@@ -188,11 +189,19 @@ void EnemyManager::update(float delta)
 						{
 						    layer->effect->shining(layer->fairyGate.at(a)->getPosition());
 							layer->repairNumber(GateNum, enemy.at(i)->bonusFairy);
+							wallCount++;
 						}
 					}
 				}
-
 			}
+
+			//•Ç‚É‚Ô‚Â‚©‚é‚©‰ó‚ê‚Ä‚È‚¢ƒQ[ƒg‚É“ü‚Á‚½Žž
+			if (wallCount == 0)
+			{
+				layer->effect->fairyAscension(enemy.at(i)->getPosition());
+			}
+
+
 			deleteEnemy(i,false);
 			return;
 		}
@@ -204,14 +213,14 @@ void EnemyManager::update(float delta)
 
 void EnemyManager::deleteEnemy(int enemyNum,bool death)
 {
-
+	wallCount = 0;
 	if (death)
 	{
 		((WatchLayer*)(this->getParent()))->effect->fairyDeath(enemy.at(enemyNum)->getPosition());
 	}
 
-	enemy.at(enemyNum)->removeFromParentAndCleanup(true);
-	enemy.erase(enemyNum);
-	aura.at(enemyNum)->removeFromParentAndCleanup(true);
-	aura.erase(enemyNum);
+		enemy.at(enemyNum)->removeFromParentAndCleanup(true);
+		enemy.erase(enemyNum);
+		aura.at(enemyNum)->removeFromParentAndCleanup(true);
+		aura.erase(enemyNum);
 }

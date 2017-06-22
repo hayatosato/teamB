@@ -9,9 +9,9 @@ using namespace std;
 class Shine : public Sprite
 {
 public:
-	CREATE_FUNC(Shine);
+	static Shine *create(bool mode);
 
-	bool init();
+	bool init(bool mode);
 	bool numberMode;
 
 	void update(float delta);

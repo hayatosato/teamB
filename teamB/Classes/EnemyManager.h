@@ -33,6 +33,8 @@ public:
 private:
 	Vector<Sprite*> aura;                         //妖精後光
 
+	int wallCount;                                //壁衝突判定に使用
+
 	void  EnemyCreater(float dt);                 //敵生成
 	void  deleteEnemy(int enemyNum,bool death);   //妖精削除(削除する妖精のナンバー、trueなら死んで消滅)
 

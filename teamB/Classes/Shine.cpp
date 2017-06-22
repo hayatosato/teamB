@@ -1,13 +1,28 @@
 #include "Shine.h"
 
-bool Shine::init()
+Shine *Shine::create(bool mode)
+{
+	Shine *pRet = new Shine();
+	if (pRet && pRet->init(mode))
+	{
+		pRet->autorelease();
+		return pRet;
+	}
+	else {
+		delete pRet;
+		pRet = NULL;
+		return NULL;
+	}
+}
+
+bool Shine::init(bool mode)
 {
 	if (!Sprite::init())
 	{
 		return false;
 	}
 	this->initWithFile("GameScene/shine.png");
-	numberMode = false;
+	numberMode = mode;
 	random_device rd;
 	mt19937 mt(rd());
 	uniform_int_distribution<int> SNum(7,14);

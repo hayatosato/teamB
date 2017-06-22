@@ -7,15 +7,16 @@ USING_NS_CC;
 class DeathFairy : public Sprite
 {
 public:
-	CREATE_FUNC(DeathFairy);
+	static DeathFairy *create(int actionMode);
 
 	float normalScale;
 
 	ScaleTo*  scale;
+	FadeOut*  fadeOut;
 	Sequence* seq;
 	CallFunc* call;
 
-	bool init();
+	bool init(int actionMode);
 	
 private:
 	void erase();

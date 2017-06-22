@@ -116,8 +116,8 @@ void Player::onTouchMoved(Touch* pTouch, Event* pEvent)
 		if (longDirF < -175.0f && longDirF > -185.0f ||
 			longDirF > 175.0f  && longDirF < 185.0f)
 		{
-			watchLayer->_longHand->setColor(Color3B::RED);
-			watchLayer->_shortHand->setColor(Color3B::RED);
+			watchLayer->_longHand->setColor(Color3B::GREEN);
+			watchLayer->_shortHand->setColor(Color3B::GREEN);
 			parallel = true;
 		}
 		else
