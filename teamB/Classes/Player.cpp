@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "WatchLayer.h"
 #include "MultiResolution.h"
+#include "Calculation.h"
 
 //針一回の角度
 const float OneLongMoveDir = 6;
@@ -14,9 +15,9 @@ bool Player::init()
 {
 	if (!Node::init()) return false;
 
+	masterTap = false;
 	downMove     = 0.5f;
 	maxMoveSpeed = 5.0f;
-	crackCount   = 0;
 	
 	// タッチイベントを有効にする
 	auto listener = EventListenerTouchOneByOne::create();
@@ -29,17 +30,20 @@ bool Player::init()
 	//動いているか
 	_isMove = false;
 
-	//this->scheduleUpdate();
+	this->scheduleUpdate();
 
 	return true;
 }
 
 bool Player::onTouchBegan(Touch* pTouch, Event* pEvent)
 {
+
 	Vec2 touchPos = pTouch->getLocationInView();
 	touchPos.y = designResolutionSize.height - touchPos.y;
 
 	auto layer = ((WatchLayer*)(this->getParent()));
+
+	layer->start(); //動かすための応急処置
 
 	//つまみRect
 	Size knobRect = layer->_knob->getContentSize();
@@ -50,21 +54,14 @@ bool Player::onTouchBegan(Touch* pTouch, Event* pEvent)
 
 	//つまみ判定
 	if (touchPos.x > (knobPos.x - knobRect.width) && touchPos.x < (knobPos.x + knobRect.width) &&
-		touchPos.y > (knobPos.y - knobRect.height) && touchPos.y < (knobPos.y + knobRect.height))
+		touchPos.y > (knobPos.y - knobRect.height) && touchPos.y < (knobPos.y + knobRect.height)&&
+		masterTap)
 	{
 		//フラグをtrueに
 		_knobFlg = true;
 
 		_isMove = true;
-		//layer->_knob->startAnimation();
 	}
-	//ガラス判定
-	if (touchPos.x >(clockPos.x - clockRect.width) && touchPos.x < (clockPos.x + clockRect.width) &&
-		touchPos.y >(clockPos.y - clockRect.height) && touchPos.y < (clockPos.y + clockRect.height))
-	{
-		crackCount++;
-	}
-
 
 	return true;
 }
@@ -162,6 +159,39 @@ void Player::onTouchEnded(Touch* pTouch, Event* pEvent)
 
 void Player::update(float delta)
 {
+	auto layer = ((WatchLayer*)(this->getParent()));
+	int gateCount = 0;  //ゴールできるか判断に使用
+	for (int i = 0; i < layer->fairyGate.size(); i++)
+	{
+		float gatePlus = Calculation::angle(designResolutionSize*0.5, layer->fairyGate.at(i)->getPosition()) + 5.0f;
+		float gateMinus= Calculation::angle(designResolutionSize*0.5, layer->fairyGate.at(i)->getPosition()) - 5.0f;
+		if (gateMinus < 0.0f) gateMinus += 360.0f;
+		if (i == 0)
+		{
+			if (longDir < gatePlus ||
+				longDir > gateMinus)
+			{
+				gateCount++;
+			}
+		}
+		else
+		{
+			if (longDir < gatePlus &&
+				longDir > gateMinus)
+			{
+				gateCount++;
+			}
+		}
+	}
+	if (gateCount == 0)
+	{
+		layer->_longHand->road->setVisible(false);
+	}
+	else
+	{
+		layer->_longHand->road->setVisible(true);
+	}
+
 
 }
 

@@ -15,6 +15,7 @@ bool Enemy::init()
 	this->initWithFile("GameScene/clockFairy1.png");
 	this->setScale(0.15f);
 
+	bonusEffectCount = 2;
 	exitNeedle = true;
 	bonusFairy = false;
 	fairyModes = WAIT;
@@ -44,6 +45,16 @@ void Enemy::update(float dt)
 {
 	//ˆÚ“®
 	Move(dt);
+
+	if (!bonusFairy) return;
+	bonusEffectCount--;
+	if (bonusEffectCount < 0)
+	{
+		((WatchLayer*)((EnemyManager*)(this->getParent())->getParent()))->effect->chargeEffect(this->getPosition());
+		bonusEffectCount = 2;
+	}
+
+
 }
 
 //ˆÚ“®
@@ -63,6 +74,12 @@ void Enemy::Move(float deltaTime)
 	{
 		if (startCount <= 0)
 		{
+			myCreatePos--;
+			if (myCreatePos < 0)
+			{
+				myCreatePos = 11;
+			}
+			((EnemyManager*)(this->getParent()))->multipleNum[myCreatePos] -= 1;
 			fairyModes = GO;
 		}
 	}

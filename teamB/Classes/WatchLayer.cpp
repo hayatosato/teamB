@@ -5,24 +5,27 @@ bool WatchLayer::init()
 {
 	if (!Layer::init()) return false;
 
+	masterHand = false;
+
 	effect = EffectManager::create();
 	this->addChild(effect, 10);
 
-	//”wŒi‰¼’u‚«
-	backOne = Sprite::create("GameScene/back.png");
-	backOne->setPosition(designResolutionSize*0.5f);
+	backDesk = Sprite::create("GameScene/gameSceneBack.png");
+	backDesk->setPosition(designResolutionSize*0.5f);
+	this->addChild(backDesk,-1);
+
+	//”ç
+	backOne = Sprite::create("GameScene/kawa.png");
+	backOne->setPosition(designResolutionSize.width*0.5f,designResolutionSize.height*0.7f);
 	this->addChild(backOne, 0);
-	Sprite* hagu = Sprite::create("GameScene/hagu.png");
-	hagu->setPosition(designResolutionSize);
-	hagu->setScale(2.0f);
-	this->addChild(hagu, 1);
-	backTwo = Sprite::create("GameScene/back2.png");
-	backTwo->setPosition(designResolutionSize*0.5f);
-	this->addChild(backTwo, -2);
+	backTwo = Sprite::create("GameScene/kawa.png");
+	backTwo->setPosition(designResolutionSize.width*0.5f, designResolutionSize.height*0.3f);
+	this->addChild(backTwo, 0);
 
 	circleNum = WATCH_NUMBER;
 	breakNumCheck = 0;
-	breakNum = 3;           //‰ó‚·”Žš‚Ì”  11ˆÈã‚É‚µ‚È‚¢‚æ‚¤‚É
+	breakNum = 5;           //‰ó‚·”Žš‚Ì”  11ˆÈã‚É‚µ‚È‚¢‚æ‚¤‚É
+	nowBreakNum = 0;
 	maxNumberHP = 10.0f;       //”Žš‚ÌÅ‘åHP‰Šú‰»
 	repairScore = 1.0f;
 	repairBonusScore = 2.0f;
@@ -105,6 +108,19 @@ bool WatchLayer::init()
 	_enemyManager = EnemyManager::create(circleNum - 1);
 	this->addChild(_enemyManager,9);
 
+	//ŽžŠÔ
+	timeLabel = TimeLabel::create();
+	timeLabel->setPosition(designResolutionSize.width*0.25f, designResolutionSize.height*0.9f);
+	this->addChild(timeLabel, 10);
+
+	timeWaku = Sprite::create("GameScene/timeWaku.png");
+	timeWaku->setPosition(timeLabel->getPosition());
+	this->addChild(timeWaku, 9);
+
+	//UI
+	UI = UIManager::create(nowBreakNum , breakNum);
+	this->addChild(UI,10);
+
 	this->scheduleUpdate();
 
 	return true;
@@ -112,6 +128,8 @@ bool WatchLayer::init()
 
 void WatchLayer::update(float delta)
 {
+	if (!masterHand) return;
+	//•bj‚Ì‰ñ“]
 	_secondHand->setRotation(_secondHand->getRotation() + 0.1f);
 	if (_secondHand->getRotation() >= 360.0f)
 	{
@@ -163,6 +181,8 @@ void WatchLayer::repairNumber(int num,bool bonus)
 	if (numberHP[num] >= maxNumberHP)
 	{
 		breakCheck[num] = true;
+		nowBreakNum++;
+		UI->breakChangeGauge((float)nowBreakNum , (float)breakNum);
 		String* repairNumStr = String::createWithFormat("GameScene/clockTwo-%d.png", num + 1);
 		numSpr.at(num)->setTexture(repairNumStr->getCString());
 		int repairNum = num;
@@ -284,4 +304,13 @@ void WatchLayer::adventGateMotion(int GatePos)
 		                             smallGate, 
 		                             nullptr);
 	fairyGate.at(GatePos)->runAction(seq);
+}
+
+//‹N“®
+void WatchLayer::start()
+{
+	masterHand = true;
+	_player->masterTap = true;
+	_enemyManager->masterFairy = true;
+	timeLabel->masterTime();
 }

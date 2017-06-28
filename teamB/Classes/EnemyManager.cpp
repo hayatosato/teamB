@@ -25,8 +25,14 @@ bool EnemyManager::init(int formPosNum)
 {
 	if (!Node::init()) return false;
 
+	masterFairy = false;
+
 	createPos = formPosNum;
 	wallCount = 0;
+	for (int i = 0; i < 12; i++)
+	{
+		multipleNum[i] = 0;
+	}
 	//ˆê’èŽžŠÔ‚²‚Æ‚É“G‚ð¶¬
 	this->schedule(schedule_selector(EnemyManager::EnemyCreater), EnemyPopInterval);
 
@@ -45,8 +51,11 @@ void EnemyManager::EnemyCreater(float dt)
 	//“G¶¬
 	pos = posNum(mt);
 	if (((WatchLayer*)(this->getParent()))->breakCheck[pos] == true &&
-		enemy.size() < 50)
+		multipleNum[pos] == 0  &&
+		enemy.size() < 10 &&
+		masterFairy)
 	{
+		multipleNum[pos] += 1;
 		//”z—ñ‚Ì‚¸‚êC³
 		pos++;
 		if (pos > 11)
@@ -62,6 +71,7 @@ void EnemyManager::fairyCreate(int fairyCreatePos)
 	//“G¶¬
 	enemy.pushBack(Enemy::create());
 	enemy.at(enemy.size() - 1)->setPosition(((WatchLayer*)(this->getParent()))->fairyGate.at(fairyCreatePos)->getPosition());
+	enemy.at(enemy.size() - 1)->myCreatePos = pos;
 	this->addChild(enemy.at(enemy.size() - 1), 1);
 	//—d¸ŒãŒõ¶¬
 	aura.pushBack(Sprite::create("GameScene/fairyAura.png"));
@@ -79,16 +89,19 @@ void EnemyManager::fairyCreate(int fairyCreatePos)
 void EnemyManager::update(float delta)
 {
 	auto layer = ((WatchLayer*)(this->getParent()));
+	//’·j‚ÌŠp“x
 	ang = layer->_longHand->getRotation();
 	if (ang < 0.0f)
 	{
 		ang = ang + 360.0f;
 	}
+	//’Zj‚ÌŠp“x
 	shotAng = layer->_shortHand->getRotation();
 	if (shotAng < 0.0f)
 	{
 		shotAng = shotAng + 360.0f;
 	}
+	//•bj‚ÌŠp“x
 	secondAng = layer->_secondHand->getRotation();
 	for (int i = 0; i < enemy.size(); i++)
 	{
@@ -155,10 +168,6 @@ void EnemyManager::update(float delta)
 			{
 				//ƒQ[ƒg‚ÌŠp“xŽæ“¾
 				fairyGateAng = Calculation::angle(designResolutionSize*0.5, layer->fairyGate.at(a)->getPosition());
-				if (fairyGateAng < 0.0f)
-				{
-					fairyGateAng += 360.0f;
-				}
 				float fairyGateAngPlus = fairyGateAng + 5.0f;
 				float fairyGateAngMinus = fairyGateAng - 5.0f;
 				if (fairyGateAngMinus <= 0)
@@ -216,7 +225,7 @@ void EnemyManager::deleteEnemy(int enemyNum,bool death)
 	wallCount = 0;
 	if (death)
 	{
-		((WatchLayer*)(this->getParent()))->effect->fairyDeath(enemy.at(enemyNum)->getPosition());
+		((WatchLayer*)(this->getParent()))->effect->fairyJunk(enemy.at(enemyNum)->getPosition());
 	}
 
 		enemy.at(enemyNum)->removeFromParentAndCleanup(true);

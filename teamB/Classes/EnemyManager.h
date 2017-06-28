@@ -14,7 +14,10 @@ class EnemyManager : public Node
 public:
 	static EnemyManager *create(int formPosNum);
 
+	bool masterFairy;                  //‚±‚ê‚ğtrue‚É‚µ‚È‚¢‚©‚¬‚è—d¸‚Í—N‚©‚È‚¢
+
 	Vector<Enemy*> enemy;
+	int multipleNum[12];               //“¯‚¶ŒÂŠ‚É—d¸‚ª—N‚©‚È‚¢‚æ‚¤‚É
 	virtual bool init(int formPosNum);
 
 	int   pos;                         //—d¸¶¬ƒ|ƒCƒ“ƒg

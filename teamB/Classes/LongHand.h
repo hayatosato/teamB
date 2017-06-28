@@ -8,8 +8,13 @@ class LongHand : public Sprite
 {
 public:
 	CREATE_FUNC(LongHand);
+
+	Sprite* road;
+
 	virtual bool init();
 private:
+
+	void update(float delta);
 
 };
 

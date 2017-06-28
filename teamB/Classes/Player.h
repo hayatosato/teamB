@@ -9,6 +9,9 @@ class Player : public Node
 public:
 	CREATE_FUNC(Player);
 	virtual bool init();
+
+	bool masterTap;           //これをtrueにしない限りタップ関係は動かない
+
 	// タッチイベント処理
 	virtual bool onTouchBegan(Touch* pTouch, Event* pEvent);
 	virtual void onTouchMoved(Touch* pTouch, Event* pEvent);
@@ -27,8 +30,6 @@ public:
 
 	void update(float delta);
 private:
-	int crackCount;        //ガラスをタッチした回数をカウント
-	bool crush;            //ガラスが割れているかの判断
 
 	//フラグ
 	bool _knobFlg;

@@ -15,6 +15,8 @@
 #include "EffectManager.h"
 #include "FairyGate.h"
 #include "Calculation.h"
+#include "UIManager.h"
+#include "TimeLabel.h"
 
 USING_NS_CC;
 using namespace std;
@@ -25,13 +27,18 @@ public:
 	CREATE_FUNC(WatchLayer);
 	virtual bool init();
 
+	bool masterHand;                    //これをtrueにしないかぎり秒針は回らない
+
 	EffectManager* effect;              //エフェクトマネージャー
+	UIManager*     UI;                  //UIマネージャー
+	TimeLabel*     timeLabel;           //時間
 
 	float maxNumberHP;                  //数字の最大体力
 	float numberHP[WATCH_NUMBER];       //数字の体力
 	float radius;                       //半径
 
 	int   breakNum;                     //壊す数字の数
+	int   nowBreakNum;                  //現在の治った壊れた数
 	int   breakNumCheck;                //壊す数字増加防止
 	int   actingBreak;                  //壊す数字を選択するときに使用
 	bool  breakCheck[WATCH_NUMBER];     //壊す数字多重防止
@@ -48,16 +55,18 @@ public:
 	Sprite* _watchSprite;
 	Sprite* dirtWatch;       //時計の汚れなど
 	Sprite* glassShine;      //ガラスの反射
-	//Playerクラス
-	Player* _player;
+	Player* _player;         //Playerクラス
 
 	void repairNumber(int num,bool bonus);    //数字の修復&クリアしたかどうか
 	void adventGateMotion(int GatePos);       //敵出現演出&敵を生成する処理を呼ぶ
+	void start();                             //つまみが動き、秒針が動き、妖精が湧きだす
 
 	void update(float delta);
 private:
 
-	//背景
+	Sprite* backDesk;  //背景
+	Sprite* timeWaku;  //時間の枠
+	//皮
 	Sprite* backOne;
 	Sprite* backTwo;
 

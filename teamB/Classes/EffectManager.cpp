@@ -75,3 +75,36 @@ void EffectManager::fairyAscension(Vec2 APos)
 	}
 
 }
+
+//チャージ演出
+void EffectManager::chargeEffect(Vec2 chPos)
+{
+	random_device rd;
+	mt19937 mt(rd());
+	uniform_int_distribution<int> SPosX((int)chPos.x - 20, (int)chPos.x + 20);
+	uniform_int_distribution<int> SPosY((int)chPos.y - 30, (int)chPos.y - 10);
+	uniform_int_distribution<int> Color(155, 255);
+
+	Shine* shine = Shine::create(false);
+	shine->setScale(0.25f);
+	shine->setPosition((float)SPosX(mt), (float)SPosY(mt));
+	shine->initWithFile("GameScene/whiteShine.png");
+	shine->setColor(Color3B(Color(mt), Color(mt), Color(mt)));
+	this->addChild(shine, 2);
+}
+
+void EffectManager::fairyJunk(Vec2 JPos)
+{
+	Junk* junkZero = Junk::create(0);
+	Junk* junkOne =  Junk::create(1);
+	Junk* junkTwo =  Junk::create(2);
+
+	junkZero->setPosition(JPos);
+	junkOne->setPosition(junkZero->getPositionX() + 20.0f,junkZero->getPositionY());
+	junkTwo->setPosition(junkZero->getPositionX() - 20.0f, junkZero->getPositionY());
+
+	this->addChild(junkZero,3);
+	this->addChild(junkOne,2);
+	this->addChild(junkTwo,2);
+
+}

@@ -4,7 +4,7 @@ bool SecondHand::init()
 {
 	if (!Sprite::init()) return false;
 
-	this->initWithFile("GameScene/secondHand.png");
+	this->initWithFile("GameScene/bloodNeedle.png");
 
 	this->setAnchorPoint(ccp(0.5, 0));
 

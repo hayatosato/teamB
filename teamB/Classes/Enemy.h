@@ -11,6 +11,7 @@ public:
 	virtual bool init();
 
 	int startCount;            //移動開始までのカウント
+	int myCreatePos;           //自身が出たゲートの場所
 
 	//動作
 	bool exitNeedle;        //針から出たか
@@ -37,10 +38,12 @@ private:
 	Animate *action;
 	RepeatForever *anime;
 
+	int bonusEffectCount; //ボーナス時のエフェクトの発生頻度
 
 	//ステータス
-	//float shotLength;   //短針の長さ
 	float _speed;	//移動速度
+
+
 
 };
 
