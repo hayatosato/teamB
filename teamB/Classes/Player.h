@@ -31,6 +31,8 @@ public:
 	void update(float delta);
 private:
 
+	bool stopManyTap;      //初回多重タップ防止
+
 	//フラグ
 	bool _knobFlg;
 	float downMove;        //針のスピードが落ちていくスピード

@@ -17,6 +17,8 @@
 #include "Calculation.h"
 #include "UIManager.h"
 #include "TimeLabel.h"
+#include "Title.h"
+#include "TextNavi.h"
 
 USING_NS_CC;
 using namespace std;
@@ -29,6 +31,8 @@ public:
 
 	bool masterHand;                    //これをtrueにしないかぎり秒針は回らない
 
+	Title*         title;               //タイトル
+	TextNavi*      navi;
 	EffectManager* effect;              //エフェクトマネージャー
 	UIManager*     UI;                  //UIマネージャー
 	TimeLabel*     timeLabel;           //時間
@@ -43,7 +47,7 @@ public:
 	int   actingBreak;                  //壊す数字を選択するときに使用
 	bool  breakCheck[WATCH_NUMBER];     //壊す数字多重防止
 
-	vector<FairyGate*> fairyGate;          //敵発生地点
+	vector<FairyGate*> fairyGate;       //敵発生地点
 	vector<Sprite*> numSpr;             //数字の画像
 
 	Knob*       _knob;                  //つまみ
@@ -59,13 +63,28 @@ public:
 
 	void repairNumber(int num,bool bonus);    //数字の修復&クリアしたかどうか
 	void adventGateMotion(int GatePos);       //敵出現演出&敵を生成する処理を呼ぶ
+	void startCountDown();                    //始まり
 	void start();                             //つまみが動き、秒針が動き、妖精が湧きだす
 
 	void update(float delta);
 private:
 
-	Sprite* backDesk;  //背景
 	Sprite* timeWaku;  //時間の枠
+	Sprite* countThree;//カウントダウンの画像3
+	Sprite* countTwo;  //カウントダウンの画像2
+	Sprite* countOne;  //カウントダウンの画像1
+
+	//カウントダウン演出に使用
+	ScaleTo* scaleTo;
+	CallFunc* dThree;
+	CallFunc* dTwo;
+	CallFunc* dOne;
+	Sequence* seqThree;
+	Sequence* seqTwo;
+	Sequence* seqOne;
+	void cTwo(float delta);  //2の動き
+	void cOne(float delta);  //3の動き
+
 	//皮
 	Sprite* backOne;
 	Sprite* backTwo;
@@ -77,6 +96,7 @@ private:
 	EnemyManager* _enemyManager;
 	int   circleNum;                         //配置する敵発生地点の数
 
+	void showingNeedle();  //見えなかった針を見せる
 	void ramdomBreak();    //壊れた数字の配置
 };
 

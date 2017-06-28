@@ -16,6 +16,7 @@ bool Player::init()
 	if (!Node::init()) return false;
 
 	masterTap = false;
+	stopManyTap = true;
 	downMove     = 0.5f;
 	maxMoveSpeed = 5.0f;
 	
@@ -43,8 +44,6 @@ bool Player::onTouchBegan(Touch* pTouch, Event* pEvent)
 
 	auto layer = ((WatchLayer*)(this->getParent()));
 
-	layer->start(); //“®‚©‚·‚½‚ß‚Ì‰‹}ˆ’u
-
 	//‚Â‚Ü‚İRect
 	Size knobRect = layer->_knob->getContentSize();
 	Vec2 knobPos  = layer->_knob->getPosition();
@@ -62,6 +61,9 @@ bool Player::onTouchBegan(Touch* pTouch, Event* pEvent)
 
 		_isMove = true;
 	}
+	if (!stopManyTap) return true;
+	layer->title->upStart(); //“®‚©‚·‚½‚ß‚Ì‰‹}ˆ’u
+	stopManyTap = false;
 
 	return true;
 }

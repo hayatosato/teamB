@@ -7,12 +7,34 @@ bool WatchLayer::init()
 
 	masterHand = false;
 
+	title = Title::create();
+	title->setPosition(designResolutionSize*0.5f);
+	this->addChild(title, 12);
+
+	navi = TextNavi::create();
+	navi->setPosition(designResolutionSize.width*0.5f, designResolutionSize.height*0.1f);
+	navi->setScale(0.5f);
+	this->addChild(navi, 12);
+
+	countThree = Sprite::create("GameScene/count3.png");
+	countThree->setAnchorPoint(Point(0.25f,0.5f));
+	countThree->setPosition(designResolutionSize*0.5f);
+	countThree->setScale(0.0f);
+	this->addChild(countThree, 11);
+
+	countTwo = Sprite::create("GameScene/count2.png");
+	countTwo->setAnchorPoint(Point(0.75f, 0.5f));
+	countTwo->setPosition(designResolutionSize*0.5f);
+	countTwo->setScale(0.0f);
+	this->addChild(countTwo, 11);
+
+	countOne = Sprite::create("GameScene/count1.png");
+	countOne->setPosition(designResolutionSize.width*0.5f, designResolutionSize.height*0.5f);
+	countOne->setScale(0.0f);
+	this->addChild(countOne, 11);
+
 	effect = EffectManager::create();
 	this->addChild(effect, 10);
-
-	backDesk = Sprite::create("GameScene/gameSceneBack.png");
-	backDesk->setPosition(designResolutionSize*0.5f);
-	this->addChild(backDesk,-1);
 
 	//”ç
 	backOne = Sprite::create("GameScene/kawa.png");
@@ -53,6 +75,7 @@ bool WatchLayer::init()
 		fairyGate.at(i)->setPosition(Vec2(designResolutionSize.width*0.5f + radius*cos(M_PI / 180 * (90 - 360 * i / circleNum)),
 			                              designResolutionSize.height*0.5f + radius*sin(M_PI / 180 * (90 - 360 * i / circleNum))));
 		fairyGate.at(i)->setScale(0.15f);
+		fairyGate.at(i)->setVisible(false);
 		this->addChild(fairyGate.at(i),5);
 	}
 	//”š‚ğ•\¦
@@ -63,10 +86,9 @@ bool WatchLayer::init()
 		numSpr.at(j)->setPosition(watchPos);
 		numSpr.at(j)->setScale(0.6f);
 		this->addChild(numSpr.at(j), 2);
+		//numSpr.at(j)->setOpacity(0);
 	}
 	
-	ramdomBreak();            //breakNum‚Ì”‚¾‚¯ƒ‰ƒ“ƒ_ƒ€‚Å”š‚ğ‰ó‚·
-
 	//‰˜‚ê
 	dirtWatch = Sprite::create("GameScene/clockThree.png");
 	dirtWatch->setPosition(watchPos);
@@ -93,6 +115,10 @@ bool WatchLayer::init()
 	_secondHand = SecondHand::create();
 	_secondHand->setPosition(watchPos);
 	this->addChild(_secondHand, 8);
+
+	_shortHand->setVisible(false);
+	_longHand->setVisible(false);
+	_secondHand->setVisible(false);
 
 	//Œõ‚Ì”½Ë
 	glassShine = Sprite::create("GameScene/clockFour.png");
@@ -160,6 +186,7 @@ void WatchLayer::ramdomBreak()
 				actingBreak = 0;
 			}
 			fairyGate.at(actingBreak)->setTexture("GameScene/badVortex.png");
+			fairyGate.at(actingBreak)->setVisible(true);
 			breakNumCheck++;
 		}
 		if (breakNum == breakNumCheck) break;
@@ -193,6 +220,7 @@ void WatchLayer::repairNumber(int num,bool bonus)
 			repairNum = 0;
 		}
 		fairyGate.at(repairNum)->setTexture("GameScene/goodVortex.png");
+		fairyGate.at(repairNum)->setVisible(false);
 		effect->numberShining(fairyGate.at(repairNum)->getPosition());
 		for (int g = 0; g < circleNum; g++)
 		{
@@ -281,6 +309,7 @@ void WatchLayer::repairNumber(int num,bool bonus)
 //—d¸¶¬‰‰o&“G¶¬
 void WatchLayer::adventGateMotion(int GatePos)
 {
+	fairyGate.at(GatePos)->setVisible(true);
 	ScaleTo* bigGate = ScaleTo::create(0.5f, 0.4f);
 	CallFunc* gateSpeedUP = CallFunc::create([=]
 	{
@@ -295,13 +324,20 @@ void WatchLayer::adventGateMotion(int GatePos)
 		fairyGate.at(GatePos)->speed = 2.0f;
 	});
 	ScaleTo* smallGate = ScaleTo::create(0.5f, 0.15f);
+
+	CallFunc* v = CallFunc::create([=] 
+	{
+		fairyGate.at(GatePos)->setVisible(false);
+	});
+
 	Sequence* seq = Sequence::create(gateSpeedUP,
 		                             bigGate,
 		                             DelayTime::create(1.5f), 
 		                             fairyCreate,
 		                             DelayTime::create(0.5f),
 		                             gateSpeedDOWN,
-		                             smallGate, 
+		                             smallGate,
+		                             v,
 		                             nullptr);
 	fairyGate.at(GatePos)->runAction(seq);
 }
@@ -313,4 +349,65 @@ void WatchLayer::start()
 	_player->masterTap = true;
 	_enemyManager->masterFairy = true;
 	timeLabel->masterTime();
+}
+
+void WatchLayer::startCountDown()
+{
+	ramdomBreak();
+	showingNeedle();
+
+	scaleTo = ScaleTo::create(0.75f, 1.0f);
+	dThree = CallFunc::create([=]
+	{
+		countThree->setVisible(false);
+	});
+
+	seqThree = Sequence::create(scaleTo,DelayTime::create(0.25f), dThree, nullptr);
+
+	countThree->runAction(seqThree);
+
+	this->scheduleOnce(schedule_selector(WatchLayer::cTwo), 1.0f);
+	this->scheduleOnce(schedule_selector(WatchLayer::cOne), 2.0f);
+
+}
+
+//2‚Ì“®‚«
+void WatchLayer::cTwo(float delta)
+{
+	scaleTo = ScaleTo::create(0.75f, 1.0f);
+	dTwo = CallFunc::create([=]
+	{
+		countTwo->setVisible(false);
+	});
+	seqTwo = Sequence::create(scaleTo, DelayTime::create(0.25f), dTwo, nullptr);
+
+	countTwo->runAction(seqTwo);
+}
+
+//3‚Ì“®‚«
+void WatchLayer::cOne(float delta)
+{
+	scaleTo = ScaleTo::create(0.75f, 1.0f);
+	dOne = CallFunc::create([=]
+	{
+		countOne->setVisible(false);
+		start();
+	});
+	seqOne = Sequence::create(scaleTo, DelayTime::create(0.25f), dOne, nullptr);
+
+	countOne->runAction(seqOne);
+}
+
+//j‚Æ”š‚ğŒ©‚¹‚é
+void WatchLayer::showingNeedle()
+{
+	for (int i = 0; i < circleNum; i++)
+	{
+		numSpr.at(i)->setOpacity(0);
+		FadeIn* fadeIn = FadeIn::create(1.0f);
+		numSpr.at(i)->runAction(fadeIn);
+	}
+	_shortHand->setVisible(true);
+	_longHand->setVisible(true);
+	_secondHand->setVisible(true);
 }
