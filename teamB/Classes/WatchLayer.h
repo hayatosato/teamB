@@ -19,6 +19,7 @@
 #include "TimeLabel.h"
 #include "Title.h"
 #include "TextNavi.h"
+#include "Clear.h"
 
 USING_NS_CC;
 using namespace std;
@@ -32,10 +33,12 @@ public:
 	bool masterHand;                    //これをtrueにしないかぎり秒針は回らない
 
 	Title*         title;               //タイトル
-	TextNavi*      navi;
+	TextNavi*      navi;                //taptostart
+	Sprite*        blackBack;           //後ろの灰色
 	EffectManager* effect;              //エフェクトマネージャー
 	UIManager*     UI;                  //UIマネージャー
 	TimeLabel*     timeLabel;           //時間
+	Clear*         clear;               //クリア画像
 
 	float maxNumberHP;                  //数字の最大体力
 	float numberHP[WATCH_NUMBER];       //数字の体力
@@ -64,10 +67,14 @@ public:
 	void repairNumber(int num,bool bonus);    //数字の修復&クリアしたかどうか
 	void adventGateMotion(int GatePos);       //敵出現演出&敵を生成する処理を呼ぶ
 	void startCountDown();                    //始まり
-	void start();                             //つまみが動き、秒針が動き、妖精が湧きだす
+	void start();                             //つまみが動き、秒針が動き、妖精が湧きだし、カウントアップを始める
+	void end();                               //つまみを止め、秒針を止め、妖精を止め、カウントアップを停止させる
 
 	void update(float delta);
 private:
+
+	Vec2 UIPos;       //UI基準点
+	Vec2 timePos;     //時間基準点
 
 	Sprite* timeWaku;  //時間の枠
 	Sprite* countThree;//カウントダウンの画像3
@@ -84,6 +91,9 @@ private:
 	Sequence* seqOne;
 	void cTwo(float delta);  //2の動き
 	void cOne(float delta);  //3の動き
+
+	MoveTo* timeMove;     //カウントの動き
+	MoveTo* UIMove;       //壊れゲージの動き
 
 	//皮
 	Sprite* backOne;

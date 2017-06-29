@@ -7,14 +7,28 @@ bool WatchLayer::init()
 
 	masterHand = false;
 
+	circleNum = WATCH_NUMBER;
+	breakNumCheck = 0;
+	breakNum = 1;           //壊す数字の数  11以上にしないように
+	nowBreakNum = 0;
+	maxNumberHP = 10.0f;       //数字の最大HP初期化
+	repairScore = 1.0f;
+	repairBonusScore = 2.0f;
+	UIPos = Vec2(designResolutionSize*0.0f);
+	timePos = Vec2(designResolutionSize.width*0.25f, designResolutionSize.height*0.9f);
+
 	title = Title::create();
-	title->setPosition(designResolutionSize*0.5f);
+	title->setPosition(designResolutionSize.width*0.5f,designResolutionSize.height*0.6f);
 	this->addChild(title, 12);
 
 	navi = TextNavi::create();
 	navi->setPosition(designResolutionSize.width*0.5f, designResolutionSize.height*0.1f);
 	navi->setScale(0.5f);
 	this->addChild(navi, 12);
+
+	blackBack = Sprite::create("GameScene/kuro.png");
+	blackBack->setPosition(designResolutionSize*0.5f);
+	this->addChild(blackBack, 11);
 
 	countThree = Sprite::create("GameScene/count3.png");
 	countThree->setAnchorPoint(Point(0.25f,0.5f));
@@ -43,14 +57,6 @@ bool WatchLayer::init()
 	backTwo = Sprite::create("GameScene/kawa.png");
 	backTwo->setPosition(designResolutionSize.width*0.5f, designResolutionSize.height*0.3f);
 	this->addChild(backTwo, 0);
-
-	circleNum = WATCH_NUMBER;
-	breakNumCheck = 0;
-	breakNum = 5;           //壊す数字の数  11以上にしないように
-	nowBreakNum = 0;
-	maxNumberHP = 10.0f;       //数字の最大HP初期化
-	repairScore = 1.0f;
-	repairBonusScore = 2.0f;
 
 	for (int t = 0; t < circleNum; t++)
 	{
@@ -86,7 +92,7 @@ bool WatchLayer::init()
 		numSpr.at(j)->setPosition(watchPos);
 		numSpr.at(j)->setScale(0.6f);
 		this->addChild(numSpr.at(j), 2);
-		//numSpr.at(j)->setOpacity(0);
+		//numSpr.at(j)->setOpacity(200);
 	}
 	
 	//汚れ
@@ -134,17 +140,24 @@ bool WatchLayer::init()
 	_enemyManager = EnemyManager::create(circleNum - 1);
 	this->addChild(_enemyManager,9);
 
+	//クリア画像
+	clear = Clear::create();
+	clear->setPosition(designResolutionSize.width*0.5f,designResolutionSize.height*-0.2f);
+	this->addChild(clear, 13);
+
 	//時間
 	timeLabel = TimeLabel::create();
-	timeLabel->setPosition(designResolutionSize.width*0.25f, designResolutionSize.height*0.9f);
+	timeLabel->setPosition(timePos.x,timePos.y+200);
 	this->addChild(timeLabel, 10);
 
+	//時間の枠
 	timeWaku = Sprite::create("GameScene/timeWaku.png");
-	timeWaku->setPosition(timeLabel->getPosition());
+	timeWaku->setPosition(timePos.x, timePos.y + 200.0f);
 	this->addChild(timeWaku, 9);
 
 	//UI
 	UI = UIManager::create(nowBreakNum , breakNum);
+	UI->setPosition(UIPos.x,UIPos.y + 200.0f);
 	this->addChild(UI,10);
 
 	this->scheduleUpdate();
@@ -154,6 +167,9 @@ bool WatchLayer::init()
 
 void WatchLayer::update(float delta)
 {
+	timeWaku->setPosition(timeLabel->getPosition());
+
+
 	if (!masterHand) return;
 	//秒針の回転
 	_secondHand->setRotation(_secondHand->getRotation() + 0.1f);
@@ -230,6 +246,7 @@ void WatchLayer::repairNumber(int num,bool bonus)
 			}
 		}
 		log("OK!");  //ここにクリア処理
+		end();
 	}
 	else
 	{
@@ -296,13 +313,6 @@ void WatchLayer::repairNumber(int num,bool bonus)
 			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, 1);
 			numSpr.at(num)->setTexture(breakNoNum->getCString());
 		}
-		else if (numberHP[num] >= Calculation::senF(0.0f, maxNumberHP, 0.91f) &&
-			     numberHP[num] <= Calculation::senF(0.0f, maxNumberHP, 0.99f))
-		{
-			//体力が91～99%の時
-			//今のところ保留
-		}
-
 	}
 }
 
@@ -351,8 +361,14 @@ void WatchLayer::start()
 	timeLabel->masterTime();
 }
 
+//始まり演出開始
 void WatchLayer::startCountDown()
 {
+	timeMove = MoveTo::create(0.5f, timePos);
+	UIMove = MoveTo::create(0.5f, UIPos);
+	timeLabel->runAction(timeMove);
+	UI->runAction(UIMove);
+
 	ramdomBreak();
 	showingNeedle();
 
@@ -410,4 +426,24 @@ void WatchLayer::showingNeedle()
 	_shortHand->setVisible(true);
 	_longHand->setVisible(true);
 	_secondHand->setVisible(true);
+}
+
+void WatchLayer::end()
+{
+	masterHand = false;
+	_player->masterTap = false;
+	_enemyManager->masterFairy = false;
+	timeLabel->stopTime();
+
+	FadeIn* BfadeIn = FadeIn::create(0.7f);
+	blackBack->runAction(BfadeIn);
+
+	Sequence* clearSeq = Sequence::create(
+		                                  DelayTime::create(0.5f),
+		                                  MoveTo::create(1.0f, designResolutionSize*0.5f),
+		                                  DelayTime::create(1.0f),
+		                                  MoveTo::create(1.5f, Vec2(designResolutionSize.width*0.5f, designResolutionSize.height*0.8f)),
+		                                  nullptr
+		                                 );
+	clear->runAction(clearSeq);
 }

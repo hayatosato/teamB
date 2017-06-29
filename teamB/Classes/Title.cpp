@@ -4,7 +4,7 @@
 bool Title::init()
 {
 	if (!Sprite::init()) return false;
-	this->initWithFile("TitleScene/ferock.png");
+	this->initWithFile("GameScene/ferock2.png");
 	this->setScale(0.9f);
 	speed = 0.0f;
 	titleGravity = false;
@@ -26,6 +26,8 @@ void Title::upStart()
 	titleGravity = true;
 	speed -= 5.0f;
 	((WatchLayer*)(this->getParent()))->navi->removeFromParent();
+	FadeOut* bOut = FadeOut::create(0.7f);
+	((WatchLayer*)(this->getParent()))->blackBack->runAction(bOut);
 	this->scheduleOnce(schedule_selector(Title::delayWatchStart), 1.5f);
 }
 

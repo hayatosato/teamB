@@ -16,6 +16,7 @@ public:
 
 	String* timeStr;
 	void masterTime();              //呼ぶとカウントアップを始める
+	void stopTime();                //カウントアップを終わる
 private:
 	void upTime(float delta);
 

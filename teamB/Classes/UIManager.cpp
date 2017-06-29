@@ -41,7 +41,7 @@ bool UIManager::init(int breakNum, int breakNumMax)
 	gaugeTwo->setPosition(breakNumBasePos);
 	this->addChild(gaugeTwo, 2);
 
-	breakLabel = Label::createWithTTF("1", "fonts/PixelMplus10-Regular.ttf",32);
+	breakLabel = Label::createWithTTF("1", "fonts/Jiyucho.ttf",32);
 	String* breakStr = String::createWithFormat("%d/%d", breakNum, breakNumMax);
 	breakLabel->setString(breakStr->getCString());
 	breakLabel->setPosition(breakNumBasePos.x + (gaugeOne->getContentSize().width*0.5f), breakNumBasePos.y);
