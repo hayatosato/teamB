@@ -2,6 +2,7 @@
 #include "WatchLayer.h"
 #include "MultiResolution.h"
 #include "Calculation.h"
+#include "GameScene.h"
 
 //jˆê‰ñ‚ÌŠp“x
 const float OneLongMoveDir = 6;
@@ -16,6 +17,7 @@ bool Player::init()
 	if (!Node::init()) return false;
 
 	masterTap = false;
+	retryTap = false;
 	stopManyTap = true;
 	downMove     = 0.5f;
 	maxMoveSpeed = 5.0f;
@@ -38,6 +40,10 @@ bool Player::init()
 
 bool Player::onTouchBegan(Touch* pTouch, Event* pEvent)
 {
+	if (retryTap)
+	{
+		Director::getInstance()->replaceScene(TransitionFade::create(3.0f, GameScene::create(), Color3B::BLACK));
+	}
 
 	Vec2 touchPos = pTouch->getLocationInView();
 	touchPos.y = designResolutionSize.height - touchPos.y;
@@ -62,6 +68,8 @@ bool Player::onTouchBegan(Touch* pTouch, Event* pEvent)
 		_isMove = true;
 	}
 	if (!stopManyTap) return true;
+	layer->stopMusic();
+	layer->effectPlayMusic(1);
 	layer->title->upStart(); //“®‚©‚·‚½‚ß‚Ì‰‹}ˆ’u
 	stopManyTap = false;
 

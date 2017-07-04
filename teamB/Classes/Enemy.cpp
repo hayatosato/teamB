@@ -80,6 +80,7 @@ void Enemy::Move(float deltaTime)
 				myCreatePos = 11;
 			}
 			((EnemyManager*)(this->getParent()))->multipleNum[myCreatePos] -= 1;
+			watchLayer->effectPlayMusic(8);
 			fairyModes = GO;
 		}
 	}
@@ -145,6 +146,10 @@ void Enemy::Move(float deltaTime)
 
 		if (Calculation::sq(designResolutionSize*0.5f, this->getPosition()) > watchLayer->_shortHand->getContentSize().height)
 		{
+			if (!bonusFairy)
+			{
+				watchLayer->effectPlayMusic(7);
+			}
 			bonusFairy = true;
 			fairyModes = SAVETWO;
 		}

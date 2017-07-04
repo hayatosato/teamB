@@ -6,16 +6,43 @@ bool WatchLayer::init()
 	if (!Layer::init()) return false;
 
 	masterHand = false;
+	timeScore = UserDefault::getInstance();
+	if (timeScore->getIntegerForKey("seconds") == 0 &&
+		timeScore->getIntegerForKey("minute") == 0)
+	{
+		timeScore->setIntegerForKey("seconds", 99);
+		timeScore->setIntegerForKey("minute", 99);
+	}
+
+	//ハイスコアリセット
+	//timeScore->setIntegerForKey("seconds", 0);
+	//timeScore->setIntegerForKey("minute", 0);
+
 
 	circleNum = WATCH_NUMBER;
 	breakNumCheck = 0;
-	breakNum = 1;           //壊す数字の数  11以上にしないように
+	breakNum = 3;           //壊す数字の数  11以上にしないように
 	nowBreakNum = 0;
 	maxNumberHP = 10.0f;       //数字の最大HP初期化
 	repairScore = 1.0f;
 	repairBonusScore = 2.0f;
 	UIPos = Vec2(designResolutionSize*0.0f);
 	timePos = Vec2(designResolutionSize.width*0.25f, designResolutionSize.height*0.9f);
+	highScoreCheck = false;
+
+	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("Music/titleMusic.mp3");
+	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("Music/gameSceneMusic2.mp3");
+	SimpleAudioEngine::getInstance()->preloadEffect("Music/titleTap.wav");
+	SimpleAudioEngine::getInstance()->preloadEffect("Music/count.wav");
+	SimpleAudioEngine::getInstance()->preloadEffect("Music/numR2.wav");
+	SimpleAudioEngine::getInstance()->preloadEffect("Music/numRMax.wav");
+	SimpleAudioEngine::getInstance()->preloadEffect("Music/death.wav");
+	SimpleAudioEngine::getInstance()->preloadEffect("Music/deathWall.wav");
+	SimpleAudioEngine::getInstance()->preloadEffect("Music/powerUP.wav");
+	SimpleAudioEngine::getInstance()->preloadEffect("Music/Ride.wav");
+	SimpleAudioEngine::getInstance()->preloadEffect("Music/Gush.wav");
+	SimpleAudioEngine::getInstance()->playBackgroundMusic("Music/titleMusic.mp3", true);
+
 
 	title = Title::create();
 	title->setPosition(designResolutionSize.width*0.5f,designResolutionSize.height*0.6f);
@@ -224,6 +251,7 @@ void WatchLayer::repairNumber(int num,bool bonus)
 	if (numberHP[num] >= maxNumberHP)
 	{
 		breakCheck[num] = true;
+		effectPlayMusic(4);
 		nowBreakNum++;
 		UI->breakChangeGauge((float)nowBreakNum , (float)breakNum);
 		String* repairNumStr = String::createWithFormat("GameScene/clockTwo-%d.png", num + 1);
@@ -250,6 +278,7 @@ void WatchLayer::repairNumber(int num,bool bonus)
 	}
 	else
 	{
+		effectPlayMusic(3);
 		//数字がだんだん治っていく
 		if (numberHP[num] >= 0 && numberHP[num] <= Calculation::senF(0.0f,maxNumberHP,0.1f))
 		{
@@ -349,12 +378,15 @@ void WatchLayer::adventGateMotion(int GatePos)
 		                             smallGate,
 		                             v,
 		                             nullptr);
+
+	effectPlayMusic(9);
 	fairyGate.at(GatePos)->runAction(seq);
 }
 
 //起動
 void WatchLayer::start()
 {
+	SimpleAudioEngine::getInstance()->playBackgroundMusic("Music/gameSceneMusic2.mp3", true);
 	masterHand = true;
 	_player->masterTap = true;
 	_enemyManager->masterFairy = true;
@@ -380,6 +412,8 @@ void WatchLayer::startCountDown()
 
 	seqThree = Sequence::create(scaleTo,DelayTime::create(0.25f), dThree, nullptr);
 
+
+	effectPlayMusic(2);
 	countThree->runAction(seqThree);
 
 	this->scheduleOnce(schedule_selector(WatchLayer::cTwo), 1.0f);
@@ -397,10 +431,11 @@ void WatchLayer::cTwo(float delta)
 	});
 	seqTwo = Sequence::create(scaleTo, DelayTime::create(0.25f), dTwo, nullptr);
 
+	effectPlayMusic(2);
 	countTwo->runAction(seqTwo);
 }
 
-//3の動き
+//1の動き
 void WatchLayer::cOne(float delta)
 {
 	scaleTo = ScaleTo::create(0.75f, 1.0f);
@@ -411,6 +446,7 @@ void WatchLayer::cOne(float delta)
 	});
 	seqOne = Sequence::create(scaleTo, DelayTime::create(0.25f), dOne, nullptr);
 
+	effectPlayMusic(2);
 	countOne->runAction(seqOne);
 }
 
@@ -435,6 +471,23 @@ void WatchLayer::end()
 	_enemyManager->masterFairy = false;
 	timeLabel->stopTime();
 
+	//スコアの繁栄
+	if (timeScore->getIntegerForKey("minute") > timeLabel->minute)
+	{
+		timeScore->setIntegerForKey("seconds", timeLabel->seconds);
+		timeScore->setIntegerForKey("minute", timeLabel->minute);
+		highScoreCheck = true;
+	}
+	else if (timeScore->getIntegerForKey("minute") == timeLabel->minute)
+	{
+		if (timeScore->getIntegerForKey("seconds") > timeLabel->seconds)
+		{
+			timeScore->setIntegerForKey("seconds", timeLabel->seconds);
+			timeScore->setIntegerForKey("minute", timeLabel->minute);
+			highScoreCheck = true;
+		}
+	}
+
 	FadeIn* BfadeIn = FadeIn::create(0.7f);
 	blackBack->runAction(BfadeIn);
 
@@ -443,7 +496,61 @@ void WatchLayer::end()
 		                                  MoveTo::create(1.0f, designResolutionSize*0.5f),
 		                                  DelayTime::create(1.0f),
 		                                  MoveTo::create(1.5f, Vec2(designResolutionSize.width*0.5f, designResolutionSize.height*0.8f)),
+		                                  DelayTime::create(0.5f),
+		                                  CallFunc::create([=] {
+		                                                         ClearText* clearText = ClearText::create(timeLabel->minute,timeLabel->seconds,timeScore->getIntegerForKey("minute"), timeScore->getIntegerForKey("seconds"),highScoreCheck);
+		                                                         this->addChild(clearText, 13);
+	                                                           }),
+		                                  DelayTime::create(1.0f),
+										  CallFunc::create([=] {
+																   Sprite* modoru = Sprite::create("GameScene/modoru.png");
+																   modoru->setPosition(designResolutionSize.width*0.5f, designResolutionSize.height*0.1f);
+																   modoru->setScale(0.7f);
+																   this->addChild(modoru, 13);
+																   _player->retryTap = true;
+															   }),
 		                                  nullptr
 		                                 );
 	clear->runAction(clearSeq);
+}
+
+void WatchLayer::stopMusic()
+{
+	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+}
+
+void WatchLayer::effectPlayMusic(int musicNum)
+{
+	switch (musicNum)
+	{
+	case 1:
+		SimpleAudioEngine::getInstance()->playEffect("Music/titleTap.wav", false);
+		break;
+	case 2:
+		SimpleAudioEngine::getInstance()->playEffect("Music/count.wav", false);
+		break;
+	case 3:
+		SimpleAudioEngine::getInstance()->playEffect("Music/numR2.wav", false);
+		break;
+	case 4:
+		SimpleAudioEngine::getInstance()->playEffect("Music/numRMax.wav", false);
+		break;
+	case 5:
+		SimpleAudioEngine::getInstance()->playEffect("Music/death.wav", false);
+		break;
+	case 6:
+		SimpleAudioEngine::getInstance()->playEffect("Music/deathWall.wav", false);
+		break;
+	case 7:
+		SimpleAudioEngine::getInstance()->playEffect("Music/powerUP.wav", false);
+		break;
+	case 8:
+		SimpleAudioEngine::getInstance()->playEffect("Music/Ride.wav", false);
+		break;
+	case 9:
+		SimpleAudioEngine::getInstance()->playEffect("Music/Gush.wav", false);
+		break;
+	default:
+		break;
+	}
 }

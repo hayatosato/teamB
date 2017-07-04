@@ -208,6 +208,7 @@ void EnemyManager::update(float delta)
 			if (wallCount == 0)
 			{
 				layer->effect->fairyAscension(enemy.at(i)->getPosition());
+				((WatchLayer*)(this->getParent()))->effectPlayMusic(6);
 			}
 
 
@@ -225,6 +226,7 @@ void EnemyManager::deleteEnemy(int enemyNum,bool death)
 	wallCount = 0;
 	if (death)
 	{
+		((WatchLayer*)(this->getParent()))->effectPlayMusic(5);
 		((WatchLayer*)(this->getParent()))->effect->fairyJunk(enemy.at(enemyNum)->getPosition());
 	}
 

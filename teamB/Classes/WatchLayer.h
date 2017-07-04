@@ -20,6 +20,10 @@
 #include "Title.h"
 #include "TextNavi.h"
 #include "Clear.h"
+#include "ClearText.h"
+
+#include "SimpleAudioEngine.h"
+using namespace CocosDenshion;
 
 USING_NS_CC;
 using namespace std;
@@ -38,7 +42,9 @@ public:
 	EffectManager* effect;              //エフェクトマネージャー
 	UIManager*     UI;                  //UIマネージャー
 	TimeLabel*     timeLabel;           //時間
+	UserDefault*   timeScore;           //時間保存用
 	Clear*         clear;               //クリア画像
+	bool highScoreCheck;                //ハイスコアを更新したかどうか
 
 	float maxNumberHP;                  //数字の最大体力
 	float numberHP[WATCH_NUMBER];       //数字の体力
@@ -69,6 +75,8 @@ public:
 	void startCountDown();                    //始まり
 	void start();                             //つまみが動き、秒針が動き、妖精が湧きだし、カウントアップを始める
 	void end();                               //つまみを止め、秒針を止め、妖精を止め、カウントアップを停止させる
+	void stopMusic();                         //音を止める
+	void effectPlayMusic(int musicNum);       //番号にあったSEを流す
 
 	void update(float delta);
 private:
