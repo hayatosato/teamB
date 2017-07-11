@@ -9,6 +9,9 @@ class ShortHand : public Sprite
 public:
 	CREATE_FUNC(ShortHand);
 	virtual bool init();
+	Sprite* bonusShine;
+	void update(float delta);
+
 private:
 };
 

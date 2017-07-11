@@ -1,9 +1,9 @@
 #include "DeathFairy.h"
 
-DeathFairy *DeathFairy::create(int actionMode)
+DeathFairy *DeathFairy::create(int actionMode,int fairyType)
 {
 	DeathFairy *pRet = new DeathFairy();
-	if (pRet && pRet->init(actionMode))
+	if (pRet && pRet->init(actionMode,fairyType))
 	{
 		pRet->autorelease();
 		return pRet;
@@ -16,16 +16,26 @@ DeathFairy *DeathFairy::create(int actionMode)
 }
 
 
-bool DeathFairy::init(int actionMode)
+bool DeathFairy::init(int actionMode,int fairyType)
 {
 	if (!Sprite::init())
 	{
 		return false;
 	}
 	normalScale = 0.15f;
-	this->initWithFile("GameScene/clockFairyDeath.png");
 	this->setScale(normalScale);
 	call = CallFunc::create(CC_CALLBACK_0(DeathFairy::erase, this));
+
+	switch (fairyType)
+	{
+	case 0:
+		this->initWithFile("GameScene/clockFairyDeath.png");
+		break;
+	case 1:
+		this->initWithFile("GameScene/goldFairysDeath.png");
+		break;
+	}
+
 
 	switch (actionMode)
 	{

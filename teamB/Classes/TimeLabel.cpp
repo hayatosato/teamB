@@ -6,7 +6,7 @@ bool TimeLabel::init()
 	seconds = 0;
 	minute =  0;
 
-	this->initWithTTF("1", "fonts/Jiyucho.ttf", 80);
+	this->initWithTTF("1", "fonts/Hayatonumfont-Regular.ttf", 80);
 	timeStr = String::createWithFormat("%02d:%02d", minute, seconds);
 	this->setString(timeStr->getCString());
 	this->setColor(Color3B::BLACK);

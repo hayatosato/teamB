@@ -70,13 +70,14 @@ public:
 	Sprite* glassShine;      //ガラスの反射
 	Player* _player;         //Playerクラス
 
-	void repairNumber(int num,bool bonus);    //数字の修復&クリアしたかどうか
+	void repairNumber(int num,bool bonus,int fairyScore,Vec2 fairyPos);    //数字の修復&クリアしたかどうか&スコア取得
 	void adventGateMotion(int GatePos);       //敵出現演出&敵を生成する処理を呼ぶ
 	void startCountDown();                    //始まり
 	void start();                             //つまみが動き、秒針が動き、妖精が湧きだし、カウントアップを始める
 	void end();                               //つまみを止め、秒針を止め、妖精を止め、カウントアップを停止させる
 	void stopMusic();                         //音を止める
 	void effectPlayMusic(int musicNum);       //番号にあったSEを流す
+	void plusScore(int upScore);              //スコアを足す
 
 	void update(float delta);
 private:

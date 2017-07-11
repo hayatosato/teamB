@@ -6,6 +6,9 @@
 #include "DeathFairy.h"
 #include "Shine.h"
 #include "Junk.h"
+#include "SurgeNum.h"
+#include "PointLabel.h"
+
 USING_NS_CC;
 using namespace std;
 
@@ -17,9 +20,11 @@ public:
 	void fairyDeath(Vec2 deathPos);  //—d¸‚Ì€
 	void shining(Vec2 shinPos);      //‚Ò‚©‚Ò‚©‚·‚é
 	void numberShining(Vec2 numSPos);//’†S‚©‚ç‚Ò‚©‚Ò‚©‚·‚é
-	void fairyAscension(Vec2 APos);  //—d¸•Ç‚É“–‚½‚è¸“V
+	void fairyAscension(Vec2 APos,int fairyType);  //—d¸•Ç‚É“–‚½‚è¸“V
 	void chargeEffect(Vec2 chPos);   //ƒ`ƒƒ[ƒW‰‰o
-	void fairyJunk(Vec2 JPos);       //—d¸”ò‚ÑU‚é
+	void fairyJunk(Vec2 JPos,int fairyType);       //—d¸”ò‚ÑU‚é
+	void numWave(int num,int way);   //”š‚Ì”g“®
+	void pointGet(Vec2 PointPos, int point,bool bonusCheck); //Šl“¾‚µ‚½ƒXƒRƒA‚ª‚Ç‚Ì‚­‚ç‚¢‚©
 
 	bool init();
 

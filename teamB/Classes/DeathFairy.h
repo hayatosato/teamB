@@ -7,7 +7,7 @@ USING_NS_CC;
 class DeathFairy : public Sprite
 {
 public:
-	static DeathFairy *create(int actionMode);
+	static DeathFairy *create(int actionMode,int fairyType);
 
 	float normalScale;
 
@@ -16,7 +16,7 @@ public:
 	Sequence* seq;
 	CallFunc* call;
 
-	bool init(int actionMode);
+	bool init(int actionMode,int fairyType);
 	
 private:
 	void erase();

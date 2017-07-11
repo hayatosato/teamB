@@ -69,7 +69,7 @@ void EnemyManager::EnemyCreater(float dt)
 void EnemyManager::fairyCreate(int fairyCreatePos)
 {
 	//“G¶¬
-	enemy.pushBack(Enemy::create());
+	enemy.pushBack(Enemy::create(1));
 	enemy.at(enemy.size() - 1)->setPosition(((WatchLayer*)(this->getParent()))->fairyGate.at(fairyCreatePos)->getPosition());
 	enemy.at(enemy.size() - 1)->myCreatePos = pos;
 	this->addChild(enemy.at(enemy.size() - 1), 1);
@@ -185,7 +185,7 @@ void EnemyManager::update(float delta)
 					if (layer->breakCheck[GateNum] == false)
 					{
 						layer->effect->shining(layer->fairyGate.at(a)->getPosition());
-						layer->repairNumber(GateNum,enemy.at(i)->bonusFairy);
+						layer->repairNumber(GateNum,enemy.at(i)->bonusFairy,enemy.at(i)->scorePoint,enemy.at(i)->getPosition());
 						wallCount++;
 					}
 				}
@@ -197,7 +197,7 @@ void EnemyManager::update(float delta)
 							tAng > fairyGateAngMinus)
 						{
 						    layer->effect->shining(layer->fairyGate.at(a)->getPosition());
-							layer->repairNumber(GateNum, enemy.at(i)->bonusFairy);
+							layer->repairNumber(GateNum, enemy.at(i)->bonusFairy,enemy.at(i)->scorePoint,enemy.at(i)->getPosition());
 							wallCount++;
 						}
 					}
@@ -207,7 +207,7 @@ void EnemyManager::update(float delta)
 			//•Ç‚É‚Ô‚Â‚©‚é‚©‰ó‚ê‚Ä‚È‚¢ƒQ[ƒg‚É“ü‚Á‚½Žž
 			if (wallCount == 0)
 			{
-				layer->effect->fairyAscension(enemy.at(i)->getPosition());
+				layer->effect->fairyAscension(enemy.at(i)->getPosition(),enemy.at(i)->typeNum);
 				((WatchLayer*)(this->getParent()))->effectPlayMusic(6);
 			}
 
@@ -227,7 +227,7 @@ void EnemyManager::deleteEnemy(int enemyNum,bool death)
 	if (death)
 	{
 		((WatchLayer*)(this->getParent()))->effectPlayMusic(5);
-		((WatchLayer*)(this->getParent()))->effect->fairyJunk(enemy.at(enemyNum)->getPosition());
+		((WatchLayer*)(this->getParent()))->effect->fairyJunk(enemy.at(enemyNum)->getPosition(),enemy.at(enemyNum)->typeNum);
 	}
 
 		enemy.at(enemyNum)->removeFromParentAndCleanup(true);

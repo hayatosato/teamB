@@ -1,4 +1,5 @@
 #include "EffectManager.h"
+#include "MultiResolution.h"
 
 bool EffectManager::init()
 {
@@ -13,7 +14,7 @@ bool EffectManager::init()
 //—d¸Ž€–S‰‰o
 void EffectManager::fairyDeath(Vec2 deathPos)
 {
-	DeathFairy* deathFairy = DeathFairy::create(0);
+	DeathFairy* deathFairy = DeathFairy::create(0,0);
 	deathFairy->setPosition(deathPos);
 	this->addChild(deathFairy);
 }
@@ -54,9 +55,9 @@ void EffectManager::numberShining(Vec2 numSPos)
 }
 
 //—d¸•Ç‚É“–‚½‚èŽ€
-void EffectManager::fairyAscension(Vec2 APos)
+void EffectManager::fairyAscension(Vec2 APos,int fairyType)
 {
-	DeathFairy* fairyD = DeathFairy::create(1);
+	DeathFairy* fairyD = DeathFairy::create(1,fairyType);
 	fairyD->setPosition(APos);
 	this->addChild(fairyD,1);
 
@@ -93,7 +94,7 @@ void EffectManager::chargeEffect(Vec2 chPos)
 	this->addChild(shine, 2);
 }
 
-void EffectManager::fairyJunk(Vec2 JPos)
+void EffectManager::fairyJunk(Vec2 JPos,int fairyType)
 {
 	Junk* junkZero = Junk::create(0);
 	Junk* junkOne =  Junk::create(1);
@@ -107,4 +108,27 @@ void EffectManager::fairyJunk(Vec2 JPos)
 	this->addChild(junkOne,2);
 	this->addChild(junkTwo,2);
 
+}
+
+//”Žš‚Ì”g“®
+void EffectManager::numWave(int num, int way)
+{
+	SurgeNum* surgeNum = SurgeNum::create(num, way);
+	surgeNum->setPosition(designResolutionSize*0.5f);
+	this->addChild(surgeNum);
+}
+
+void EffectManager::pointGet(Vec2 pointPos,int point,bool bonusCheck)
+{
+	PointLabel* pointLabel = PointLabel::create();
+	pointLabel->setPosition(pointPos);
+
+	if (bonusCheck)
+	{
+		pointLabel->bonusColor = true;
+	}
+
+	String* pointStr = String::createWithFormat("%d",point);
+	pointLabel->setString(pointStr->getCString());
+	this->addChild(pointLabel);
 }

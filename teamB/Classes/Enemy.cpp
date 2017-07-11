@@ -8,31 +8,77 @@
 //目標地点
 const Vec2 AttackPoint = designResolutionSize * 0.5f;
 
-bool Enemy::init()
+Enemy *Enemy::create(int type)
+{
+	Enemy *pRet = new Enemy();
+	if (pRet && pRet->init(type))
+	{
+		pRet->autorelease();
+		return pRet;
+	}
+	else {
+		delete pRet;
+		pRet = NULL;
+		return NULL;
+	}
+}
+
+
+bool Enemy::init(int type)
 {
 	if (!Sprite::init()) return false;
 
-	this->initWithFile("GameScene/clockFairy1.png");
+	typeNum = type;
+
 	this->setScale(0.15f);
+
+	switch (typeNum)
+	{
+	case 0:
+	 {
+		 this->initWithFile("GameScene/clockFairy1.png");
+		 scorePoint = 100;
+		 _speed = 100;                 //動く速さ
+
+		 animation = Animation::create();
+		 animation->addSpriteFrameWithFileName("GameScene/clockFairy1new.png");
+		 animation->addSpriteFrameWithFileName("GameScene/clockFairy2new.png");
+		 animation->addSpriteFrameWithFileName("GameScene/clockFairy3new.png");
+		 animation->addSpriteFrameWithFileName("GameScene/clockFairy2new.png");
+		 animation->setDelayPerUnit(0.2f);
+		 animation->setRestoreOriginalFrame(true);
+		 action = Animate::create(animation);
+		 anime = RepeatForever::create(action);
+		 this->runAction(anime);
+	 }
+	break;
+	case 1:
+	 {
+		 this->initWithFile("GameScene/goldFairys1.png");
+		 scorePoint = 500;
+		 _speed = 50;                 //動く速さ
+
+		 animation = Animation::create();
+		 animation->addSpriteFrameWithFileName("GameScene/goldFairys1.png");
+		 animation->addSpriteFrameWithFileName("GameScene/goldFairys2.png");
+		 animation->addSpriteFrameWithFileName("GameScene/goldFairys3.png");
+		 animation->addSpriteFrameWithFileName("GameScene/goldFairys2.png");
+		 animation->setDelayPerUnit(0.2f);
+		 animation->setRestoreOriginalFrame(true);
+		 action = Animate::create(animation);
+		 anime = RepeatForever::create(action);
+		 this->runAction(anime);
+
+	 }
+	break;
+	}
+
 
 	bonusEffectCount = 2;
 	exitNeedle = true;
 	bonusFairy = false;
 	fairyModes = WAIT;
 
-	animation = Animation::create();
-	animation->addSpriteFrameWithFileName("GameScene/clockFairy1new.png");
-	animation->addSpriteFrameWithFileName("GameScene/clockFairy2new.png");
-	animation->addSpriteFrameWithFileName("GameScene/clockFairy3new.png");
-	animation->addSpriteFrameWithFileName("GameScene/clockFairy2new.png");
-	animation->setDelayPerUnit(0.2f);
-	animation->setRestoreOriginalFrame(true);
-	action = Animate::create(animation);
-	anime = RepeatForever::create(action);
-	this->runAction(anime);
-
-
-	_speed = 100;                 //動く速さ
 	resetCount();                //動くまでのカウント
 
 	//update
@@ -149,6 +195,8 @@ void Enemy::Move(float deltaTime)
 			if (!bonusFairy)
 			{
 				watchLayer->effectPlayMusic(7);
+				watchLayer->plusScore((int)scorePoint*0.5f);
+				watchLayer->effect->pointGet(this->getPosition(), (int)scorePoint*0.5f,bonusFairy);
 			}
 			bonusFairy = true;
 			fairyModes = SAVETWO;

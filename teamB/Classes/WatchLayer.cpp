@@ -75,7 +75,7 @@ bool WatchLayer::init()
 	this->addChild(countOne, 11);
 
 	effect = EffectManager::create();
-	this->addChild(effect, 10);
+	this->addChild(effect, 18);
 
 	//”ç
 	backOne = Sprite::create("GameScene/kawa.png");
@@ -183,7 +183,7 @@ bool WatchLayer::init()
 	this->addChild(timeWaku, 9);
 
 	//UI
-	UI = UIManager::create(nowBreakNum , breakNum);
+	UI = UIManager::create();
 	UI->setPosition(UIPos.x,UIPos.y + 200.0f);
 	this->addChild(UI,10);
 
@@ -237,15 +237,19 @@ void WatchLayer::ramdomBreak()
 }
 
 //”ŽšC•œ&ƒNƒŠƒA‚µ‚½‚©‚Ç‚¤‚©
-void WatchLayer::repairNumber(int num,bool bonus)
+void WatchLayer::repairNumber(int num,bool bonus,int fairyScore,Vec2 fairyPos)
 {
 	if (!bonus)
 	{
 		numberHP[num] += repairScore;
+		plusScore(fairyScore);
+		effect->pointGet(fairyPos, fairyScore,bonus);
 	}
 	else
 	{
 		numberHP[num] += repairBonusScore;
+		plusScore(fairyScore*2);
+		effect->pointGet(fairyPos, fairyScore*2,bonus);
 	}
 
 	if (numberHP[num] >= maxNumberHP)
@@ -253,7 +257,6 @@ void WatchLayer::repairNumber(int num,bool bonus)
 		breakCheck[num] = true;
 		effectPlayMusic(4);
 		nowBreakNum++;
-		UI->breakChangeGauge((float)nowBreakNum , (float)breakNum);
 		String* repairNumStr = String::createWithFormat("GameScene/clockTwo-%d.png", num + 1);
 		numSpr.at(num)->setTexture(repairNumStr->getCString());
 		int repairNum = num;
@@ -279,69 +282,81 @@ void WatchLayer::repairNumber(int num,bool bonus)
 	else
 	{
 		effectPlayMusic(3);
+		int clockTwoNum;
+
 		//”Žš‚ª‚¾‚ñ‚¾‚ñŽ¡‚Á‚Ä‚¢‚­
 		if (numberHP[num] >= 0 && numberHP[num] <= Calculation::senF(0.0f,maxNumberHP,0.1f))
 		{
 			//‘Ì—Í‚ª0`10%‚ÌŽž
-			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1,9);
+			clockTwoNum = 9;
+			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1,clockTwoNum);
 			numSpr.at(num)->setTexture(breakNoNum->getCString());
 		}
 		else if (numberHP[num] >= Calculation::senF(0.0f, maxNumberHP, 0.11f) && 
 			     numberHP[num] <= Calculation::senF(0.0f, maxNumberHP, 0.2f))
 		{
 			//‘Ì—Í‚ª11`20%‚ÌŽž
-			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, 8);
+			clockTwoNum = 8;
+			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, clockTwoNum);
 			numSpr.at(num)->setTexture(breakNoNum->getCString());
 		}
 		else if(numberHP[num] >= Calculation::senF(0.0f, maxNumberHP, 0.21f) &&
 			    numberHP[num] <= Calculation::senF(0.0f, maxNumberHP, 0.3f))
 		{
 			//‘Ì—Í‚ª21`30%‚ÌŽž
-			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, 7);
+			clockTwoNum = 7;
+			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, clockTwoNum);
 			numSpr.at(num)->setTexture(breakNoNum->getCString());
 		}
 		else if (numberHP[num] >= Calculation::senF(0.0f, maxNumberHP, 0.31f) &&
 			     numberHP[num] <= Calculation::senF(0.0f, maxNumberHP, 0.4f))
 		{
 			//‘Ì—Í‚ª31`40%‚ÌŽž
-			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, 6);
+			clockTwoNum = 6;
+			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, clockTwoNum);
 			numSpr.at(num)->setTexture(breakNoNum->getCString());
 		}
 		else if (numberHP[num] >= Calculation::senF(0.0f, maxNumberHP, 0.41f) &&
 			     numberHP[num] <= Calculation::senF(0.0f, maxNumberHP, 0.5f))
 		{
 			//‘Ì—Í‚ª41`50%‚ÌŽž
-			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, 5);
+			clockTwoNum = 5;
+			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, clockTwoNum);
 			numSpr.at(num)->setTexture(breakNoNum->getCString());
 		}
 		else if (numberHP[num] >= Calculation::senF(0.0f, maxNumberHP, 0.51f) &&
 			     numberHP[num] <= Calculation::senF(0.0f, maxNumberHP, 0.6f))
 		{
 			//‘Ì—Í‚ª51`60%‚ÌŽž
-			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, 4);
+			clockTwoNum = 4;
+			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, clockTwoNum);
 			numSpr.at(num)->setTexture(breakNoNum->getCString());
 		}
 		else if (numberHP[num] >= Calculation::senF(0.0f, maxNumberHP, 0.61f) &&
 			     numberHP[num] <= Calculation::senF(0.0f, maxNumberHP, 0.7f))
 		{
 			//‘Ì—Í‚ª61`70%‚ÌŽž
-			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, 3);
+			clockTwoNum = 3;
+			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, clockTwoNum);
 			numSpr.at(num)->setTexture(breakNoNum->getCString());
 		}
 		else if (numberHP[num] >= Calculation::senF(0.0f, maxNumberHP, 0.71f) &&
 			     numberHP[num] <= Calculation::senF(0.0f, maxNumberHP, 0.8f))
 		{
 			//‘Ì—Í‚ª71`80%‚ÌŽž
-			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, 2);
+			clockTwoNum = 2;
+			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, clockTwoNum);
 			numSpr.at(num)->setTexture(breakNoNum->getCString());
 		}
 		else if (numberHP[num] >= Calculation::senF(0.0f, maxNumberHP, 0.81f) &&
 			     numberHP[num] <= Calculation::senF(0.0f, maxNumberHP, 0.9f))
 		{
 			//‘Ì—Í‚ª81`90%‚ÌŽž
-			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, 1);
+			clockTwoNum = 1;
+			String* breakNoNum = String::createWithFormat("GameScene/clockTwo-%dbreak-%d.png", num + 1, clockTwoNum);
 			numSpr.at(num)->setTexture(breakNoNum->getCString());
 		}
+		effect->numWave(num + 1, clockTwoNum);
 	}
 }
 
@@ -464,6 +479,7 @@ void WatchLayer::showingNeedle()
 	_secondHand->setVisible(true);
 }
 
+//I‚í‚è
 void WatchLayer::end()
 {
 	masterHand = false;
@@ -550,7 +566,11 @@ void WatchLayer::effectPlayMusic(int musicNum)
 	case 9:
 		SimpleAudioEngine::getInstance()->playEffect("Music/Gush.wav", false);
 		break;
-	default:
-		break;
 	}
+}
+
+//ƒXƒRƒA‚ð‘«‚·ˆ—
+void WatchLayer::plusScore(int upScore)
+{
+	UI->score += upScore;
 }

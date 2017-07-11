@@ -7,11 +7,14 @@ USING_NS_CC;
 class Enemy : public Sprite
 {
 public:
-	CREATE_FUNC(Enemy);
-	virtual bool init();
+	//CREATE_FUNC(Enemy);
+	static Enemy *create(int type);
+	virtual bool init(int type);
 
+	int typeNum;               //妖精の種類
 	int startCount;            //移動開始までのカウント
 	int myCreatePos;           //自身が出たゲートの場所
+	int scorePoint;            //自身の持っているスコアポイント
 
 	//動作
 	bool exitNeedle;        //針から出たか
