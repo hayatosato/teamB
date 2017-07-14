@@ -41,6 +41,9 @@ private:
 	void  EnemyCreater(float dt);                 //敵生成
 	void  deleteEnemy(int enemyNum,bool death);   //妖精削除(削除する妖精のナンバー、trueなら死んで消滅)
 
+	//妖精出現番号を出現率に基づいて出す
+	int fairyAdvent();
+
 };
 
 #endif

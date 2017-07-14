@@ -9,12 +9,13 @@ using namespace std;
 class Junk : public Sprite
 {
 public:
-	static Junk *create(int junkNum);
+	static Junk *create(int junkNum,int fairyType);
 
-	bool init(int junkNum);
+	bool init(int junkNum,int fairyType);
 
 	void update(float delta);
 private:
+	String* junkStr;
 	float downSpeed;          //d—Í
 	float directionSpeed;     //¶‰E‚Ö‚Ì—Í
 

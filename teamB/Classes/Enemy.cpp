@@ -56,13 +56,32 @@ bool Enemy::init(int type)
 	 {
 		 this->initWithFile("GameScene/goldFairys1.png");
 		 scorePoint = 500;
-		 _speed = 50;                 //“®‚­‘¬‚³
+		 _speed = 300;                 //“®‚­‘¬‚³
 
 		 animation = Animation::create();
 		 animation->addSpriteFrameWithFileName("GameScene/goldFairys1.png");
 		 animation->addSpriteFrameWithFileName("GameScene/goldFairys2.png");
 		 animation->addSpriteFrameWithFileName("GameScene/goldFairys3.png");
 		 animation->addSpriteFrameWithFileName("GameScene/goldFairys2.png");
+		 animation->setDelayPerUnit(0.2f);
+		 animation->setRestoreOriginalFrame(true);
+		 action = Animate::create(animation);
+		 anime = RepeatForever::create(action);
+		 this->runAction(anime);
+
+	 }
+	break;
+	case 2:
+	 {
+		 this->initWithFile("GameScene/silverFairys1.png");
+		 scorePoint = 300;
+		 _speed = 200;                 //“®‚­‘¬‚³
+
+		 animation = Animation::create();
+		 animation->addSpriteFrameWithFileName("GameScene/silverFairys1.png");
+		 animation->addSpriteFrameWithFileName("GameScene/silverFairys2.png");
+		 animation->addSpriteFrameWithFileName("GameScene/silverFairys3.png");
+		 animation->addSpriteFrameWithFileName("GameScene/silverFairys2.png");
 		 animation->setDelayPerUnit(0.2f);
 		 animation->setRestoreOriginalFrame(true);
 		 action = Animate::create(animation);
@@ -196,7 +215,7 @@ void Enemy::Move(float deltaTime)
 			{
 				watchLayer->effectPlayMusic(7);
 				watchLayer->plusScore((int)scorePoint*0.5f);
-				watchLayer->effect->pointGet(this->getPosition(), (int)scorePoint*0.5f,bonusFairy);
+				watchLayer->effect->subPointGet(this->getPosition(), (int)scorePoint*0.5f,bonusFairy);
 			}
 			bonusFairy = true;
 			fairyModes = SAVETWO;

@@ -15,7 +15,7 @@ bool UIManager::init()
 	gauge->setPosition(scoreBasePos);
 	this->addChild(gauge);
 
-	scoreLabel = Label::createWithTTF("1", "fonts/Hayatonumfont-Regular.ttf",80);
+	scoreLabel = Label::createWithTTF("1", "fonts/PixelMplus12-Bold.ttf",80);
 	String* scoreStr = String::createWithFormat("%06d",score);
 	scoreLabel->setString(scoreStr->getCString());
 	scoreLabel->setPosition(scoreBasePos);

@@ -24,14 +24,14 @@ bool ClearText::init(int nowM, int nowS, int highM, int highS, bool highScoreC)
 
 	auto layer = ((WatchLayer*)(this->getParent()));
 
-	nowScore = Label::createWithTTF("1", "fonts/Hayatonumfont-Regular.ttf", 96);
+	nowScore = Label::createWithTTF("1", "fonts/PixelMplus12-Bold.ttf", 96);
 	String* nowScoreStr = String::createWithFormat("%02d:%02d", nowM, nowS);
 	nowScore->setString(nowScoreStr->getCString());
 	nowScore->setPosition(designResolutionSize.width*0.5f,designResolutionSize.height*0.3f);
 	nowScore->setColor(Color3B::WHITE);
 	this->addChild(nowScore);
 
-	highScore = Label::createWithTTF("1", "fonts/Hayatonumfont-Regular.ttf", 128);
+	highScore = Label::createWithTTF("1", "fonts/PixelMplus12-Bold.ttf", 128);
 	String* highScoreStr = String::createWithFormat("%02d:%02d", highM, highS);
 	highScore->setString(highScoreStr->getCString());
 	highScore->setPosition(designResolutionSize.width*0.5f, designResolutionSize.height*0.5f);

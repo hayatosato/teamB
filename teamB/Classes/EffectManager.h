@@ -25,6 +25,7 @@ public:
 	void fairyJunk(Vec2 JPos,int fairyType);       //—d¸”ò‚ÑU‚é
 	void numWave(int num,int way);   //”š‚Ì”g“®
 	void pointGet(Vec2 PointPos, int point,bool bonusCheck); //Šl“¾‚µ‚½ƒXƒRƒA‚ª‚Ç‚Ì‚­‚ç‚¢‚©
+	void subPointGet(Vec2 subPointPos, int subPoint, bool subBonusCheck); //“¹’†‚ÌƒXƒRƒAŠl“¾
 
 	bool init();
 

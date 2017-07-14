@@ -69,7 +69,7 @@ void EnemyManager::EnemyCreater(float dt)
 void EnemyManager::fairyCreate(int fairyCreatePos)
 {
 	//“G¶¬
-	enemy.pushBack(Enemy::create(1));
+	enemy.pushBack(Enemy::create(fairyAdvent()));
 	enemy.at(enemy.size() - 1)->setPosition(((WatchLayer*)(this->getParent()))->fairyGate.at(fairyCreatePos)->getPosition());
 	enemy.at(enemy.size() - 1)->myCreatePos = pos;
 	this->addChild(enemy.at(enemy.size() - 1), 1);
@@ -234,4 +234,29 @@ void EnemyManager::deleteEnemy(int enemyNum,bool death)
 		enemy.erase(enemyNum);
 		aura.at(enemyNum)->removeFromParentAndCleanup(true);
 		aura.erase(enemyNum);
+}
+
+//oŒ»—¦ŒvZ
+int EnemyManager::fairyAdvent()
+{
+	random_device rnd;
+	mt19937 mt(rnd());
+	uniform_int_distribution<int> EType(1, 100);
+	int a = EType(mt);
+	int advent;
+
+	if (a <= 10)
+	{
+		advent = 1;
+	}
+	else if (a > 10 && a <= 30)
+	{
+		advent = 2;
+	}
+	else
+	{
+		advent = 0;
+	}
+
+	return advent;
 }

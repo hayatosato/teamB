@@ -1,9 +1,9 @@
 #include "Junk.h"
 
-Junk *Junk::create(int junkNum)
+Junk *Junk::create(int junkNum,int fairyType)
 {
 	Junk *pRet = new Junk();
-	if (pRet && pRet->init(junkNum))
+	if (pRet && pRet->init(junkNum,fairyType))
 	{
 		pRet->autorelease();
 		return pRet;
@@ -15,15 +15,28 @@ Junk *Junk::create(int junkNum)
 	}
 }
 
-bool Junk::init(int junkNum)
+bool Junk::init(int junkNum,int fairyType)
 {
 	if (!Sprite::init())
 	{
 		return false;
 	}
-	String* junkStr = String::createWithFormat("GameScene/JunkParts%d.png", junkNum);
+	switch (fairyType)
+	{
+	case 0:
+		junkStr = String::createWithFormat("GameScene/JunkParts%d.png", junkNum);
+		break;
+	case 1:
+		junkStr = String::createWithFormat("GameScene/JunkPartsGold%d.png", junkNum);
+		break;
+	case 2:
+		junkStr = String::createWithFormat("GameScene/JunkPartsSilver%d.png", junkNum);
+		break;
+	}
+
 	this->initWithFile(junkStr->getCString());
 	this->setScale(0.15f);
+
 
 	this->scheduleOnce(schedule_selector(Junk::fadeErase), 0.5f);
 
@@ -54,10 +67,12 @@ void Junk::up()
 {
 	random_device rd;
 	mt19937 mt(rd());
-	uniform_int_distribution<int> dPower(-4,4);
+	uniform_int_distribution<int> dPower(-400,400);
+	uniform_int_distribution<int> JPower(300,400);
 
-	downSpeed = 3.0f;
-	directionSpeed = (float)dPower(mt);
+
+	downSpeed = (float)JPower(mt)*0.01f;
+	directionSpeed = (float)dPower(mt)*0.01;
 }
 
 void Junk::erase()

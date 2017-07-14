@@ -96,9 +96,9 @@ void EffectManager::chargeEffect(Vec2 chPos)
 
 void EffectManager::fairyJunk(Vec2 JPos,int fairyType)
 {
-	Junk* junkZero = Junk::create(0);
-	Junk* junkOne =  Junk::create(1);
-	Junk* junkTwo =  Junk::create(2);
+	Junk* junkZero = Junk::create(0,fairyType);
+	Junk* junkOne =  Junk::create(1,fairyType);
+	Junk* junkTwo =  Junk::create(2,fairyType);
 
 	junkZero->setPosition(JPos);
 	junkOne->setPosition(junkZero->getPositionX() + 20.0f,junkZero->getPositionY());
@@ -118,17 +118,47 @@ void EffectManager::numWave(int num, int way)
 	this->addChild(surgeNum);
 }
 
+//いくつスコアを取得したか表示
 void EffectManager::pointGet(Vec2 pointPos,int point,bool bonusCheck)
 {
 	PointLabel* pointLabel = PointLabel::create();
 	pointLabel->setPosition(pointPos);
+
+	PointLabel* doublingLabel = PointLabel::create();
+	doublingLabel->setPosition(pointPos.x + 70,pointPos.y);
+	doublingLabel->setColor(Color3B::RED);
 
 	if (bonusCheck)
 	{
 		pointLabel->bonusColor = true;
 	}
 
-	String* pointStr = String::createWithFormat("%d",point);
+	int multipleNum = (int)point / 100;
+
+	String* pointStr = String::createWithFormat("%d",100);
+	pointLabel->setString(pointStr->getCString());
+	String* doublingStr = String::createWithFormat("x%d", multipleNum);
+	doublingLabel->setString(doublingStr->getCString());
+	doublingLabel->enableOutline(Color4B::BLACK, 2);
+	this->addChild(pointLabel);
+	if (multipleNum != 1)
+	{
+		this->addChild(doublingLabel);
+	}
+}
+
+//道中のスコア獲得について
+void EffectManager::subPointGet(Vec2 subPointPos, int subPoint, bool subBonusCheck)
+{
+	PointLabel* pointLabel = PointLabel::create();
+	pointLabel->setPosition(subPointPos);
+
+	if (subBonusCheck)
+	{
+		pointLabel->bonusColor = true;
+	}
+
+	String* pointStr = String::createWithFormat("%d", subPoint);
 	pointLabel->setString(pointStr->getCString());
 	this->addChild(pointLabel);
 }
