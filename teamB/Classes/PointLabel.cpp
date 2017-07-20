@@ -24,7 +24,6 @@ bool PointLabel::init()
 	colorCount = 3;
 	bonusColor = false;
 	this->initWithTTF("1", "fonts/PixelMplus12-Bold.ttf", 40);
-	//this->setColor(Color3B(209, 207, 207));
 	this->setColor(Color3B(170, 170, 170));
 
 	FadeOut* fadeOut = FadeOut::create(0.7f);

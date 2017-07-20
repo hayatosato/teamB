@@ -18,6 +18,7 @@ bool Player::init()
 
 	masterTap = false;
 	retryTap = false;
+	skipTap = false;
 	stopManyTap = true;
 	downMove     = 0.5f;
 	maxMoveSpeed = 5.0f;
@@ -40,15 +41,21 @@ bool Player::init()
 
 bool Player::onTouchBegan(Touch* pTouch, Event* pEvent)
 {
+	auto layer = ((WatchLayer*)(this->getParent()));
+
 	if (retryTap)
 	{
 		Director::getInstance()->replaceScene(TransitionFade::create(3.0f, GameScene::create(), Color3B::BLACK));
 	}
 
+	if (skipTap)
+	{
+		layer->clearText->skip();
+		skipTap = false;
+	}
+
 	Vec2 touchPos = pTouch->getLocationInView();
 	touchPos.y = designResolutionSize.height - touchPos.y;
-
-	auto layer = ((WatchLayer*)(this->getParent()));
 
 	//‚Â‚Ü‚ÝRect
 	Size knobRect = layer->_knob->getContentSize();

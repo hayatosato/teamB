@@ -15,13 +15,13 @@ bool WatchLayer::init()
 	}
 
 	//ハイスコアリセット
-	//timeScore->setIntegerForKey("seconds", 0);
-	//timeScore->setIntegerForKey("minute", 0);
-
+	timeScore->setIntegerForKey("seconds", 0);
+	timeScore->setIntegerForKey("minute", 0);
+	timeScore->setIntegerForKey("highScore",0);
 
 	circleNum = WATCH_NUMBER;
 	breakNumCheck = 0;
-	breakNum = 3;           //壊す数字の数  11以上にしないように
+	breakNum = 1;           //壊す数字の数  11以上にしないように
 	nowBreakNum = 0;
 	maxNumberHP = 10.0f;       //数字の最大HP初期化
 	repairScore = 1.0f;
@@ -182,6 +182,10 @@ bool WatchLayer::init()
 	timeWaku->setPosition(timePos.x, timePos.y + 200.0f);
 	this->addChild(timeWaku, 9);
 
+	//時間の板
+	timeBoard = Sprite::create("GameScene/timeIta.png");
+	this->addChild(timeBoard, 10);
+
 	//UI
 	UI = UIManager::create();
 	UI->setPosition(UIPos.x,UIPos.y + 200.0f);
@@ -195,7 +199,7 @@ bool WatchLayer::init()
 void WatchLayer::update(float delta)
 {
 	timeWaku->setPosition(timeLabel->getPosition());
-
+	timeBoard->setPosition(timeWaku->getPositionX() - 70, timeWaku->getPositionY() + (timeWaku->getContentSize().height*0.5f));
 
 	if (!masterHand) return;
 	//秒針の回転
@@ -487,21 +491,15 @@ void WatchLayer::end()
 	_enemyManager->masterFairy = false;
 	timeLabel->stopTime();
 
-	//スコアの繁栄
-	if (timeScore->getIntegerForKey("minute") > timeLabel->minute)
+	int totalScore = UI->score + (999 - (int)(((timeLabel->minute * 100) + (timeLabel->seconds))*0.1f));
+	int memoryTotalScore = timeScore->getIntegerForKey("highScore");
+	if (memoryTotalScore < totalScore)
 	{
+		highScoreCheck = true;
 		timeScore->setIntegerForKey("seconds", timeLabel->seconds);
 		timeScore->setIntegerForKey("minute", timeLabel->minute);
-		highScoreCheck = true;
-	}
-	else if (timeScore->getIntegerForKey("minute") == timeLabel->minute)
-	{
-		if (timeScore->getIntegerForKey("seconds") > timeLabel->seconds)
-		{
-			timeScore->setIntegerForKey("seconds", timeLabel->seconds);
-			timeScore->setIntegerForKey("minute", timeLabel->minute);
-			highScoreCheck = true;
-		}
+		timeScore->setIntegerForKey("highScore", totalScore);
+
 	}
 
 	FadeIn* BfadeIn = FadeIn::create(0.7f);
@@ -514,17 +512,9 @@ void WatchLayer::end()
 		                                  MoveTo::create(1.5f, Vec2(designResolutionSize.width*0.5f, designResolutionSize.height*0.8f)),
 		                                  DelayTime::create(0.5f),
 		                                  CallFunc::create([=] {
-		                                                         ClearText* clearText = ClearText::create(timeLabel->minute,timeLabel->seconds,timeScore->getIntegerForKey("minute"), timeScore->getIntegerForKey("seconds"),highScoreCheck);
+		                                                         clearText = ClearText::create(timeScore->getIntegerForKey("highScore"), UI->score, timeLabel->minute, timeLabel->seconds,highScoreCheck);
 		                                                         this->addChild(clearText, 13);
 	                                                           }),
-		                                  DelayTime::create(1.0f),
-										  CallFunc::create([=] {
-																   Sprite* modoru = Sprite::create("GameScene/modoru.png");
-																   modoru->setPosition(designResolutionSize.width*0.5f, designResolutionSize.height*0.1f);
-																   modoru->setScale(0.7f);
-																   this->addChild(modoru, 13);
-																   _player->retryTap = true;
-															   }),
 		                                  nullptr
 		                                 );
 	clear->runAction(clearSeq);
@@ -573,4 +563,14 @@ void WatchLayer::effectPlayMusic(int musicNum)
 void WatchLayer::plusScore(int upScore)
 {
 	UI->score += upScore;
+}
+
+//戻る画像を生成戻るを実行可能にする
+void WatchLayer::createModoru()
+{
+	Sprite* modoru = Sprite::create("GameScene/modoru.png");
+	modoru->setPosition(designResolutionSize.width*0.5f, designResolutionSize.height*0.1f);
+	modoru->setScale(0.7f);
+	this->addChild(modoru, 13);
+	_player->retryTap = true;
 }

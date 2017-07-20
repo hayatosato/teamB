@@ -17,7 +17,9 @@ public:
 private:
 	Vec2 scoreBasePos;          //壊れた数字を表すUIの基準位置
 	Sprite* gauge;              //壊れゲージ下地
-	Label*  scoreLabel;            //壊れ表示
+	Sprite* scoreBoard;         //スコア板
+	Label*  scoreLabel;         //壊れ表示
+
 
 };
 #endif

@@ -69,6 +69,7 @@ public:
 	Sprite* dirtWatch;       //時計の汚れなど
 	Sprite* glassShine;      //ガラスの反射
 	Player* _player;         //Playerクラス
+	ClearText* clearText;
 
 	void repairNumber(int num,bool bonus,int fairyScore,Vec2 fairyPos);    //数字の修復&クリアしたかどうか&スコア取得
 	void adventGateMotion(int GatePos);       //敵出現演出&敵を生成する処理を呼ぶ
@@ -78,14 +79,16 @@ public:
 	void stopMusic();                         //音を止める
 	void effectPlayMusic(int musicNum);       //番号にあったSEを流す
 	void plusScore(int upScore);              //スコアを足す
+	void createModoru();
 
 	void update(float delta);
 private:
 
-	Vec2 UIPos;       //UI基準点
-	Vec2 timePos;     //時間基準点
+	Vec2 UIPos;        //UI基準点
+	Vec2 timePos;      //時間基準点
 
 	Sprite* timeWaku;  //時間の枠
+	Sprite* timeBoard; //時間の板
 	Sprite* countThree;//カウントダウンの画像3
 	Sprite* countTwo;  //カウントダウンの画像2
 	Sprite* countOne;  //カウントダウンの画像1
@@ -118,5 +121,4 @@ private:
 	void showingNeedle();  //見えなかった針を見せる
 	void ramdomBreak();    //壊れた数字の配置
 };
-
 #endif

@@ -12,6 +12,7 @@ public:
 
 	bool masterTap;           //これをtrueにしない限りタップ関係は動かない
 	bool retryTap;            //タップした時シーン繊維するか
+	bool skipTap;             //リザルトをスキップしたいとき
 
 	// タッチイベント処理
 	virtual bool onTouchBegan(Touch* pTouch, Event* pEvent);

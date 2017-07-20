@@ -15,6 +15,10 @@ bool UIManager::init()
 	gauge->setPosition(scoreBasePos);
 	this->addChild(gauge);
 
+	scoreBoard = Sprite::create("GameScene/scoreIta.png");
+	scoreBoard->setPosition(gauge->getPositionX() - 70, gauge->getPositionY()+(gauge->getContentSize().height*0.5f));
+	this->addChild(scoreBoard);
+
 	scoreLabel = Label::createWithTTF("1", "fonts/PixelMplus12-Bold.ttf",80);
 	String* scoreStr = String::createWithFormat("%06d",score);
 	scoreLabel->setString(scoreStr->getCString());
