@@ -11,6 +11,7 @@ public:
 
 	bool init(int HScore, int score, int nowM, int nowS, bool highScoreC);
 
+	Label* scoreChar;          //スコア文字
 	Label* nowScore;           //現在のスコアラベル
 	Label* bonusChar;          //ボーナス文字
 	Label* timeBonus;          //タイム表示ラベル

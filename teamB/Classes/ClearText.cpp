@@ -35,6 +35,11 @@ bool ClearText::init(int HScore, int score, int nowM, int nowS, bool highScoreC)
 	nowScore->setColor(Color3B::WHITE);
 	this->addChild(nowScore);
 
+	scoreChar = Label::createWithTTF("Score", "fonts/PixelMplus12-Bold.ttf", 40);
+	scoreChar->setPosition(nowScore->getPositionX() - 100, nowScore->getPositionY() + 70);
+	scoreChar->setColor(Color3B::WHITE);
+	this->addChild(scoreChar);
+
 	CallFunc* callBTime = CallFunc::create([=] { timeBonusDisplay(); });
 	CallFunc* callGateOpen = CallFunc::create([=] { bonusGate = true; });
 	Sequence* seq = Sequence::create(DelayTime::create(1.0f), callBTime, DelayTime::create(1.0f), callGateOpen, nullptr);

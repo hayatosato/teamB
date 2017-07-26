@@ -31,6 +31,7 @@ bool Enemy::init(int type)
 	typeNum = type;
 
 	this->setScale(0.15f);
+	downMode = false;
 
 	switch (typeNum)
 	{
@@ -87,8 +88,27 @@ bool Enemy::init(int type)
 		 action = Animate::create(animation);
 		 anime = RepeatForever::create(action);
 		 this->runAction(anime);
-
 	 }
+	break;
+	case 3:
+	{
+		this->initWithFile("GameScene/DownFairy1.png");
+		scorePoint = 50;
+		_speed = 100;                 //“®‚­‘¬‚³
+		downMode = true;
+
+		animation = Animation::create();
+		animation->addSpriteFrameWithFileName("GameScene/DownFairy1.png");
+		animation->addSpriteFrameWithFileName("GameScene/DownFairy2.png");
+		animation->addSpriteFrameWithFileName("GameScene/DownFairy3.png");
+		animation->addSpriteFrameWithFileName("GameScene/DownFairy2.png");
+		animation->setDelayPerUnit(0.2f);
+		animation->setRestoreOriginalFrame(true);
+		action = Animate::create(animation);
+		anime = RepeatForever::create(action);
+		this->runAction(anime);
+
+	}
 	break;
 	}
 

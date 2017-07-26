@@ -8,6 +8,7 @@
 #include "Junk.h"
 #include "SurgeNum.h"
 #include "PointLabel.h"
+#include "KNobEffect.h"
 
 USING_NS_CC;
 using namespace std;
@@ -26,6 +27,8 @@ public:
 	void numWave(int num,int way);   //数字の波動
 	void pointGet(Vec2 PointPos, int point,bool bonusCheck); //獲得したスコアがどのくらいか
 	void subPointGet(Vec2 subPointPos, int subPoint, bool subBonusCheck); //道中のスコア獲得
+	void kNobTurn(Vec2 kNobPos); //つまみアピール
+	void yajiErase();           //チュートリアルの矢印けし
 
 	bool init();
 

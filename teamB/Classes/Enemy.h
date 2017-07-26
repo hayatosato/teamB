@@ -20,6 +20,8 @@ public:
 	bool exitNeedle;        //針から出たか
 	bool bonusFairy;        //ボーナスがかかっているかどうか
 
+	bool downMode;          //特殊妖精か判断
+
 	enum fairyMode
 	{
 		WAIT,

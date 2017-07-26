@@ -56,6 +56,10 @@ public:
 	int   actingBreak;                  //壊す数字を選択するときに使用
 	bool  breakCheck[WATCH_NUMBER];     //壊す数字多重防止
 
+	int   maxKnobCount;                 //最大つまみ協調カウント
+	int   knobCount;                    //つまみ協調カウント
+	bool  knobSwitch;                   //trueで演出
+
 	vector<FairyGate*> fairyGate;       //敵発生地点
 	vector<Sprite*> numSpr;             //数字の画像
 

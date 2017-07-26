@@ -37,6 +37,9 @@ bool DeathFairy::init(int actionMode,int fairyType)
 	case 2:
 		this->initWithFile("GameScene/silverFairysDeath.png");
 		break;
+	case 3:
+		this->initWithFile("GameScene/DownFairyDeath.png");
+		break;
 	}
 
 

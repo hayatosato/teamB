@@ -32,6 +32,9 @@ bool Junk::init(int junkNum,int fairyType)
 	case 2:
 		junkStr = String::createWithFormat("GameScene/JunkPartsSilver%d.png", junkNum);
 		break;
+	case 3:
+		junkStr = String::createWithFormat("GameScene/JunkPartsDown%d.png", junkNum);
+		break;
 	}
 
 	this->initWithFile(junkStr->getCString());

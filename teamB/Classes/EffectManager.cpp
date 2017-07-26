@@ -125,26 +125,28 @@ void EffectManager::pointGet(Vec2 pointPos,int point,bool bonusCheck)
 	pointLabel->setPosition(pointPos);
 
 	PointLabel* doublingLabel = PointLabel::create();
-	doublingLabel->setPosition(pointPos.x + 70,pointPos.y);
+	doublingLabel->setPosition(pointPos.x + 60,pointPos.y);
 	doublingLabel->setColor(Color3B::RED);
 
 	if (bonusCheck)
 	{
 		pointLabel->bonusColor = true;
+		String* pointStr = String::createWithFormat("%d",(int)(point*0.5f));
+		pointLabel->setString(pointStr->getCString());
+		String* doublingStr = String::createWithFormat("x%d", 2);
+		doublingLabel->setString(doublingStr->getCString());
+		doublingLabel->enableOutline(Color4B::BLACK, 2);
+		this->addChild(doublingLabel);
+	}
+	else
+	{
+		String* pointStr = String::createWithFormat("%d", point);
+		pointLabel->setString(pointStr->getCString());
 	}
 
 	int multipleNum = (int)point / 100;
 
-	String* pointStr = String::createWithFormat("%d",100);
-	pointLabel->setString(pointStr->getCString());
-	String* doublingStr = String::createWithFormat("x%d", multipleNum);
-	doublingLabel->setString(doublingStr->getCString());
-	doublingLabel->enableOutline(Color4B::BLACK, 2);
 	this->addChild(pointLabel);
-	if (multipleNum != 1)
-	{
-		this->addChild(doublingLabel);
-	}
 }
 
 //“¹’†‚ÌƒXƒRƒAŠl“¾‚É‚Â‚¢‚Ä
@@ -161,4 +163,22 @@ void EffectManager::subPointGet(Vec2 subPointPos, int subPoint, bool subBonusChe
 	String* pointStr = String::createWithFormat("%d", subPoint);
 	pointLabel->setString(pointStr->getCString());
 	this->addChild(pointLabel);
+}
+
+void EffectManager::kNobTurn(Vec2 kNobPos)
+{
+	KNobEffect* knobEffect = KNobEffect::create();
+	knobEffect->setPosition(kNobPos);
+	this->addChild(knobEffect);
+
+	KNobEffect* yaji = KNobEffect::create();
+	yaji->initWithFile("GameScene/yaji.png");
+	yaji->setPosition(knobEffect->getPositionX(), knobEffect->getPositionY() + 100.0f);
+	this->addChild(yaji);
+
+}
+
+void EffectManager::yajiErase()
+{
+
 }

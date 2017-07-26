@@ -16,12 +16,14 @@ bool Player::init()
 {
 	if (!Node::init()) return false;
 
+	auto layer = ((WatchLayer*)(this->getParent()));
+
 	masterTap = false;
 	retryTap = false;
 	skipTap = false;
 	stopManyTap = true;
 	downMove     = 0.5f;
-	maxMoveSpeed = 5.0f;
+	maxMoveSpeed = 3.0f;
 	
 	// タッチイベントを有効にする
 	auto listener = EventListenerTouchOneByOne::create();
@@ -77,7 +79,7 @@ bool Player::onTouchBegan(Touch* pTouch, Event* pEvent)
 	if (!stopManyTap) return true;
 	layer->stopMusic();
 	layer->effectPlayMusic(1);
-	layer->title->upStart(); //動かすための応急処置
+	layer->title->upStart(); //時計起動
 	stopManyTap = false;
 
 	return true;

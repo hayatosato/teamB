@@ -253,6 +253,10 @@ int EnemyManager::fairyAdvent()
 	{
 		advent = 2;
 	}
+	else if(a > 31 && a <= 45)
+	{
+		advent = 3;
+	}
 	else
 	{
 		advent = 0;

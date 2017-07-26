@@ -18,14 +18,18 @@ bool WatchLayer::init()
 	timeScore->setIntegerForKey("seconds", 0);
 	timeScore->setIntegerForKey("minute", 0);
 	timeScore->setIntegerForKey("highScore",0);
+	timeScore->setIntegerForKey("tutorial", 0);
 
 	circleNum = WATCH_NUMBER;
 	breakNumCheck = 0;
-	breakNum = 1;           //‰ó‚·”Žš‚Ì”  11ˆÈã‚É‚µ‚È‚¢‚æ‚¤‚É
+	breakNum = 3;           //‰ó‚·”Žš‚Ì”  11ˆÈã‚É‚µ‚È‚¢‚æ‚¤‚É
 	nowBreakNum = 0;
 	maxNumberHP = 10.0f;       //”Žš‚ÌÅ‘åHP‰Šú‰»
 	repairScore = 1.0f;
 	repairBonusScore = 2.0f;
+	maxKnobCount = 60;
+	knobCount = maxKnobCount;
+	knobSwitch = false;
 	UIPos = Vec2(designResolutionSize*0.0f);
 	timePos = Vec2(designResolutionSize.width*0.25f, designResolutionSize.height*0.9f);
 	highScoreCheck = false;
@@ -119,7 +123,6 @@ bool WatchLayer::init()
 		numSpr.at(j)->setPosition(watchPos);
 		numSpr.at(j)->setScale(0.6f);
 		this->addChild(numSpr.at(j), 2);
-		//numSpr.at(j)->setOpacity(200);
 	}
 	
 	//‰˜‚ê
@@ -201,6 +204,15 @@ void WatchLayer::update(float delta)
 	timeWaku->setPosition(timeLabel->getPosition());
 	timeBoard->setPosition(timeWaku->getPositionX() - 70, timeWaku->getPositionY() + (timeWaku->getContentSize().height*0.5f));
 
+	if (knobSwitch)
+	{
+		knobCount--;
+		if (knobCount <= 0)
+		{
+			effect->kNobTurn(_knob->getPosition());
+			knobCount = maxKnobCount;
+		}
+	}
 	if (!masterHand) return;
 	//•bj‚Ì‰ñ“]
 	_secondHand->setRotation(_secondHand->getRotation() + 0.1f);
@@ -486,11 +498,16 @@ void WatchLayer::showingNeedle()
 //I‚í‚è
 void WatchLayer::end()
 {
+	//‚¢‚ë‚¢‚ë’âŽ~
 	masterHand = false;
 	_player->masterTap = false;
 	_enemyManager->masterFairy = false;
 	timeLabel->stopTime();
 
+	//ƒ`ƒ…[ƒgƒŠƒAƒ‹‚ð¡Œã‘jŽ~
+	timeScore->setIntegerForKey("tutorial", 1);
+
+	//ƒ^ƒCƒ€ƒ{[ƒiƒXŒvŽZ
 	int totalScore = UI->score + (999 - (int)(((timeLabel->minute * 100) + (timeLabel->seconds))*0.1f));
 	int memoryTotalScore = timeScore->getIntegerForKey("highScore");
 	if (memoryTotalScore < totalScore)
